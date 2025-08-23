@@ -17,22 +17,25 @@ with app.app_context():
     db.create_all()
 
 # ---------------- Routes ----------------
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
-        # check the users existed or not
+        # 检查用户名是否已存在
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            return "Username already taken. Please choose another one."
+            # 把错误信息传给模板
+            return render_template("signup.html", error="Username already exists. Please try again.")
 
         hashed_pw = generate_password_hash(password, method="scrypt")
         new_user = User(username=username, password=hashed_pw)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("login"))
+
     return render_template("signup.html")
 
 
@@ -48,8 +51,9 @@ def login():
             session["username"] = user.username
             return redirect(url_for("dashboard"))
         else:
-            return "Invalid credentials"
+            return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
+
 
 @app.route("/logout")
 def logout():
