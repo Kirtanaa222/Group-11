@@ -18,16 +18,19 @@ with app.app_context():
 
 # ---------------- Routes ----------------
 
+@app.route("/")
+def home():
+    return render_template("home.html", username=session.get("username"))
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
-        # 检查用户名是否已存在
+        # check if the user exists in db
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
-            # 把错误信息传给模板
             return render_template("signup.html", error="Username already exists. Please try again.")
 
         hashed_pw = generate_password_hash(password, method="scrypt")
