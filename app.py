@@ -23,12 +23,18 @@ def signup():
         username = request.form["username"]
         password = request.form["password"]
 
+        # check the users existed or not
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return "Username already taken. Please choose another one."
+
         hashed_pw = generate_password_hash(password, method="scrypt")
         new_user = User(username=username, password=hashed_pw)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("login"))
     return render_template("signup.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
