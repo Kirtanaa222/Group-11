@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, request, redirect, url_for, session # pyright: ignore[reportMissingImports]
+from flask_sqlalchemy import SQLAlchemy # pyright: ignore[reportMissingImports]
+from werkzeug.security import generate_password_hash, check_password_hash # pyright: ignore[reportMissingImports]
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
@@ -57,5 +57,8 @@ def dashboard():
     return render_template("dashboard.html", username=session["username"])
 
 # Run the app
+@app.route("/")
+def home():
+    return redirect(url_for("login"))
 if __name__ == "__main__":
     app.run(debug=True)
