@@ -70,8 +70,5 @@ def dashboard():
     return render_template("dashboard.html", username=session["username"])
 
 # Run the app
-@app.route("/")
-def home():
-    return redirect(url_for("login"))
 if __name__ == "__main__":
     app.run(debug=True)
