@@ -14,7 +14,7 @@
         <ul class="nav-links">
             <li><a href="{{ url_for('home') }}">Home</a></li>
             {% if username %}
-                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -33,4 +33,4 @@
         {% endif %}
     </div>
 </body>
-</html>
+</html> 
