@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy # pyright: ignore[reportMissingImports]
 from werkzeug.security import generate_password_hash, check_password_hash # pyright: ignore[reportMissingImports]
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 db = SQLAlchemy(app)
