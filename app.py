@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy # pyright: ignore[reportMissingImports]
 from werkzeug.security import generate_password_hash, check_password_hash # pyright: ignore[reportMissingImports]
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 db = SQLAlchemy(app)
@@ -52,7 +52,7 @@ def login():
         if user and check_password_hash(user.password, password):
             session["user_id"] = user.id
             session["username"] = user.username
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("profile"))
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
@@ -63,11 +63,11 @@ def logout():
     session.clear()
     return redirect(url_for("login"))
 
-@app.route("/dashboard")
-def dashboard():
+@app.route("/profile")
+def profile():
     if "user_id" not in session:
         return redirect(url_for("login"))
-    return render_template("dashboard.html", username=session["username"])
+    return render_template("profile.html", username=session["username"])
 
 # Run the app
 if __name__ == "__main__":
