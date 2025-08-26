@@ -12,6 +12,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    faculty = db.Column(db.String(50), nullable=False)
+    student_id = db.Column(db.String(50), unique=True, nullable=False)
+    mmu_email = db.Column(db.String(50), nullable=False)
 
 with app.app_context():
     db.create_all()
@@ -22,25 +25,33 @@ with app.app_context():
 def home():
     return render_template("home.html", username=session.get("username"))
 
+#sign up form
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        faculty = request.form["faculty"]
+        student_id = request.form["student_id"]
+        mmu_email = request.form["mmu_email"]
 
-        # check if the user exists in db
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
+        # to check if the user exists in db
+        if User.query.filter_by(username=username).first():
             return render_template("signup.html", error="Username already exists. Please try again.")
 
+        if User.query.filter_by(student_id=student_id).first():
+            return render_template("signup.html", error="Student ID already exists. Please check.")
+        
+        if User.query.filter_by(mmu_email=mmu_email).first():
+            return render_template("signup.html", error="Email already exists.")
+
         hashed_pw = generate_password_hash(password, method="scrypt")
-        new_user = User(username=username, password=hashed_pw)
+        new_user = User(username=username, password=hashed_pw, faculty=faculty, student_id=student_id, mmu_email=mmu_email)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("login"))
 
     return render_template("signup.html")
-
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -56,7 +67,6 @@ def login():
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
-
 
 @app.route("/logout")
 def logout():
