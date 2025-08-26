@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>StudyBae！</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span>Study</span><span>B</span><span>a</span><span>e</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            {% if username %}
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- main content -->
+    <div class="container">
+        {% if username %}
+            <h1>Welcome back, {{ username }}!</h1>
+        {% else %}
+            <h1>Welcome to StudyBae！</h1>
+            <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('signup') }}">sign up</a>.</p>
+        {% endif %}
+    </div>
+</body>
+</html> 
