@@ -69,6 +69,6 @@ def profile():
         return redirect(url_for("login"))
     return render_template("profile.html", username=session["username"])
 
-# Run the app
+# run the app
 if __name__ == "__main__":
     app.run(debug=True)
