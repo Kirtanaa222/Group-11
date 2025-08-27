@@ -128,3 +128,25 @@ body {
 .btn:hover {
     background: #7a0e8b;
 }
+
+.form-box select {
+    color: #777;
+    font-size: 14px;
+    width: 97%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-box select:focus {
+    color: #777;
+    font-size: 14px;
+    border-color: #a877d3;
+    box-shadow: 0 0 5px rgba(168, 119, 211, 0.5);
+    outline: none;
+}

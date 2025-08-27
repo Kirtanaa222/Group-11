@@ -14,10 +14,24 @@
 
         <form method="POST">
             <input type="text" name="username" placeholder="Username" required>
-            <input type="text" name="faculty" placeholder="Faculty" required>
             <input type="text" name="student_id" maxlength="10" placeholder="Student ID" required>
             <input type="email" name="user_email" placeholder="Personal Email" required>
             <input type="password" name="password" placeholder="Password" required>
+            
+            <select name="faculty" required>
+                <option value="">Select Faculty</option>
+                <option value="Faculty Of Applied Communication (FAC)">Faculty Of Applied Communication (FAC)</option>
+                <option value="Faculty Of Artificial Intelligence And Engineering (FAIE)">Faculty Of Artificial Intelligence And Engineering (FAIE)</option>
+                <option value="Faculty Of Business (FOB)">Faculty Of Business (FOB)</option>
+                <option value="Faculty Of Cinematic Arts (FCA)">Faculty Of Cinematic Arts (FCA)</option>
+                <option value="Faculty Of Computing And Informatics (FCI)">Faculty Of Computing And Informatics (FCI)</option>
+                <option value="Faculty Of Creative Multimedia (FCM)">Faculty Of Creative Multimedia (FCM)</option>
+                <option value="Faculty Of Engineering And Technology (FET)">Faculty Of Engineering And Technology (FET)</option>
+                <option value="Faculty Of Information Science And Technology (FIST)">Faculty Of Information Science And Technology (FIST)</option>
+                <option value="Faculty Of Law (FOL)">Faculty Of Law (FOL)</option>
+                <option value="Faculty Of Management (FOM)">Faculty Of Management (FOM)</option>
+            </select>
+
             <button type="submit" class="btn">Sign Up</button>
         </form>
         <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
