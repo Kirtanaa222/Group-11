@@ -10,11 +10,11 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(50), nullable=False)
     faculty = db.Column(db.String(50), nullable=False)
-    student_id = db.Column(db.String(50), unique=True, nullable=False)
-    mmu_email = db.Column(db.String(50), nullable=False)
+    student_id = db.Column(db.String(10), unique=True, nullable=False)
+    user_email = db.Column(db.String(50), nullable=False)
 
 with app.app_context():
     db.create_all()
@@ -31,22 +31,21 @@ def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-        faculty = request.form["faculty"]
         student_id = request.form["student_id"]
-        mmu_email = request.form["mmu_email"]
+        user_email = request.form["user_email"]
+        faculty = request.form.get("faculty")  
 
-        # to check if the user exists in db
         if User.query.filter_by(username=username).first():
             return render_template("signup.html", error="Username already exists. Please try again.")
 
         if User.query.filter_by(student_id=student_id).first():
             return render_template("signup.html", error="Student ID already exists. Please check.")
         
-        if User.query.filter_by(mmu_email=mmu_email).first():
+        if User.query.filter_by(user_email=user_email).first():
             return render_template("signup.html", error="Email already exists.")
 
         hashed_pw = generate_password_hash(password, method="scrypt")
-        new_user = User(username=username, password=hashed_pw, faculty=faculty, student_id=student_id, mmu_email=mmu_email)
+        new_user = User(username=username, password=hashed_pw, faculty=faculty, student_id=student_id, user_email=user_email)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("login"))

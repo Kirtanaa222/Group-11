@@ -128,3 +128,29 @@ body {
 .btn:hover {
     background: #7a0e8b;
 }
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 20px 20px;
+    text-align: left;
+}
+
+.dropdown-box {
+    margin-left: 16px;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-box label {
+    margin-bottom: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.dropdown-box select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #a877d3;
+}
