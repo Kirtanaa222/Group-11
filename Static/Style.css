@@ -151,39 +151,40 @@ body {
     outline: none;
 }
 
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 侧边导航初始关闭 */
 .sidenav {
     height: 100%;
-    width: 0;  
+    width: 0;
     position: fixed;
     top: 0;
     left: 0;
     background-color: #718dcb;
     overflow-x: hidden;
-    transition: 0.4s;
+    transition: 0.3s;
     padding-top: 60px;
-    z-index: 2000;
 }
 
 .sidenav a {
-    padding: 12px 24px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
     display: block;
-    transition: 0.3s;
-}
-
-.sidenav a:hover {
-    background-color: #575757;
-}
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    cursor: pointer;
+    padding: 10px 20px;
+    text-decoration: none;
     color: white;
+}
+.sidenav a:hover {
+    background: #575757;
+}
+
+.closebtn {
+    font-size: 36px;
+    color: white;
+    cursor: pointer;
+    padding: 10px 20px;
+    display: block;
 }
 
 .openbtn {
@@ -193,21 +194,21 @@ body {
     color: white;
     padding: 10px 20px;
     border: none;
-    border-radius: 6px;
-    margin: 15px;
+    display: inline-block;
+    margin: 10px;
 }
 
-.openbtn:hover {
-    background-color: #575757;
+#menu-toggle:checked ~ .sidenav { /* use checkbox to control sidenav */
+    width: 250px;
+}
+
+#menu-toggle:checked ~ .main {
+    margin-left: 250px;
+    transition: margin-left 0.3s;
 }
 
 .main {
-    transition: margin-left 0.4s;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
     text-align: center;
+    padding: 20px;
+    transition: margin-left 0.3s;
 }
