@@ -150,3 +150,64 @@ body {
     box-shadow: 0 0 5px rgba(168, 119, 211, 0.5);
     outline: none;
 }
+
+.sidenav {
+    height: 100%;
+    width: 0;  
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #718dcb;
+    overflow-x: hidden;
+    transition: 0.4s;
+    padding-top: 60px;
+    z-index: 2000;
+}
+
+.sidenav a {
+    padding: 12px 24px;
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    background-color: #575757;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: white;
+}
+
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #718dcb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    margin: 15px;
+}
+
+.openbtn:hover {
+    background-color: #575757;
+}
+
+.main {
+    transition: margin-left 0.4s;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}

@@ -4,10 +4,32 @@
     <title>Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-    <div class="container">
-        <h1>Welcome, {{ username }} !!!!</h1>
-        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    <div id="mySidenav" class="sidenav">
+        <span class="closebtn" onclick="closeNav()">&times;</span>
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="#">Settings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
     </div>
+
+    <button class="openbtn" onclick="openNav()">☰ Menu</button>
+
+    <div class="main">
+        <h1>Welcome, {{ username }}</h1>
+        <p>This is your profile page.</p>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.querySelector(".main").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.querySelector(".main").style.marginLeft = "0";
+        }
+    </script>
 </body>
 </html> 
