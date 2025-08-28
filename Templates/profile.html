@@ -5,9 +5,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, {{ username }} !!!!</h1>
-        <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+    <input type="checkbox" id="menu-toggle" hidden>
+
+    <label for="menu-toggle" class="openbtn">☰ Menu</label>
+
+    <div id="mySidenav" class="sidenav">
+        <label for="menu-toggle" class="closebtn">&times;</label>
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="#">Settings</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <div class="main">
+        <h1>Welcome, {{ username }}</h1>
+        <p>This is your profile page.</p>
     </div>
 </body>
-</html> 
+</html>
