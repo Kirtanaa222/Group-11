@@ -16,7 +16,7 @@ class User(db.Model):
     password = db.Column(db.String(50), nullable=False)
     faculty = db.Column(db.String(50), nullable=False)
     student_id = db.Column(db.String(50), unique=True, nullable=False)
-    mmu_email = db.Column(db.String(50), nullable=False)
+    user_email = db.Column(db.String(50), unique=True, nullable=False)
 
 with app.app_context():
     db.create_all()
