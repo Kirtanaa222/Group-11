@@ -272,8 +272,14 @@ body {
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 15px;
+    cursor: pointer; 
+    transition: transform 0.2s;
 }
+
+.profile-avatar img:hover {
+    transform: scale(1.2); 
+}
+
 
 .profile-info-container textarea {
     width: 90%;
@@ -299,3 +305,4 @@ body {
 .profile-info-container button:hover {
     background-color: #7a0e8b;
 }
+
