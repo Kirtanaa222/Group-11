@@ -11,7 +11,14 @@
             <img src="{{ url_for('static', filename=avatar) }}" alt="Avatar">
         </div>
         <h1>{{ user.username }}</h1>
-        <p>{{ bio }}</p>
+
+        <form method="POST" enctype="multipart/form-data">
+            <p><textarea name="bio" rows="4" cols="40" placeholder="Write your bio here...">{{ bio }}</textarea></p>
+            <p>Upload Avatar: <input type="file" name="avatar"></p>
+            <p>Upload Background: <input type="file" name="background"></p>
+            <button type="submit">Save</button>
+        </form>
+
         <p>Faculty: {{ user.faculty }}</p>
         <p>Student ID: {{ user.student_id }}</p>
         <p>Email: {{ user.user_email }}</p>

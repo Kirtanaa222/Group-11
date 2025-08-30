@@ -123,7 +123,7 @@ def profile():
     return render_template("profile.html", username=user.username,
                            avatar=avatar, background=background, bio=bio)
 
-@app.route("/profile_info/<int:user_id>")
+@app.route("/profile_info/<int:user_id>", methods=["GET", "POST"])
 def profile_info(user_id):
     user = User.query.get(user_id)
     if not user:
@@ -133,11 +133,32 @@ def profile_info(user_id):
     background = user.background if user.background else "default_bg.jpg"
     bio = user.bio if user.bio else ""
 
+    if request.method == "POST":
+        bio_text = request.form.get("bio", "")
+        avatar_file = request.files.get("avatar")
+        bg_file = request.files.get("background")
+
+        user.bio = bio_text
+
+        if avatar_file and allowed_file(avatar_file.filename):
+            filename = secure_filename(avatar_file.filename)
+            avatar_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            user.avatar = f"uploads/{filename}"
+
+        if bg_file and allowed_file(bg_file.filename):
+            filename = secure_filename(bg_file.filename)
+            bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            user.background = f"uploads/{filename}"
+
+        db.session.commit()
+        return redirect(url_for("profile_info", user_id=user.id))
+
     return render_template("profile_info.html",
                            user=user,
                            avatar=avatar,
                            background=background,
                            bio=bio)
+
 
 
 # Run the app
