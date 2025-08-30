@@ -4,15 +4,22 @@
     <title>Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <input type="checkbox" id="menu-toggle" hidden>
+<body style='background-image: url("{{ url_for("static", filename=background or "default_bg.jpg") }}"); background-size: cover;'>
 
+    <input type="checkbox" id="menu-toggle" hidden>
     <label for="menu-toggle" class="openbtn">☰ Menu</label>
 
     <div id="mySidenav" class="sidenav">
         <label for="menu-toggle" class="closebtn">&times;</label>
+
+        <!-- Sidenav Profile Section -->
+        <div class="sidenav-profile">
+            <a href="{{ url_for('profile_info', user_id=session['user_id']) }}">
+                <img src="{{ url_for('static', filename=avatar or 'default_avatar.png') }}" alt="Avatar">
+            </a>
+        </div>
+        <a href="{{ url_for('home') }}">Home</a>
         <a href="{{ url_for('profile') }}">Profile</a>
-        <a href="#">Settings</a>
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 
@@ -20,5 +27,7 @@
         <h1>Welcome, {{ username }}</h1>
         <p>This is your profile page.</p>
     </div>
+
 </body>
 </html>
+
