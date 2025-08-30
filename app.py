@@ -1,12 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, session 
 from flask_sqlalchemy import SQLAlchemy 
 from werkzeug.security import generate_password_hash, check_password_hash 
+from werkzeug.utils import secure_filename
+import os 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #disable modification tracking in SQLAlchemy (saves memory and improves performance)
 app.secret_key = "supersecret" #encrypt the data that store in the users session
 db = SQLAlchemy(app)
+
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +25,9 @@ class User(db.Model):
     faculty = db.Column(db.String(50), nullable=False)
     student_id = db.Column(db.String(10), unique=True, nullable=False)
     user_email = db.Column(db.String(50), unique=True, nullable=False)
+    bio = db.Column(db.Text, nullable=True)
+    avatar = db.Column(db.String(200), nullable=True)
+    background = db.Column(db.String(200), nullable=True)
 
 with app.app_context():
     db.create_all()
@@ -76,11 +89,39 @@ def logout():
     session.clear()
     return redirect(url_for("login"))
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
 def profile():
     if "user_id" not in session:
         return redirect(url_for("login"))
-    return render_template("profile.html", username=session["username"]) 
+
+    user = User.query.get(session["user_id"])
+
+    avatar = user.avatar if hasattr(user, 'avatar') else "default_avatar.png"
+    background = user.background if hasattr(user, 'background') else "default_bg.jpg"
+    bio = user.bio if hasattr(user, 'bio') else ""
+
+    if request.method == "POST":
+        bio_text = request.form.get("bio", "")
+        avatar_file = request.files.get("avatar")
+        bg_file = request.files.get("background")
+
+        user.bio = bio_text
+
+        if avatar_file and allowed_file(avatar_file.filename):
+            filename = secure_filename(avatar_file.filename)
+            avatar_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            user.avatar = f"uploads/{filename}"
+
+        if bg_file and allowed_file(bg_file.filename):
+            filename = secure_filename(bg_file.filename)
+            bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            user.background = f"uploads/{filename}"
+
+        db.session.commit()
+        return redirect(url_for("profile"))
+
+    return render_template("profile.html", username=user.username,
+                           avatar=avatar, background=background, bio=bio)
 
 # Run the app
 if __name__ == "__main__":
