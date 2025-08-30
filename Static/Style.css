@@ -128,3 +128,87 @@ body {
 .btn:hover {
     background: #7a0e8b;
 }
+
+.form-box select {
+    color: #777;
+    font-size: 14px;
+    width: 97%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-box select:focus {
+    color: #777;
+    font-size: 14px;
+    border-color: #a877d3;
+    box-shadow: 0 0 5px rgba(168, 119, 211, 0.5);
+    outline: none;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* 侧边导航初始关闭 */
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #718dcb;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+}
+.sidenav a:hover {
+    background: #575757;
+}
+
+.closebtn {
+    font-size: 36px;
+    color: white;
+    cursor: pointer;
+    padding: 10px 20px;
+    display: block;
+}
+
+.openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #718dcb;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    display: inline-block;
+    margin: 10px;
+}
+
+#menu-toggle:checked ~ .sidenav { /* use checkbox to control sidenav */
+    width: 250px;
+}
+
+#menu-toggle:checked ~ .main {
+    margin-left: 250px;
+    transition: margin-left 0.3s;
+}
+
+.main {
+    text-align: center;
+    padding: 20px;
+    transition: margin-left 0.3s;
+}
