@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body style='background-image: url("{{ url_for("static", filename=background) }}"); background-size: cover; background-position: center;'>
+
+    <div class="profile-info-container">
+        <div class="profile-avatar">
+            <img src="{{ url_for('static', filename=avatar) }}" alt="Avatar">
+        </div>
+        <h1>{{ user.username }}</h1>
+        <p>{{ bio }}</p>
+        <p>Faculty: {{ user.faculty }}</p>
+        <p>Student ID: {{ user.student_id }}</p>
+        <p>Email: {{ user.user_email }}</p>
+    </div>
+
+</body>
+</html>

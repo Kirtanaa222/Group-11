@@ -257,3 +257,20 @@ body {
 .sidenav-profile button:hover {
     background-color: #7a0e8b;
 }
+
+.profile-info-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.85);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.profile-avatar img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+}

@@ -123,6 +123,23 @@ def profile():
     return render_template("profile.html", username=user.username,
                            avatar=avatar, background=background, bio=bio)
 
+@app.route("/profile_info/<int:user_id>")
+def profile_info(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return "User not found", 404
+
+    avatar = user.avatar if user.avatar else "default_avatar.png"
+    background = user.background if user.background else "default_bg.jpg"
+    bio = user.bio if user.bio else ""
+
+    return render_template("profile_info.html",
+                           user=user,
+                           avatar=avatar,
+                           background=background,
+                           bio=bio)
+
+
 # Run the app
 if __name__ == "__main__":
     app.run(debug=True)
