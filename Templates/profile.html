@@ -23,6 +23,13 @@
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 
+    {% if mmu_reminder %}
+    <div class="mmu-reminder">
+        <p>{{ mmu_reminder }}</p>
+        <a href="{{ url_for('profile_info', user_id=session['user_id']) }}">Update MMU Email</a>
+    </div>
+    {% endif %}
+
     <div class="main">
         <h1>Welcome, {{ username }}</h1>
         <p>This is your profile page.</p>

@@ -84,10 +84,9 @@ def login():
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
+#----------------------profile----------------------------
+def is_mmu_email(email):
+    return email.endswith("@mmu.edu.my") or email.endswith("@student.mmu.edu.my")
 
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
@@ -95,33 +94,23 @@ def profile():
         return redirect(url_for("login"))
 
     user = User.query.get(session["user_id"])
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
 
-    avatar = user.avatar if hasattr(user, 'avatar') else "default_avatar.png"
-    background = user.background if hasattr(user, 'background') else "default_bg.jpg"
-    bio = user.bio if hasattr(user, 'bio') else ""
+    #check if user update mmu email
+    mmu_reminder = None
+    if not is_mmu_email(user.user_email):
+        mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
 
-    if request.method == "POST":
-        bio_text = request.form.get("bio", "")
-        avatar_file = request.files.get("avatar")
-        bg_file = request.files.get("background")
+    return render_template("profile.html",
+                           username=user.username,
+                           avatar=avatar,
+                           background=background,
+                           bio=bio,
+                           mmu_reminder=mmu_reminder)
 
-        user.bio = bio_text
-
-        if avatar_file and allowed_file(avatar_file.filename):
-            filename = secure_filename(avatar_file.filename)
-            avatar_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.avatar = f"uploads/{filename}"
-
-        if bg_file and allowed_file(bg_file.filename):
-            filename = secure_filename(bg_file.filename)
-            bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.background = f"uploads/{filename}"
-
-        db.session.commit()
-        return redirect(url_for("profile"))
-
-    return render_template("profile.html", username=user.username,
-                           avatar=avatar, background=background, bio=bio)
+#------------------------------profile_info---------------------------------
 
 @app.route("/profile_info/<int:user_id>", methods=["GET", "POST"])
 def profile_info(user_id):
@@ -129,12 +118,14 @@ def profile_info(user_id):
     if not user:
         return "User not found", 404
 
-    avatar = user.avatar if user.avatar else "default_avatar.png"
-    background = user.background if user.background else "default_bg.jpg"
-    bio = user.bio if user.bio else ""
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
+    error = None
 
     if request.method == "POST":
         bio_text = request.form.get("bio", "")
+        new_email = request.form.get("user_email")
         avatar_file = request.files.get("avatar")
         bg_file = request.files.get("background")
 
@@ -150,15 +141,24 @@ def profile_info(user_id):
             bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             user.background = f"uploads/{filename}"
 
-        db.session.commit()
-        return redirect(url_for("profile_info", user_id=user.id))
+        if new_email:
+            if is_mmu_email(new_email):
+                user.user_email = new_email
+            else:
+                error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 
+    db.session.commit()
     return render_template("profile_info.html",
                            user=user,
                            avatar=avatar,
                            background=background,
-                           bio=bio)
+                           bio=bio,
+                           error=error)
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 # Run the app

@@ -306,3 +306,27 @@ body {
     background-color: #7a0e8b;
 }
 
+.mmu-reminder {
+    background-color: #c2a3de;
+    color: #000000;
+    border: 1px solid #5f48ce;
+    padding: 10px;
+    margin: 15px auto;
+    width: 90%;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.mmu-reminder a {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #bd82cf;
+    color: black;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.mmu-reminder a:hover {
+    background-color: #cf8ad7;
+}
