@@ -123,6 +123,8 @@ def profile_info(user_id):
     bio = user.bio or ""
     error = None
 
+    email_editable = not is_mmu_email(user.user_email)
+
     if request.method == "POST":
         bio_text = request.form.get("bio", "")
         new_email = request.form.get("user_email")
@@ -147,13 +149,15 @@ def profile_info(user_id):
             else:
                 error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 
-    db.session.commit()
+        db.session.commit()
+
     return render_template("profile_info.html",
                            user=user,
                            avatar=avatar,
                            background=background,
                            bio=bio,
-                           error=error)
+                           error=error,
+                           email_editable=email_editable)
 
 @app.route("/logout")
 def logout():
