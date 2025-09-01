@@ -103,9 +103,10 @@ def profile():
 
     #check if user update mmu email
     mmu_reminder = None
-    if not is_mmu_email(user.user_email):
+    if not is_mmu_email(user.mmu_email):
         mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
 
+    #send data to profile.html to display the profile page
     return render_template("profile.html",
                            username=user.username,
                            avatar=avatar,
@@ -126,7 +127,12 @@ def profile_info(user_id):
     bio = user.bio or ""
     error = None
 
-    email_editable = not is_mmu_email(user.mmu_email)
+    if is_mmu_email(user.mmu_email): #false means that email cannot be edited)
+        email_editable = False
+    else:
+        email_editable = True
+    # email_editable = not is_mmu_email(user.mmu_email)
+    # true when email is mmuemail, 'not' make it become false(means that email cannot be edited)
 
     if request.method == "POST":
         bio_text = request.form.get("bio", "")
