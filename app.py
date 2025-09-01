@@ -25,6 +25,7 @@ class User(db.Model):
     faculty = db.Column(db.String(50), nullable=False)
     student_id = db.Column(db.String(10), unique=True, nullable=False)
     user_email = db.Column(db.String(50), unique=True, nullable=False)
+    mmu_email = db.Column(db.String(50), unique=True, nullable=True)
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
@@ -86,6 +87,8 @@ def login():
 
 #----------------------profile----------------------------
 def is_mmu_email(email):
+    if not email:
+        return False
     return email.endswith("@mmu.edu.my") or email.endswith("@student.mmu.edu.my")
 
 @app.route("/profile", methods=["GET", "POST"])
@@ -123,14 +126,13 @@ def profile_info(user_id):
     bio = user.bio or ""
     error = None
 
-    email_editable = not is_mmu_email(user.user_email)
+    email_editable = not is_mmu_email(user.mmu_email)
 
     if request.method == "POST":
         bio_text = request.form.get("bio", "")
-        new_email = request.form.get("user_email")
+        new_mmu_email = request.form.get("mmu_email")
         avatar_file = request.files.get("avatar")
         bg_file = request.files.get("background")
-
         user.bio = bio_text
 
         if avatar_file and allowed_file(avatar_file.filename):
@@ -143,9 +145,10 @@ def profile_info(user_id):
             bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             user.background = f"uploads/{filename}"
 
-        if new_email:
-            if is_mmu_email(new_email):
-                user.user_email = new_email
+        if new_mmu_email and email_editable:
+            if is_mmu_email(new_mmu_email):
+                user.mmu_email = new_mmu_email
+                email_editable = False
             else:
                 error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 

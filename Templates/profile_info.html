@@ -23,7 +23,6 @@
         <a href="{{ url_for('logout') }}">Logout</a>
     </div>
 
-
     <div class="profile-info-container">
         <div class="profile-avatar">
             <form method="POST" enctype="multipart/form-data" id="avatar-form">
@@ -36,25 +35,29 @@
         <h1>{{ user.username }}</h1>
 
         <form method="POST" enctype="multipart/form-data">
-            <p><textarea name="bio" rows="4" cols="40" placeholder="Write your bio here...">{{ bio }}</textarea></p>
+            <p>
+                <textarea name="bio" rows="4" cols="40" placeholder="Write your bio here...">{{ bio }}</textarea>
+            </p>
             
             <p>Upload Background: <input type="file" name="background"></p>
 
+            <p>Faculty: {{ user.faculty }}</p>
+            <p>Student ID: {{ user.student_id }}</p>
+            <p>Email: {{ user.user_email }}</p>
+
             {% if email_editable %}
-            <p>MMU Email: <input type="email" name="user_email" placeholder="Enter your MMU email" value="{{ user.user_email }}"></p>
-            {% if error %}
-            <p style="color:red;">{{ error }}</p>
-            {% endif %}
+                <p>MMU Email: 
+                    <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
+                </p>
+                {% if error %}
+                    <p style="color:red;">{{ error }}</p>
+                {% endif %}
             {% else %}
-            <p>MMU Email: {{ user.user_email }}</p>
+                <p>MMU Email: {{ user.mmu_email }}</p>
             {% endif %}
 
             <button type="submit">Save</button>
         </form>
-
-        <p>Faculty: {{ user.faculty }}</p>
-        <p>Student ID: {{ user.student_id }}</p>
-        <p>Email: {{ user.user_email }}</p>
     </div>
     
 </body>
