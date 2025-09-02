@@ -155,10 +155,28 @@ def profile():
                            bio=bio,
                            mmu_reminder=mmu_reminder)
 
-#------------------------------profile_info---------------------------------
+#------------------------------display_profile-----------------------------
 
-@app.route("/profile_info/<int:user_id>", methods=["GET", "POST"])
-def profile_info(user_id):
+@app.route("/display_profile/<int:user_id>")
+def display_profile(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return "User not found", 404
+
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
+
+    return render_template("display_profile.html",
+                           user=user,
+                           avatar=avatar,
+                           background=background,
+                           bio=bio)
+
+#------------------------------edit_profile---------------------------------
+
+@app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
+def edit_profile(user_id):
     user = User.query.get(user_id)
     if not user:
         return "User not found", 404
@@ -209,7 +227,7 @@ def profile_info(user_id):
 
         db.session.commit()
 
-    return render_template("profile_info.html",
+    return render_template("edit_profile.html",
                            user=user,
                            avatar=avatar,
                            background=background,
