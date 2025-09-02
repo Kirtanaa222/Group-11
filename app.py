@@ -135,28 +135,36 @@ def profile_info(user_id):
     # true when email is mmuemail, 'not' make it become false(means that email cannot be edited)
 
     if request.method == "POST":
-        bio_text = request.form.get("bio", "")
-        new_mmu_email = request.form.get("mmu_email")
-        avatar_file = request.files.get("avatar")
-        bg_file = request.files.get("background")
-        user.bio = bio_text
+        form_name = request.form.get("form_name")
 
-        if avatar_file and allowed_file(avatar_file.filename):
-            filename = secure_filename(avatar_file.filename)
-            avatar_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.avatar = f"uploads/{filename}"
+        if form_name == "bio":
+            bio_text = request.form.get("bio", "")
+            user.bio = bio_text
 
-        if bg_file and allowed_file(bg_file.filename):
-            filename = secure_filename(bg_file.filename)
-            bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.background = f"uploads/{filename}"
+        elif form_name == "avatar":
+            avatar_file = request.files.get("avatar")
+            if avatar_file and allowed_file(avatar_file.filename):
+                filename = secure_filename(avatar_file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                avatar_file.save(path)
+                user.avatar = f"uploads/{filename}"
 
-        if new_mmu_email and email_editable:
-            if is_mmu_email(new_mmu_email):
-                user.mmu_email = new_mmu_email
-                email_editable = False
-            else:
-                error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
+        elif form_name == "background":
+            bg_file = request.files.get("background")
+            if bg_file and allowed_file(bg_file.filename):
+                filename = secure_filename(bg_file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                bg_file.save(path)
+                user.background = f"uploads/{filename}"
+
+        elif form_name == "mmu_email":
+            new_mmu_email = request.form.get("mmu_email")
+            if new_mmu_email and email_editable:
+                if is_mmu_email(new_mmu_email):
+                    user.mmu_email = new_mmu_email
+                    email_editable = False
+                else:
+                    error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 
         db.session.commit()
 

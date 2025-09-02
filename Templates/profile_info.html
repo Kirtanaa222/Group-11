@@ -4,18 +4,16 @@
     <title>{{ user.username }}'s Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body style='background-image: url("{{ url_for("static", filename=background) }}"); background-size: cover; background-position: center;'>
+<body style='background-image: url("{{ url_for("static", filename=user.background or "default_bg.jpg") }}"); background-size: cover; background-position: center;'>
 
     <input type="checkbox" id="menu-toggle" hidden>
-    <label for="menu-toggle" class="openbtn">☰ Menu</label>
+    <label for="menu-toggle" class="openbtn">Settings</label>
 
     <div id="mySidenav" class="sidenav">
         <label for="menu-toggle" class="closebtn">&times;</label>
-
-        <!-- Sidenav Profile Section -->
         <div class="sidenav-profile">
             <a href="{{ url_for('profile_info', user_id=session['user_id']) }}">
-                <img src="{{ url_for('static', filename=avatar or 'default_avatar.png') }}" alt="Avatar">
+                <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
             </a>
         </div>
         <a href="{{ url_for('home') }}">Home</a>
@@ -24,23 +22,37 @@
     </div>
 
     <div class="profile-info-container">
+
         <div class="profile-avatar">
             <form method="POST" enctype="multipart/form-data" id="avatar-form">
+                <input type="hidden" name="form_name" value="avatar">
                 <label for="avatar-upload">
-                    <img src="{{ url_for('static', filename=avatar) }}" alt="Avatar" style="cursor:pointer;">
+                    <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" 
+                         alt="Avatar" style="cursor:pointer; width:150px; height:150px; border-radius:50%;">
                 </label>
-                <input type="file" name="avatar" id="avatar-upload" style="display:none;" onchange="document.getElementById('avatar-form').submit();">
+                <input type="file" name="avatar" id="avatar-upload" style="display:none;" 
+                       onchange="document.getElementById('avatar-form').submit();">
             </form>
         </div>
+
         <h1>{{ user.username }}</h1>
 
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST">
+            <input type="hidden" name="form_name" value="bio">
             <p>
-                <textarea name="bio" rows="4" cols="40" placeholder="Write your bio here...">{{ bio }}</textarea>
+                <textarea name="bio" rows="4" cols="40" placeholder="Write your bio here...">{{ user.bio or '' }}</textarea>
             </p>
-            
-            <p>Upload Background: <input type="file" name="background"></p>
+            <button type="submit">Save Bio</button>
+        </form>
 
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="form_name" value="background">
+            <p>Upload Background: <input type="file" name="background"></p>
+            <button type="submit">Save Background</button>
+        </form>
+
+        <form method="POST">
+            <input type="hidden" name="form_name" value="mmu_email">
             <p>Faculty: {{ user.faculty }}</p>
             <p>Student ID: {{ user.student_id }}</p>
             <p>Email: {{ user.user_email }}</p>
@@ -52,12 +64,12 @@
                 {% if error %}
                     <p style="color:red;">{{ error }}</p>
                 {% endif %}
-            {% else %}
-                <p>MMU Email: {{ user.mmu_email }}</p>
-            {% endif %}
-
+                {% else %}
+                    <p>MMU Email: {{ user.mmu_email }}</p>
+                {% endif %}
             <button type="submit">Save</button>
         </form>
+
     </div>
     
 </body>
