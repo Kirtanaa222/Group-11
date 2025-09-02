@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session 
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
 import os 
+from datetime import datetime
+from flask import abort
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #disable modification tracking in SQLAlchemy (saves memory and improves performance)
-app.secret_key = "supersecret" #encrypt the data that store in the users session
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = "supersecret"
 db = SQLAlchemy(app)
 
 UPLOAD_FOLDER = "static/uploads"
@@ -18,6 +20,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# new database because needed for admin functionality
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -29,28 +32,63 @@ class User(db.Model):
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
+    is_verified = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(20), default='active')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_admin = db.Column(db.Boolean, default=False) 
 
 with app.app_context():
     db.create_all()
 
-# ---------------- Routes ----------------
+# Helper function to check if user is logged in or is admin
+@app.route('/admin')
+def admin_dashboard():
+    if not is_logged_in_admin():
+        abort(403)
+    users = User.query.all()
+    return render_template('admin.html', users=users)
+
+def is_logged_in_admin():
+    user_id = session.get("user_id")
+    if not user_id:
+        return False
+    user = User.query.get(user_id)
+    return user and user.is_admin
+
+# Admin routes- only accessible to admin users. so need to sign up first then manually set is_admin to True in the database
+@app.route('/admin/users/<int:user_id>/ban', methods=['POST'])
+def admin_ban_user(user_id):
+    if not is_logged_in_admin():
+        abort(403)
+    user = User.query.get_or_404(user_id)
+    user.status = 'banned'
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/users/<int:user_id>/unban', methods=['POST'])
+def admin_unban_user(user_id):
+    if not is_logged_in_admin():
+        abort(403)
+    user = User.query.get_or_404(user_id)
+    user.status = 'active'
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
 
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
 
-#sign up form
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == "POST":  #check if the user has summitted sighup form
+    if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         faculty = request.form["faculty"]
         student_id = request.form["student_id"]
         user_email = request.form["user_email"]
 
-        # to check if the user exists in db
-        if User.query.filter_by(username=username).first(): #do not use .all() bcs we want to check that db only has 1 username
+        if User.query.filter_by(username=username).first():
             return render_template("signup.html", error="Username already exists. Please try again.")
 
         if User.query.filter_by(student_id=student_id).first():
@@ -78,8 +116,11 @@ def login():
         ).first()
         
         if user and check_password_hash(user.password, password):
+            if user.status == 'banned':
+                return render_template("login.html", error="Your account has been banned.")
             session["user_id"] = user.id
             session["username"] = user.username
+            session["is_admin"] = user.is_admin
             return redirect(url_for("profile"))
         else:
             return render_template("login.html", error="Invalid username or password.")
