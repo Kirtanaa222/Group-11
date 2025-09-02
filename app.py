@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify 
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
 from werkzeug.security import generate_password_hash, check_password_hash 
 from datetime import datetime
@@ -27,6 +27,13 @@ with app.app_context():
     db.create_all()
 
 # Helper function to check if user is logged in or is admin
+@app.route('/admin')
+def admin_dashboard():
+    if not is_logged_in_admin():
+        abort(403)
+    users = User.query.all()
+    return render_template('admin.html', users=users)
+
 def is_logged_in_admin():
     user_id = session.get("user_id")
     if not user_id:
@@ -35,48 +42,23 @@ def is_logged_in_admin():
     return user and user.is_admin
 
 # Admin routes- only accessible to admin users. so need to sign up first then manually set is_admin to True in the database
-@app.route('/admin')
-def admin_dashboard():
-    if not is_logged_in_admin():
-        abort(403)
-    return render_template('admin.html')
-
-@app.route('/admin/users', methods=['GET'])
-def admin_get_users():
-    if not is_logged_in_admin():
-        abort(403)
-    users = User.query.all()
-    return jsonify([
-        {
-            'id': user.id,
-            'username': user.username,
-            'user_email': user.user_email,
-            'is_verified': user.is_verified,
-            'status': user.status,
-            'created_at': user.created_at.isoformat()
-        }
-        for user in users
-    ])
-
-# Admin can verify users - only verified users can log in
-@app.route('/admin/users/<int:user_id>/ban', methods=['PATCH'])
+@app.route('/admin/users/<int:user_id>/ban', methods=['POST'])
 def admin_ban_user(user_id):
     if not is_logged_in_admin():
         abort(403)
     user = User.query.get_or_404(user_id)
     user.status = 'banned'
     db.session.commit()
-    return jsonify({'message': f'User {user.user_email} banned'})
+    return redirect(url_for('admin_dashboard'))
 
-# Admin can unban users
-@app.route('/admin/users/<int:user_id>/unban', methods=['PATCH'])
+@app.route('/admin/users/<int:user_id>/unban', methods=['POST'])
 def admin_unban_user(user_id):
     if not is_logged_in_admin():
         abort(403)
     user = User.query.get_or_404(user_id)
     user.status = 'active'
     db.session.commit()
-    return jsonify({'message': f'User {user.user_email} unbanned'})
+    return redirect(url_for('admin_dashboard'))
 
 @app.route("/")
 def home():
