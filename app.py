@@ -1,13 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session 
+from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
 import os 
+from datetime import datetime
+from flask import abort
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False #disable modification tracking in SQLAlchemy (saves memory and improves performance)
-app.secret_key = "supersecret" #encrypt the data that store in the users session
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = "supersecret"
 db = SQLAlchemy(app)
 
 UPLOAD_FOLDER = "static/uploads"
@@ -18,6 +20,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# new database because needed for admin functionality
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -25,31 +28,67 @@ class User(db.Model):
     faculty = db.Column(db.String(50), nullable=False)
     student_id = db.Column(db.String(10), unique=True, nullable=False)
     user_email = db.Column(db.String(50), unique=True, nullable=False)
+    mmu_email = db.Column(db.String(50), unique=True, nullable=True)
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
+    is_verified = db.Column(db.Boolean, default=False)
+    status = db.Column(db.String(20), default='active')
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    is_admin = db.Column(db.Boolean, default=False) 
 
 with app.app_context():
     db.create_all()
 
-# ---------------- Routes ----------------
+# Helper function to check if user is logged in or is admin
+@app.route('/admin')
+def admin_dashboard():
+    if not is_logged_in_admin():
+        abort(403)
+    users = User.query.all()
+    return render_template('admin.html', users=users)
+
+def is_logged_in_admin():
+    user_id = session.get("user_id")
+    if not user_id:
+        return False
+    user = User.query.get(user_id)
+    return user and user.is_admin
+
+# Admin routes- only accessible to admin users. so need to sign up first then manually set is_admin to True in the database
+@app.route('/admin/users/<int:user_id>/ban', methods=['POST'])
+def admin_ban_user(user_id):
+    if not is_logged_in_admin():
+        abort(403)
+    user = User.query.get_or_404(user_id)
+    user.status = 'banned'
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/users/<int:user_id>/unban', methods=['POST'])
+def admin_unban_user(user_id):
+    if not is_logged_in_admin():
+        abort(403)
+    user = User.query.get_or_404(user_id)
+    user.status = 'active'
+    db.session.commit()
+    return redirect(url_for('admin_dashboard'))
 
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
 
-#sign up form
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    if request.method == "POST":  #check if the user has summitted sighup form
+    if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         faculty = request.form["faculty"]
         student_id = request.form["student_id"]
         user_email = request.form["user_email"]
 
-        # to check if the user exists in db
-        if User.query.filter_by(username=username).first(): #do not use .all() bcs we want to check that db only has 1 username
+        if User.query.filter_by(username=username).first():
             return render_template("signup.html", error="Username already exists. Please try again.")
 
         if User.query.filter_by(student_id=student_id).first():
@@ -77,17 +116,21 @@ def login():
         ).first()
         
         if user and check_password_hash(user.password, password):
+            if user.status == 'banned':
+                return render_template("login.html", error="Your account has been banned.")
             session["user_id"] = user.id
             session["username"] = user.username
+            session["is_admin"] = user.is_admin
             return redirect(url_for("profile"))
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
 
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect(url_for("login"))
+#----------------------profile----------------------------
+def is_mmu_email(email):
+    if not email:
+        return False
+    return email.endswith("@mmu.edu.my") or email.endswith("@student.mmu.edu.my")
 
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
@@ -95,70 +138,107 @@ def profile():
         return redirect(url_for("login"))
 
     user = User.query.get(session["user_id"])
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
 
-    avatar = user.avatar if hasattr(user, 'avatar') else "default_avatar.png"
-    background = user.background if hasattr(user, 'background') else "default_bg.jpg"
-    bio = user.bio if hasattr(user, 'bio') else ""
+    #check if user update mmu email
+    mmu_reminder = None
+    if not is_mmu_email(user.mmu_email):
+        mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
 
-    if request.method == "POST":
-        bio_text = request.form.get("bio", "")
-        avatar_file = request.files.get("avatar")
-        bg_file = request.files.get("background")
+    #send data to profile.html to display the profile page
+    return render_template("profile.html",
+                           username=user.username,
+                           avatar=avatar,
+                           background=background,
+                           bio=bio,
+                           mmu_reminder=mmu_reminder)
 
-        user.bio = bio_text
+#------------------------------display_profile-----------------------------
 
-        if avatar_file and allowed_file(avatar_file.filename):
-            filename = secure_filename(avatar_file.filename)
-            avatar_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.avatar = f"uploads/{filename}"
-
-        if bg_file and allowed_file(bg_file.filename):
-            filename = secure_filename(bg_file.filename)
-            bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.background = f"uploads/{filename}"
-
-        db.session.commit()
-        return redirect(url_for("profile"))
-
-    return render_template("profile.html", username=user.username,
-                           avatar=avatar, background=background, bio=bio)
-
-@app.route("/profile_info/<int:user_id>", methods=["GET", "POST"])
-def profile_info(user_id):
+@app.route("/display_profile/<int:user_id>")
+def display_profile(user_id):
     user = User.query.get(user_id)
     if not user:
         return "User not found", 404
 
-    avatar = user.avatar if user.avatar else "default_avatar.png"
-    background = user.background if user.background else "default_bg.jpg"
-    bio = user.bio if user.bio else ""
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
 
-    if request.method == "POST":
-        bio_text = request.form.get("bio", "")
-        avatar_file = request.files.get("avatar")
-        bg_file = request.files.get("background")
-
-        user.bio = bio_text
-
-        if avatar_file and allowed_file(avatar_file.filename):
-            filename = secure_filename(avatar_file.filename)
-            avatar_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.avatar = f"uploads/{filename}"
-
-        if bg_file and allowed_file(bg_file.filename):
-            filename = secure_filename(bg_file.filename)
-            bg_file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.background = f"uploads/{filename}"
-
-        db.session.commit()
-        return redirect(url_for("profile_info", user_id=user.id))
-
-    return render_template("profile_info.html",
+    return render_template("display_profile.html",
                            user=user,
                            avatar=avatar,
                            background=background,
                            bio=bio)
 
+#------------------------------edit_profile---------------------------------
+
+@app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
+def edit_profile(user_id):
+    user = User.query.get(user_id)
+    if not user:
+        return "User not found", 404
+
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
+    error = None
+
+    if is_mmu_email(user.mmu_email): #false means that email cannot be edited)
+        email_editable = False
+    else:
+        email_editable = True
+    # email_editable = not is_mmu_email(user.mmu_email)
+    # true when email is mmuemail, 'not' make it become false(means that email cannot be edited)
+
+    if request.method == "POST":
+        form_name = request.form.get("form_name")
+
+        if form_name == "bio":
+            bio_text = request.form.get("bio", "")
+            user.bio = bio_text
+
+        elif form_name == "avatar":
+            avatar_file = request.files.get("avatar")
+            if avatar_file and allowed_file(avatar_file.filename):
+                filename = secure_filename(avatar_file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                avatar_file.save(path)
+                user.avatar = f"uploads/{filename}"
+
+        elif form_name == "background":
+            bg_file = request.files.get("background")
+            if bg_file and allowed_file(bg_file.filename):
+                filename = secure_filename(bg_file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                bg_file.save(path)
+                user.background = f"uploads/{filename}"
+
+        elif form_name == "mmu_email":
+            new_mmu_email = request.form.get("mmu_email")
+            if new_mmu_email and email_editable:
+                if is_mmu_email(new_mmu_email):
+                    user.mmu_email = new_mmu_email
+                    email_editable = False
+                else:
+                    error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
+
+        db.session.commit()
+
+    return render_template("edit_profile.html",
+                           user=user,
+                           avatar=avatar,
+                           background=background,
+                           bio=bio,
+                           error=error,
+                           email_editable=email_editable)
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 # Run the app
