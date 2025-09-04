@@ -70,7 +70,6 @@ def home():
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-    if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
         student_id = request.form["student_id"]
