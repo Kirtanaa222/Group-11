@@ -238,6 +238,15 @@ def edit_profile(user_id):
                            error=error,
                            email_editable=email_editable)
 
+@app.route("/search_users")
+def search_users():
+    faculty = request.args.get("faculty")
+    if faculty:
+        users = User.query.filter_by(faculty=faculty).all()
+    else:
+        users = User.query.all()
+    return render_template("search.html", users=users, faculty=faculty)
+
 @app.route("/logout")
 def logout():
     session.clear()

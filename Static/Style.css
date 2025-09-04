@@ -1,9 +1,10 @@
 body {
     font-family: Arial, sans-serif;
-    background-image: url("img/purplemarble.jpg");
+    background: #f4f6f8;
+    background-image: url("img/purplemarble.jpeg");
     background-size: cover;
-    background-repeat: repeat;
-    background-position: center;
+    background-repeat: no-repeat;
+    background-position: center center;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -49,7 +50,7 @@ body {
 
 
 .navbar {
-    background-color: #718dcb;
+    background-color: hsl(305, 77%, 65%);
     color: white;
     display: flex;
     justify-content: space-between;
@@ -129,7 +130,7 @@ body {
 }
 
 .btn:hover {
-    background: #7a0e8b;
+    background:hsl(305, 77%, 65%);
 }
 
 .form-box select {
@@ -165,7 +166,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #718dcb;
+    background-color: hsl(305, 77%, 65%);
     overflow-x: hidden;
     transition: 0.3s;
     z-index: 2000;
@@ -322,7 +323,7 @@ body {
     padding: 8px 16px;
     border-radius: 8px;
     border: none;
-    background-color: #718dcb;
+    background-color:hsl(305, 77%, 65%);
     color: white;
     cursor: pointer;
 }
@@ -355,4 +356,10 @@ body {
 
 .mmu-reminder a:hover {
     background-color: #cf8ad7;
+}
+
+.faculty-search {
+background-attachment: fixed;
+font-family: Arial, Helvetica, sans-serif;
+color: black;
 }

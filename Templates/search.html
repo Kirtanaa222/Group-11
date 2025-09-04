@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Matching</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+    <div class="logo">
+        <span>S</span><span>tudy</span><span>B</span><span>ae</span>
+    </div>
+<div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        {% if username %}
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="search-results">
+    <h2>Users{% if faculty %} in {{ faculty }}{% endif %}</h2>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.username }} ({{ user.faculty }})</li>
+        {% else %}
+            <li>No users found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</div>
+</body>
+</html>
