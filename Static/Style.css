@@ -50,7 +50,7 @@ body {
 
 
 .navbar {
-    background-color: hsl(305, 77%, 65%);
+    background-color: #bd82cf;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -130,7 +130,7 @@ body {
 }
 
 .btn:hover {
-    background:hsl(305, 77%, 65%);
+    background:#bd82cf;
 }
 
 .form-box select {
@@ -166,7 +166,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: hsl(305, 77%, 65%);
+    background-color: #bd82cf;
     overflow-x: hidden;
     transition: 0.3s;
     z-index: 2000;
@@ -193,7 +193,7 @@ body {
 .openbtn {
     font-size: 20px;
     cursor: pointer;
-    background-color: #718dcb;
+    background-color: #bd82cf;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -323,7 +323,7 @@ body {
     padding: 8px 16px;
     border-radius: 8px;
     border: none;
-    background-color:hsl(305, 77%, 65%);
+    background-color:#bd82cf;
     color: white;
     cursor: pointer;
 }
@@ -358,8 +358,10 @@ body {
     background-color: #cf8ad7;
 }
 
-.faculty-search {
-background-attachment: fixed;
-font-family: Arial, Helvetica, sans-serif;
-color: black;
+.search-results {
+    background: none;
+    padding: 30px 20px;
+    border-radius: 0;
+    box-shadow: none;
+    margin-top: 30px;
 }

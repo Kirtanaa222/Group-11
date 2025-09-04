@@ -217,7 +217,7 @@ def edit_profile(user_id):
                 filename = secure_filename(bg_file.filename)
                 path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
                 bg_file.save(path)
-                user.background = f"uploads/{filename}"
+                user.background = f"/static/uploads/{filename}"
 
         elif form_name == "mmu_email":
             new_mmu_email = request.form.get("mmu_email")

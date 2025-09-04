@@ -12,12 +12,11 @@
 <div>
     <ul class="nav-links">
         <li><a href="{{ url_for('home') }}">Home</a></li>
-        {% if username %}
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% endif %}
+        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
 </div>
+</nav>
 <div class="search-results">
     <h2>Users{% if faculty %} in {{ faculty }}{% endif %}</h2>
     <ul>
@@ -27,7 +26,6 @@
             <li>No users found.</li>
         {% endfor %}
     </ul>
-    <a href="{{ url_for('home') }}">Back to Home</a>
 </div>
 </body>
 </html>
