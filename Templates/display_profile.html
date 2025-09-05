@@ -21,13 +21,12 @@
     </div>
 
     <div class="profile-cover">
-        <img src="{{ url_for('static', filename=user.background or 'default_bg.jpg') }}" alt="Background" class="profile-background">
+            <img src="{{ user.background or url_for('static', filename='default_bg.jpg') }}" alt="Background" class="profile-background">
         <div class="profile-avatar">
             <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
         </div>
     </div>
-
-    <div class="profile-info">
+    
         <h1>{{ user.username }}</h1>
         <p class="profile-bio">{{ user.bio or 'No bio yet.' }}</p>
 

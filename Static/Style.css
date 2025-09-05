@@ -271,7 +271,7 @@ body {
 
 .profile-background {
     width: 100%;
-    height: 100%;
+    height: 110%;
     object-fit: cover;
     position: absolute;
     top: 0;
@@ -359,9 +359,57 @@ body {
 }
 
 .search-results {
-    background: none;
+    background: #fff;
     padding: 30px 20px;
-    border-radius: 0;
-    box-shadow: none;
-    margin-top: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin: 40px auto 0 auto;
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+}
+
+.faculty-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.faculty-search select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+
+.faculty-search button {
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: none;
+    background: #a877d3;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.faculty-search button:hover {
+    background: #7a0e8b;
+}
+
+.search-label {
+    margin-right: 10px;
+    margin-left: 680px;
+    font-weight: bold;
+    color: white;
+}
+
+.search-bar-group {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 10px;
 }

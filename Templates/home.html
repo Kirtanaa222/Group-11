@@ -21,17 +21,21 @@
             <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
         {% endif %}
     </ul>
-    <!-- Add this form for faculty search -->
+    <div class="search-bar-group"></div>
+    <span class="search-label">Search for your studybae :</span>
     <form class="faculty-search" method="get" action="{{ url_for('search_users') }}">
         <select name="faculty">
             <option value="">All Faculties</option>
-            <option value="FCI">FCI</option>
-            <option value="FCM">FCM</option>
-            <option value="FOE">FOE</option>
-            <option value="FAIE">FAIE</option>
-            <option value="FAC">FAC</option>
-            <option value="FCA">FCA</option>
-            <option value="FOM">FOM</option>
+            <option value="Faculty of Computer Science and Information Technology (FCI)">FCI</option>
+            <option value="Faculty of Engineering (FOE)">FOE</option>
+            <option value="Faculty of Artificial Intelligence And Engineering (FAIE)">FAIE</option>
+            <option value="Faculty of Applied Communication (FAC)">FAC</option>
+            <option value="Faculty of Creative Multimedia (FCM)">FCM</option>
+            <option value="Faculty of Management (FOM)">FOM</option>
+            <option value="Faculty of Law (FOL)">FOL</option>
+            <option value="Faculty of Engineering And Technology (FET)">FET</option>
+            <option value="Faculty of Information Science and Technology (FIST)">FIST</option>
+            <option value="Faculty of Business (FOB)">FOB</option>
         </select>
         <button type="submit">Search</button>
     </form>
