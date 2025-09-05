@@ -9,7 +9,7 @@
     <!-- navbar -->
     <nav class="navbar">
     <div class="logo">
-        <span>S</span><span>tudy</span><span>B</span><span>ae</span>
+        <span>Study</span><span>B</span><span>a</span><span>e</span>
     </div>
     <ul class="nav-links">
         <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -25,18 +25,18 @@
     <span class="search-label">Search for your studybae :</span>
     <form class="faculty-search" method="get" action="{{ url_for('search_users') }}">
         <select name="faculty">
-            <option value="">All Faculties</option>
-            <option value="Faculty of Computer Science and Information Technology (FCI)">FCI</option>
-            <option value="Faculty of Engineering (FOE)">FOE</option>
-            <option value="Faculty of Artificial Intelligence And Engineering (FAIE)">FAIE</option>
-            <option value="Faculty of Applied Communication (FAC)">FAC</option>
-            <option value="Faculty of Creative Multimedia (FCM)">FCM</option>
-            <option value="Faculty of Management (FOM)">FOM</option>
-            <option value="Faculty of Law (FOL)">FOL</option>
-            <option value="Faculty of Engineering And Technology (FET)">FET</option>
-            <option value="Faculty of Information Science and Technology (FIST)">FIST</option>
-            <option value="Faculty of Business (FOB)">FOB</option>
-        </select>
+            <option value="">Select Faculty</option>
+                <option value="Faculty Of Applied Communication (FAC)">FAC</option>
+                <option value="Faculty Of Artificial Intelligence And Engineering (FAIE)">FAIE</option>
+                <option value="Faculty Of Business (FOB)">FOB</option>
+                <option value="Faculty Of Cinematic Arts (FCA)">FCA</option>
+                <option value="Faculty Of Computing And Informatics (FCI)">FCI</option>
+                <option value="Faculty Of Creative Multimedia (FCM)">FCM</option>
+                <option value="Faculty Of Engineering And Technology (FET)">FET</option>
+                <option value="Faculty Of Information Science And Technology (FIST)">FIST</option>
+                <option value="Faculty Of Law (FOL)">FOL</option>
+                <option value="Faculty Of Management (FOM)">FOM</option>
+            </select>
         <button type="submit">Search</button>
     </form>
 </nav>
