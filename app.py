@@ -25,8 +25,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
     faculty = db.Column(db.String(50), nullable=False)
     student_id = db.Column(db.String(50), unique=True, nullable=False)
     user_email = db.Column(db.String(50), unique=True, nullable=False)
@@ -176,6 +174,7 @@ def display_profile(user_id):
                            background=background,
                            bio=bio)
 
+
 #------------------------------edit_profile---------------------------------
 
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
@@ -188,6 +187,17 @@ def edit_profile(user_id):
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
     error = None
+
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if session["user_id"] != user_id and not session.get("is_admin"):
+        abort(403)
+
+    user = User.query.get(user_id)
+    if not user:
+        abort(404)
+
 
     if is_mmu_email(user.mmu_email): #false means that email cannot be edited)
         email_editable = False
@@ -209,7 +219,7 @@ def edit_profile(user_id):
                 filename = secure_filename(avatar_file.filename)
                 path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
                 avatar_file.save(path)
-                user.avatar = f"uploads/{filename}"
+                user.avatar = f"/static/uploads/{filename}"
 
         elif form_name == "background":
             bg_file = request.files.get("background")
@@ -247,6 +257,7 @@ def search_users():
         users = User.query.all()
     return render_template("search.html", users=users, faculty=faculty)
 
+#--------------logout------------------------------
 @app.route("/logout")
 def logout():
     session.clear()
