@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body>
+    
+    <input type="checkbox" id="menu-toggle" hidden>
+    <label for="menu-toggle" class="openbtn">Settings</label>
+    <div id="mySidenav" class="sidenav">
+        <label for="menu-toggle" class="closebtn">&times;</label>
+        <div class="sidenav-profile">
+            <a href="{{ url_for('display_profile', user_id=session['user_id']) }}">
+                <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
+            </a>
+        </div>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <div class="profile-cover">
+            <img src="{{ user.background or url_for('static', filename='default_bg.jpg') }}" alt="Background" class="profile-background">
+        <div class="profile-avatar">
+            <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
+        </div>
+    </div>
+    
+        <h1>{{ user.username }}</h1>
+        <p class="profile-bio">{{ user.bio or 'No bio yet.' }}</p>
+
+        <p><strong>Faculty:</strong> {{ user.faculty }}</p>
+        <p><strong>Student ID:</strong> {{ user.student_id }}</p>
+        <p><strong>Email:</strong> {{ user.user_email }}</p>
+        <p><strong>MMU Email:</strong> {{ user.mmu_email or 'Not provided' }}</p>
+
+        {% if session['user_id'] == user.id %}
+            <div class="edit-profile-btn">
+                <a href="{{ url_for('edit_profile', user_id=user.id) }}">
+                    <button type="button">Edit Profile</button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

@@ -1,6 +1,10 @@
 body {
     font-family: Arial, sans-serif;
     background: #f4f6f8;
+    background-image: url("img/purplemarble.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -46,7 +50,7 @@ body {
 
 
 .navbar {
-    background-color: #718dcb;
+    background-color: #bd82cf;
     color: white;
     display: flex;
     justify-content: space-between;
@@ -59,7 +63,7 @@ body {
 }
 
 .navbar .logo {
-    font-size: 30px;
+    font-size: 28px;
     font-weight: bold;
 }
 
@@ -87,7 +91,7 @@ body {
 }
 
 .container {
-    padding: 80px 20px 20px; 
+    padding: 120px 20px 20px; 
     text-align: center;
 }
 
@@ -126,7 +130,7 @@ body {
 }
 
 .btn:hover {
-    background: #7a0e8b;
+    background:#bd82cf;
 }
 
 .form-box select {
@@ -156,17 +160,16 @@ body {
     font-family: Arial, sans-serif;
 }
 
-/* 侧边导航初始关闭 */
 .sidenav {
     height: 100%;
     width: 0;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #718dcb;
+    background-color: #bd82cf;
     overflow-x: hidden;
     transition: 0.3s;
-    padding-top: 60px;
+    z-index: 2000;
 }
 
 .sidenav a {
@@ -190,7 +193,7 @@ body {
 .openbtn {
     font-size: 20px;
     cursor: pointer;
-    background-color: #718dcb;
+    background-color: #bd82cf;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -198,7 +201,7 @@ body {
     margin: 10px;
 }
 
-#menu-toggle:checked ~ .sidenav { /* use checkbox to control sidenav */
+#menu-toggle:checked ~ .sidenav {
     width: 250px;
 }
 
@@ -207,8 +210,221 @@ body {
     transition: margin-left 0.3s;
 }
 
+/* Main content */
 .main {
     text-align: center;
     padding: 20px;
     transition: margin-left 0.3s;
+}
+
+/* --- Sidenav Profile Section --- */
+.sidenav-profile {
+    margin-top: 20px;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+.sidenav-profile img {
+    display: block;
+    margin: 0 auto 10px auto;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.sidenav-profile textarea {
+    width: 90%;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+    resize: vertical;
+}
+
+.sidenav-profile input[type="file"] {
+    display: block;
+    margin: 5px auto;
+}
+
+.sidenav-profile button {
+    background-color: #a877d3;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.sidenav-profile button:hover {
+    background-color: #7a0e8b;
+}
+
+.profile-cover {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    overflow: visible;
+}
+
+.profile-background {
+    width: 100%;
+    height: 110%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.profile-avatar {
+    position: absolute;
+    bottom: -75px;  
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.profile-avatar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.profile-avatar img:hover {
+    transform: scale(1.1);
+}
+
+.profile-info {
+    margin-top: 60px; 
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+}
+
+.profile-info h1 {
+    margin: 10px 0;
+}
+
+.profile-info textarea {
+    width: 100%;
+    border-radius: 8px;
+    padding: 8px;
+    resize: vertical;
+}
+
+.profile-info button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color:#bd82cf;
+    color: white;
+    cursor: pointer;
+}
+
+.profile-info button:hover {
+    background-color: #4a65a1;
+}
+
+
+.mmu-reminder {
+    background-color: #c2a3de;
+    color: #000000;
+    border: 1px solid #5f48ce;
+    padding: 10px;
+    margin: 15px auto;
+    width: 90%;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.mmu-reminder a {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #bd82cf;
+    color: black;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.mmu-reminder a:hover {
+    background-color: #cf8ad7;
+}
+
+.search-results {
+    background: #fff;
+    padding: 30px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin: 40px auto 0 auto;
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+}
+
+.faculty-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.faculty-search select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+
+.faculty-search button {
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: none;
+    background: #a877d3;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.faculty-search button:hover {
+    background: #7a0e8b;
+}
+
+.search-label {
+    margin-right: 10px;
+    margin-left: 680px;
+    font-weight: bold;
+    color: white;
+}
+
+.search-bar-group {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
 }
