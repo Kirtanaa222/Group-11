@@ -21,7 +21,7 @@
     </div>
 
     <div class="profile-cover">
-            <img src="{{ user.background or url_for('static', filename='default_bg.jpg') }}" alt="Background" class="profile-background">
+            <img src="{{ url_for('static', filename=user.background or 'default_bg.jpg') }}" alt="Background" class="profile-background">
         <div class="profile-avatar">
             <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
         </div>
