@@ -3,8 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
 import os 
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import abort
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
@@ -32,15 +33,16 @@ class User(db.Model):
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
-    is_verified = db.Column(db.Boolean, default=False)
+    verified = db.Column(db.Boolean, default=False)
     status = db.Column(db.String(20), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    is_admin = db.Column(db.Boolean, default=False) 
+    admin = db.Column(db.Boolean, default=False) 
+    mmu_email_updated_at = db.Column(db.DateTime, nullable=True)
 
 with app.app_context():
     db.create_all()
 
-# Helper function to check if user is logged in or is admin
+#----------------------ADMIN----------------------------
 @app.route('/admin')
 def admin_dashboard():
     if not is_logged_in_admin():
@@ -53,9 +55,8 @@ def is_logged_in_admin():
     if not user_id:
         return False
     user = User.query.get(user_id)
-    return user and user.is_admin
+    return user and user.admin
 
-# Admin routes- only accessible to admin users. so need to sign up first then manually set is_admin to True in the database
 @app.route('/admin/users/<int:user_id>/ban', methods=['POST'])
 def admin_ban_user(user_id):
     if not is_logged_in_admin():
@@ -74,6 +75,33 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
+# Email config (use your own SMTP settings)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'your_admin_email@gmail.com'
+app.config['MAIL_PASSWORD'] = 'your_email_password'
+mail = Mail(app)
+
+def send_verification_email(user):
+    msg = Message(
+        subject="Your Account Has Been Verified",
+        sender=app.config['MAIL_USERNAME'],
+        recipients=[user.user_email]
+    )
+    msg.body = f"""
+    Hi {user.username},
+
+    Congratulations! Your account has been verified because you updated your MMU email within the required time.
+
+    You now have full access to the platform.
+
+    Regards,
+    Admin Team
+    """
+    mail.send(msg)
+
+#----------------------USER----------------------------
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
@@ -121,7 +149,7 @@ def login():
                 return render_template("login.html", error="Your account has been banned.")
             session["user_id"] = user.id
             session["username"] = user.username
-            session["is_admin"] = user.is_admin
+            session["is_admin"] = user.admin
             return redirect(url_for("profile"))
         else:
             return render_template("login.html", error="Invalid username or password.")
@@ -234,6 +262,13 @@ def edit_profile(user_id):
             if new_mmu_email and email_editable:
                 if is_mmu_email(new_mmu_email):
                     user.mmu_email = new_mmu_email
+                    user.mmu_email_updated_at = datetime.utcnow()
+
+                    # Check if updated within 7 days of signup
+                    if (user.mmu_email_updated_at - user.created_at) <= timedelta(days=7):
+                        user.verified = True
+                        send_verification_email(user)  # Send email after verification
+
                     email_editable = False
                 else:
                     error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
