@@ -51,6 +51,27 @@
         </form>
 
         <form method="POST">
+            <input type="hidden" name="form_name" value="subjects">
+            <p><strong>Preferred Subjects:</strong></p>
+            
+            <div class="subjects-list">
+            {% set all_subjects = ["Math", "Physics", "Computer Science", "Business", "Engineering", "Psychology", "AI", "Art"] %}
+            {% for subject in all_subjects %}
+                <label>
+                    <input type="checkbox" name="subjects" value="{{ subject }}"
+                        {% if user.preferred_subjects and subject in user.preferred_subjects.split(" , ") %}
+                            checked
+                        {% endif %}>
+                    {{ subject }}
+                </label><br>
+            {% endfor %}
+            </div>
+
+            <button type="submit">Save Subjects</button>
+        </form>
+
+
+        <form method="POST">
             <input type="hidden" name="form_name" value="mmu_email">
             <p><strong>Faculty:</strong> {{ user.faculty }}</p>
             <p><strong>Student ID:</strong> {{ user.student_id }}</p>

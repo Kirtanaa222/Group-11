@@ -1,16 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
+from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
 import os 
 from datetime import datetime
-from flask import abort
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
@@ -20,18 +21,21 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# new database because needed for admin functionality
 class User(db.Model):
+    #signupp
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(50), nullable=False)
     faculty = db.Column(db.String(50), nullable=False)
     student_id = db.Column(db.String(50), unique=True, nullable=False)
     user_email = db.Column(db.String(50), unique=True, nullable=False)
+    #edit profile
     mmu_email = db.Column(db.String(50), unique=True, nullable=True)
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
+    preferred_subjects = db.Column(db.String(100), nullable=True)
+    #admin profile
     is_verified = db.Column(db.Boolean, default=False)
     status = db.Column(db.String(20), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -236,6 +240,10 @@ def edit_profile(user_id):
                     email_editable = False
                 else:
                     error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
+
+        elif form_name == "subjects":
+            selected_subjects = request.form.getlist("subjects")
+            user.preferred_subjects = " , ".join (selected_subjects)
 
         db.session.commit()
 
