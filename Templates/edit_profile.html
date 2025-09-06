@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body>
+
+    <input type="checkbox" id="menu-toggle" hidden>
+    <label for="menu-toggle" class="openbtn">Settings</label>
+    <div id="mySidenav" class="sidenav">
+        <label for="menu-toggle" class="closebtn">&times;</label>
+        <div class="sidenav-profile">
+            <a href="{{ url_for('display_profile', user_id=session['user_id']) }}">
+                <img src="{{ url_for('static', filename='uploads/' ~ user.avatar or 'default_avatar.png') }}" alt="Avatar">
+            </a>
+        </div>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('profile') }}">Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <div class="profile-cover">
+        <img src="{{ url_for('static', filename=user.background or 'default_bg.jpg') }}" alt="Background" class="profile-background">
+        <div class="profile-avatar">
+            <form method="POST" enctype="multipart/form-data" id="avatar-form">
+                <input type="hidden" name="form_name" value="avatar">
+                <label for="avatar-upload">
+                    <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
+                </label>
+                <input type="file" name="avatar" id="avatar-upload" style="display:none;" onchange="document.getElementById('avatar-form').submit();">
+            </form>
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <h1>{{ user.username }}</h1>
+
+        <form method="POST">
+            <input type="hidden" name="form_name" value="bio">
+            <textarea name="bio" rows="4" placeholder="Write your bio here...">{{ user.bio or '' }}</textarea>
+            <button type="submit">Save Bio</button>
+        </form>
+
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="form_name" value="background">
+            <p>Upload Background:</p>
+            <input type="file" name="background">
+            <button type="submit">Save Background</button>
+        </form>
+
+        <form method="POST">
+            <input type="hidden" name="form_name" value="mmu_email">
+            <p><strong>Faculty:</strong> {{ user.faculty }}</p>
+            <p><strong>Student ID:</strong> {{ user.student_id }}</p>
+            <p><strong>Email:</strong> {{ user.user_email }}</p>
+
+            {% if email_editable %}
+                <p><strong>MMU Email:</strong> 
+                    <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
+                </p>
+                {% if error %}
+                    <p style="color:red;">{{ error }}</p>
+                {% endif %}
+            {% else %}
+                <p><strong>MMU Email:</strong> {{ user.mmu_email }}</p>
+            {% endif %}
+            <button type="submit">Save</button>
+        </form>
+    </div>
+
+</body>
+</html>
