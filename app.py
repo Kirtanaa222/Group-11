@@ -164,6 +164,10 @@ def profile():
 
 @app.route("/display_profile/<int:user_id>")
 def display_profile(user_id):
+    if "user_id" not in session:
+        # it redirects user to login
+        return redirect(url_for("login", next=request.url))
+    
     user = User.query.get(user_id)
     if not user:
         return "User not found", 404
@@ -177,6 +181,7 @@ def display_profile(user_id):
                            avatar=avatar,
                            background=background,
                            bio=bio)
+
 
 #------------------------------edit_profile---------------------------------
 
