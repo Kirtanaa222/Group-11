@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>StudyBae！</title>
+    <title>StudyBae!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
 </head>
 <body>
@@ -15,6 +15,8 @@
         <li><a href="{{ url_for('home') }}">Home</a></li>
         {% if username %}
             <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="https://calendar.google.com/calendar/u/0/r" target="_blank">Google Calendar</a></li>
+            <li><a href="{{ url_for('chat') }}">Chatroom</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
             <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -46,7 +48,7 @@
         {% if username %}
             <h1>Welcome back, {{ username }}!</h1>
         {% else %}
-            <h1>Welcome to StudyBae！</h1>
+            <h1>Welcome to StudyBae!</h1>
             <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('signup') }}">sign up</a>.</p>
         {% endif %}
     </div>
