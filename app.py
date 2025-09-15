@@ -5,11 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os 
 from datetime import datetime
+from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
+serializer = URLSafeTimedSerializer(app.secret_key)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -78,10 +80,13 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
+#---------------------------home----------------------------------
+
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
 
+#---------------------------signup----------------------------------
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -110,6 +115,8 @@ def signup():
 
     return render_template("signup.html")
 
+#---------------------------login----------------------------------
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -130,6 +137,46 @@ def login():
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
+
+#---------------------------forgotpassword----------------------------------
+
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_pw():
+    if request.method == "POST":
+        email = request.form.get("email").strip().lower()
+        user = User.query.filter_by(user_email=email).first()
+        if user:
+            token = serializer.dumps(email, salt="reset-salt")
+            reset_url = url_for("reset_pw", token=token, _external=True)
+            return render_template("forgot_pw.html", message=f"Click the link to reset your password: {reset_url}")
+        else:
+            return render_template("forgot_pw.html", error="Email not found.")
+    return render_template("forgot_pw.html")
+
+#-----------------------------resetpassword---------------------------------------
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_pw(token):
+    try:
+        email = serializer.loads(token, salt="reset-salt", max_age=900)  # valid for 15 minutes
+    except Exception:
+        return render_template("reset_pw.html", error="The reset link is invalid or has expired.")
+
+    user = User.query.filter_by(user_email=email).first()
+    if not user:
+        return render_template("reset_pw.html", error="User not found.")
+
+    if request.method == "POST":
+        new_pwd = request.form.get("password")
+        confirm = request.form.get("confirm")
+        if new_pwd != confirm:
+            return render_template("reset_pw.html", error="Passwords do not match.")
+
+        user.password = generate_password_hash(new_pwd, method="scrypt")
+        db.session.commit()
+        return redirect(url_for("login"))
+
+    return render_template("reset_pw.html")
 
 #----------------------profile----------------------------
 def is_mmu_email(email):
