@@ -1,16 +1,17 @@
 body {
     font-family: Arial, sans-serif;
+    color: #ffffff;
     background: #f4f6f8;
     background-image: url("img/home background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    height: 100vh;
 }
 
-.interface {
+body.interface {
     font-family: Arial, sans-serif;
     background: #f4f6f8;
     background-image: url("img/interface background.jpg");
@@ -19,7 +20,7 @@ body {
     background-position: center center;
     margin: auto;
     margin-top: 0;
-    height: 120vh;
+    height: 100%;
 }
 
 .logo {
@@ -316,7 +317,6 @@ body {
 }
 
 .profile-info {
-    background: rgba(255, 255, 255, 0.468);
     margin-top: 60px; 
     text-align: center;
     padding: 20px;
