@@ -148,7 +148,7 @@ def forgot_pw():
         if user:
             token = serializer.dumps(email, salt="reset-salt")
             reset_url = url_for("reset_pw", token=token, _external=True)
-            return render_template("forgot_pw.html", message=f"Click the link to reset your password: {reset_url}")
+            return render_template("forgot_pw.html", reset_url=reset_url)
         else:
             return render_template("forgot_pw.html", error="Email not found.")
     return render_template("forgot_pw.html")

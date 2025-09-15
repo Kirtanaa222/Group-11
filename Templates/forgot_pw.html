@@ -7,17 +7,23 @@
 <body class="interface">
     <div class="form-box">
         <h1>Forgot Password</h1>
-        {% if error %}
-            <p style="color: red;">{{ error }}</p>
-        {% endif %}
-        {% if message %}
-            <p style="color: green;">{{ message|safe }}</p>
-        {% endif %}
+
         <form method="POST">
-            <input type="email" name="email" placeholder="Enter your email" required>
-            <button type="submit" class="btn">Submit</button>
+            <input type="email" name="email" placeholder="Enter your registered email" required>
+            <button type="submit" class="btn">Send Reset Link</button>
         </form>
+
+        {% if reset_url %}
+            <p style="color: green;">
+                Click here to reset your password:  
+                <a href="{{ reset_url }}">{{ reset_url }}</a>
+            </p>
+        {% elif message %}
+            <p style="color: red;">{{ message }}</p>
+        {% endif %}
+
         <p><a href="{{ url_for('login') }}">Back to Login</a></p>
     </div>
 </body>
 </html>
+
