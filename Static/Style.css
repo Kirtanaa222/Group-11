@@ -120,6 +120,7 @@ body.interface {
     height: fit-content;
     text-align: center;
     margin: 100px auto;
+    overflow-wrap: break-word;
 }
 
 .form-box h1 {

@@ -150,7 +150,7 @@ def forgot_pw():
             reset_url = url_for("reset_pw", token=token, _external=True)
             return render_template("forgot_pw.html", reset_url=reset_url)
         else:
-            return render_template("forgot_pw.html", error="Email not found.")
+            return render_template("forgot_pw.html", message="Email not found.")
     return render_template("forgot_pw.html")
 
 #-----------------------------resetpassword---------------------------------------
