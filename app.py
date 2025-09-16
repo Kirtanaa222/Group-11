@@ -8,12 +8,14 @@ from datetime import datetime, timedelta
 from flask import abort
 from flask_mail import Mail, Message
 import requests
+from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 db = SQLAlchemy(app)
+socketio = SocketIO(app)
 
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
@@ -40,6 +42,13 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     admin = db.Column(db.Boolean, default=False) 
     mmu_email_updated_at = db.Column(db.DateTime, nullable=True)
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sender = db.Column(db.String(50), nullable=False)
+    recipient = db.Column(db.String(50), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 with app.app_context():
     db.create_all()
@@ -351,39 +360,33 @@ def search_users():
 
 
 #------------------------------chat---------------------------------
-NAKAMA_HOST = "http://127.0.0.1:7350"
-NAKAMA_SERVER_KEY = "defaultkey"
+@app.route("/message")
+def message():
+    username = session.get("username")
+    recipient = request.args.get("recipient", "")
+    messages = Message.query.filter(
+        (Message.sender == username) | (Message.recipient == username)
+    ).order_by(Message.timestamp).all()
+    return render_template("message.html", username=username, messages=messages, recipient=recipient)
 
-def nakama_authenticate(email, password):
-    url = f"{NAKAMA_HOST}/v2/account/authenticate/email?create=true"
-    payload = {"email": email, "password": password}
-    headers = {"Authorization": f"Bearer {NAKAMA_SERVER_KEY}"}
-    response = requests.post(url, json=payload, headers=headers)
-    if response.status_code == 200:
-        return response.json().get("token")
-    return None
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    join_room(username)
 
-@app.route('/chatroom', methods=['GET', 'POST'])
-def chat():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-    user = User.query.get(session["user_id"])
-    nakama_token = nakama_authenticate(user.user_email, user.password)
-    messages = []
-    if nakama_token:
-        # Example: send message (pseudo-code, replace with actual Nakama API)
-        if request.method == "POST":
-            message_text = request.form["message"]
-            # Here you would send the message to Nakama using REST API
-            # Example endpoint: /v2/chat/send (not actual, see Nakama docs)
-        # Example: get messages (pseudo-code, replace with actual Nakama API)
-        # You would fetch messages from Nakama using REST API
-        # For demo, use static messages
-        messages = [
-            {"username": user.username, "content": "Welcome to the chatroom!"}
-        ]
-    return render_template("chatroom.html", messages=messages)
-    
+@socketio.on('send_message')
+def handle_send_message(data):
+    recipient = data['recipient']
+    message = data['message']
+    sender = session.get('username')
+    # Save to database
+    msg = Message(sender=sender, recipient=recipient, content=message)
+    db.session.add(msg)
+    db.session.commit()
+    # Show to sender immediately
+    emit('receive_message', {'sender': sender, 'message': message}, room=sender)
+    # Deliver to recipient if online
+    emit('receive_message', {'sender': sender, 'message': message}, room=recipient)
 
 #--------------logout------------------------------
 @app.route("/logout")
@@ -393,4 +396,4 @@ def logout():
 
 # Run the app
 if __name__ == "__main__":
-    app.run(debug=True)
+    socketio.run(app, debug=True)

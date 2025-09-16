@@ -43,6 +43,14 @@
             </div>
         {% endif %}
     </div>
+    
+    {% if session['user_id'] != user.id %}
+    <div class="chat-btn">
+        <a href="{{ url_for('message', recipient=user.username) }}">
+            <button type="button">Message</button>
+        </a>
+    </div>
+{% endif %}
 
 </body>
 </html>

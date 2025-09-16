@@ -15,8 +15,6 @@
         <li><a href="{{ url_for('home') }}">Home</a></li>
         {% if username %}
             <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="https://calendar.google.com/calendar/u/0/r" target="_blank">Google Calendar</a></li>
-            <li><a href="{{ url_for('chat') }}">Chatroom</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
         {% else %}
             <li><a href="{{ url_for('login') }}">Login</a></li>
