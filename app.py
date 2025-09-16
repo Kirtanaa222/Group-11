@@ -3,19 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
-<<<<<<< HEAD
-import os 
-from datetime import datetime
 from itsdangerous import URLSafeTimedSerializer
-=======
 import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
 from datetime import datetime, timedelta
 from flask import abort
 from flask_mail import Mail, Message
-import requests
 from flask_socketio import SocketIO, emit, join_room
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
@@ -23,11 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 serializer = URLSafeTimedSerializer(app.secret_key)
 db = SQLAlchemy(app)
-<<<<<<< HEAD
-migrate = Migrate(app, db)
-=======
 socketio = SocketIO(app)
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
 
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
@@ -50,13 +40,9 @@ class User(db.Model):
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
-<<<<<<< HEAD
     preferred_subjects = db.Column(db.String(100), nullable=True)
     #admin profile
-    is_verified = db.Column(db.Boolean, default=False)
-=======
     verified = db.Column(db.Boolean, default=False)
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
     status = db.Column(db.String(20), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     admin = db.Column(db.Boolean, default=False) 
@@ -126,10 +112,8 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
-<<<<<<< HEAD
 #---------------------------home----------------------------------
 
-=======
 # Email config (use your own SMTP settings)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -157,16 +141,12 @@ def send_verification_email(user):
     mail.send(msg)
 
 #------------------------------------USER----------------------------------------
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
 
-<<<<<<< HEAD
 #---------------------------signup----------------------------------
 
-=======
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -218,7 +198,6 @@ def login():
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
 
-<<<<<<< HEAD
 #---------------------------forgotpassword----------------------------------
 
 @app.route("/forgot-password", methods=["GET", "POST"])
@@ -258,7 +237,6 @@ def reset_pw(token):
         return redirect(url_for("login"))
 
     return render_template("reset_pw.html")
-=======
 #------------------------------unlock_account---------------------------------
 @app.route("/unlock_acc", methods=["GET", "POST"])
 def unlock_account():
@@ -286,7 +264,6 @@ def unlock_account():
             # Redirect to login page with success message
             return redirect(url_for("login", success="Your account has been updated and unbanned. You can now log in."))
     return render_template("unlock_acc.html", error=error, success=success)
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
 
 #----------------------profile----------------------------
 def is_mmu_email(email):
@@ -402,7 +379,6 @@ def edit_profile(user_id):
                     email_editable = False
                 else:
                     error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
-<<<<<<< HEAD
 
             db.session.commit()
 
@@ -428,10 +404,7 @@ def edit_profile(user_id):
         error=error,
         email_editable=email_editable
     )
-=======
-        db.session.commit()
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
-
+#------------------------------search---------------------------------
 
 @app.route("/search_users")
 def search_users():
@@ -448,8 +421,6 @@ def search_users():
     users = query.all()
     return render_template("search.html", users=users, faculty=faculty, subject=subject)
 
-<<<<<<< HEAD
-=======
 
 #------------------------------chat---------------------------------
 @app.route("/message")
@@ -481,7 +452,6 @@ def handle_send_message(data):
     emit('receive_message', {'sender': sender, 'message': message}, room=recipient)
 
 #--------------logout------------------------------
->>>>>>> 0fb900b42b7732970744ff7f8c70224e3f9ab047
 @app.route("/logout")
 def logout():
     session.clear()
