@@ -5,11 +5,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import os 
 from datetime import datetime
+from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
+serializer = URLSafeTimedSerializer(app.secret_key)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -78,10 +80,13 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
+#---------------------------home----------------------------------
+
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
 
+#---------------------------signup----------------------------------
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -110,6 +115,8 @@ def signup():
 
     return render_template("signup.html")
 
+#---------------------------login----------------------------------
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -130,6 +137,46 @@ def login():
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
+
+#---------------------------forgotpassword----------------------------------
+
+@app.route("/forgot-password", methods=["GET", "POST"])
+def forgot_pw():
+    if request.method == "POST":
+        email = request.form.get("email").strip().lower()
+        user = User.query.filter_by(user_email=email).first()
+        if user:
+            token = serializer.dumps(email, salt="reset-salt")
+            reset_url = url_for("reset_pw", token=token, _external=True)
+            return render_template("forgot_pw.html", reset_url=reset_url)
+        else:
+            return render_template("forgot_pw.html", message="Email not found.")
+    return render_template("forgot_pw.html")
+
+#-----------------------------resetpassword---------------------------------------
+
+@app.route("/reset-password/<token>", methods=["GET", "POST"])
+def reset_pw(token):
+    try:
+        email = serializer.loads(token, salt="reset-salt", max_age=900)  # valid for 15 minutes
+    except Exception:
+        return render_template("reset_pw.html", error="The reset link is invalid or has expired.")
+
+    user = User.query.filter_by(user_email=email).first()
+    if not user:
+        return render_template("reset_pw.html", error="User not found.")
+
+    if request.method == "POST":
+        new_pwd = request.form.get("password")
+        confirm = request.form.get("confirm")
+        if new_pwd != confirm:
+            return render_template("reset_pw.html", error="Passwords do not match.")
+
+        user.password = generate_password_hash(new_pwd, method="scrypt")
+        db.session.commit()
+        return redirect(url_for("login"))
+
+    return render_template("reset_pw.html")
 
 #----------------------profile----------------------------
 def is_mmu_email(email):
@@ -182,7 +229,6 @@ def display_profile(user_id):
                            background=background,
                            bio=bio)
 
-
 #------------------------------edit_profile---------------------------------
 
 @app.route("/edit_profile/<int:user_id>", methods=["GET", "POST"])
@@ -191,45 +237,30 @@ def edit_profile(user_id):
     if not user:
         return "User not found", 404
 
-    avatar = user.avatar or "default_avatar.png"
-    background = user.background or "default_bg.jpg"
-    bio = user.bio or ""
-    error = None
-
     if "user_id" not in session:
         return redirect(url_for("login"))
 
     if session["user_id"] != user_id and not session.get("is_admin"):
         abort(403)
 
-    user = User.query.get(user_id)
-    if not user:
-        abort(404)
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
+    error = None
 
-
-    if is_mmu_email(user.mmu_email): #false means that email cannot be edited)
-        email_editable = False
+    # check if email is editable
+    if is_mmu_email(user.mmu_email):
+        email_editable = False #false means that email cannot be edited
     else:
         email_editable = True
-    # email_editable = not is_mmu_email(user.mmu_email)
-    # true when email is mmuemail, 'not' make it become false(means that email cannot be edited)
 
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
-        if form_name == "bio":
+        if form_name == "all":
             bio_text = request.form.get("bio", "")
             user.bio = bio_text
 
-        elif form_name == "avatar":
-            avatar_file = request.files.get("avatar")
-            if avatar_file and allowed_file(avatar_file.filename):
-                filename = secure_filename(avatar_file.filename)
-                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                avatar_file.save(path)
-                user.avatar = f"uploads/{filename}"
-
-        elif form_name == "background":
             bg_file = request.files.get("background")
             if bg_file and allowed_file(bg_file.filename):
                 filename = secure_filename(bg_file.filename)
@@ -237,7 +268,9 @@ def edit_profile(user_id):
                 bg_file.save(path)
                 user.background = f"uploads/{filename}"
 
-        elif form_name == "mmu_email":
+            selected_subjects = request.form.getlist("subjects")
+            user.preferred_subjects = ",".join(selected_subjects)
+
             new_mmu_email = request.form.get("mmu_email")
             if new_mmu_email and email_editable:
                 if is_mmu_email(new_mmu_email):
@@ -246,19 +279,31 @@ def edit_profile(user_id):
                 else:
                     error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 
-        elif form_name == "subjects":
-            selected_subjects = request.form.getlist("subjects")
-            user.preferred_subjects = " , ".join (selected_subjects)
+            db.session.commit()
 
-        db.session.commit()
+        if error:
+            return render_template(
+                "edit_profile.html",
+                user=user,
+                avatar=user.avatar,
+                background=user.background,
+                bio=user.bio,
+                error=error,
+                email_editable=email_editable
+            )
+        else:
+            return redirect(url_for("display_profile", user_id=user.id))
 
-    return render_template("edit_profile.html",
-                           user=user,
-                           avatar=avatar,
-                           background=background,
-                           bio=bio,
-                           error=error,
-                           email_editable=email_editable)
+    return render_template(
+        "edit_profile.html",
+        user=user,
+        avatar=avatar,
+        background=background,
+        bio=user.bio,
+        error=error,
+        email_editable=email_editable
+    )
+
 
 @app.route("/search_users")
 def search_users():
