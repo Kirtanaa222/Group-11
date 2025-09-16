@@ -237,45 +237,32 @@ def edit_profile(user_id):
     if not user:
         return "User not found", 404
 
-    avatar = user.avatar or "default_avatar.png"
-    background = user.background or "default_bg.jpg"
-    bio = user.bio or ""
-    error = None
-
     if "user_id" not in session:
         return redirect(url_for("login"))
 
     if session["user_id"] != user_id and not session.get("is_admin"):
         abort(403)
 
-    user = User.query.get(user_id)
-    if not user:
-        abort(404)
+    avatar = user.avatar or "default_avatar.png"
+    background = user.background or "default_bg.jpg"
+    bio = user.bio or ""
+    error = None
 
-
-    if is_mmu_email(user.mmu_email): #false means that email cannot be edited)
-        email_editable = False
+    # check if email is editable
+    if is_mmu_email(user.mmu_email):
+        email_editable = False #false means that email cannot be edited
     else:
         email_editable = True
-    # email_editable = not is_mmu_email(user.mmu_email)
-    # true when email is mmuemail, 'not' make it become false(means that email cannot be edited)
 
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
-        if form_name == "bio":
+        if form_name == "all":
+            # 保存 bio
             bio_text = request.form.get("bio", "")
             user.bio = bio_text
 
-        elif form_name == "avatar":
-            avatar_file = request.files.get("avatar")
-            if avatar_file and allowed_file(avatar_file.filename):
-                filename = secure_filename(avatar_file.filename)
-                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                avatar_file.save(path)
-                user.avatar = f"uploads/{filename}"
-
-        elif form_name == "background":
+            # 保存背景
             bg_file = request.files.get("background")
             if bg_file and allowed_file(bg_file.filename):
                 filename = secure_filename(bg_file.filename)
@@ -283,7 +270,11 @@ def edit_profile(user_id):
                 bg_file.save(path)
                 user.background = f"uploads/{filename}"
 
-        elif form_name == "mmu_email":
+            # 保存 subjects
+            selected_subjects = request.form.getlist("subjects")
+            user.preferred_subjects = ",".join(selected_subjects)
+
+            # 保存 MMU email
             new_mmu_email = request.form.get("mmu_email")
             if new_mmu_email and email_editable:
                 if is_mmu_email(new_mmu_email):
@@ -292,19 +283,31 @@ def edit_profile(user_id):
                 else:
                     error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 
-        elif form_name == "subjects":
-            selected_subjects = request.form.getlist("subjects")
-            user.preferred_subjects = " , ".join (selected_subjects)
+            db.session.commit()
 
-        db.session.commit()
+        if error:
+            return render_template(
+                "edit_profile.html",
+                user=user,
+                avatar=user.avatar,
+                background=user.background,
+                bio=user.bio,
+                error=error,
+                email_editable=email_editable
+            )
+        else:
+            return redirect(url_for("display_profile", user_id=user.id))
 
-    return render_template("edit_profile.html",
-                           user=user,
-                           avatar=avatar,
-                           background=background,
-                           bio=bio,
-                           error=error,
-                           email_editable=email_editable)
+    return render_template(
+        "edit_profile.html",
+        user=user,
+        avatar=avatar,
+        background=background,
+        bio=user.bio,
+        error=error,
+        email_editable=email_editable
+    )
+
 
 @app.route("/search_users")
 def search_users():
