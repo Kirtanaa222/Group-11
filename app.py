@@ -258,11 +258,9 @@ def edit_profile(user_id):
         form_name = request.form.get("form_name")
 
         if form_name == "all":
-            # 保存 bio
             bio_text = request.form.get("bio", "")
             user.bio = bio_text
 
-            # 保存背景
             bg_file = request.files.get("background")
             if bg_file and allowed_file(bg_file.filename):
                 filename = secure_filename(bg_file.filename)
@@ -270,11 +268,9 @@ def edit_profile(user_id):
                 bg_file.save(path)
                 user.background = f"uploads/{filename}"
 
-            # 保存 subjects
             selected_subjects = request.form.getlist("subjects")
             user.preferred_subjects = ",".join(selected_subjects)
 
-            # 保存 MMU email
             new_mmu_email = request.form.get("mmu_email")
             if new_mmu_email and email_editable:
                 if is_mmu_email(new_mmu_email):
