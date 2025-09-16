@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>StudyBae！</title>
+    <title>StudyBae!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
 </head>
 <body>
@@ -52,7 +52,7 @@
         {% if username %}
             <h1>Welcome back, {{ username }}!</h1>
         {% else %}
-            <h1>Welcome to StudyBae！</h1>
+            <h1>Welcome to StudyBae!</h1>
             <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('signup') }}">sign up</a>.</p>
         {% endif %}
     </div>
