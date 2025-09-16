@@ -263,11 +263,17 @@ def edit_profile(user_id):
 @app.route("/search_users")
 def search_users():
     faculty = request.args.get("faculty")
+    subject = request.args.get("subject")
+
+    query = User.query
+
     if faculty:
-        users = User.query.filter_by(faculty=faculty).all()
-    else:
-        users = User.query.all()
-    return render_template("search.html", users=users, faculty=faculty)
+        query = query.filter_by(faculty=faculty)
+    if subject:
+        query = query.filter(User.preferred_subjects.ilike(f"%{subject}%"))
+
+    users = query.all()
+    return render_template("search.html", users=users, faculty=faculty, subject=subject)
 
 @app.route("/logout")
 def logout():

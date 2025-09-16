@@ -407,6 +407,19 @@ body {
     background: #7a0e8b;
 }
 
+.faculty-search input[type="text"] {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+.search-results h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
 .search-label {
     margin-right: 10px;
     margin-left: 680px;
