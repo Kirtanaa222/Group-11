@@ -10,6 +10,7 @@
     <label for="menu-toggle" class="openbtn">Settings</label>
     <div id="mySidenav" class="sidenav">
         <label for="menu-toggle" class="closebtn">&times;</label>
+
         <div class="sidenav-profile">
             <a href="{{ url_for('display_profile', user_id=session['user_id']) }}">
                 <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
@@ -21,15 +22,22 @@
     </div>
 
     <div class="profile-cover">
-            <img src="{{ user.background or url_for('static', filename='default_bg.jpg') }}" alt="Background" class="profile-background">
+            <img src="{{ url_for('static', filename=user.background or 'default_bg.jpg') }}" alt="Background" class="profile-background">
         <div class="profile-avatar">
             <img src="{{ url_for('static', filename=user.avatar or 'default_avatar.png') }}" alt="Avatar">
         </div>
     </div>
     
+    <div class="profile-info">
         <h1>{{ user.username }}</h1>
         <p class="profile-bio">{{ user.bio or 'No bio yet.' }}</p>
-
+        <p><strong>Preferred Subjects:</strong>
+            {% if user.preferred_subjects %}
+                {{ user.preferred_subjects }}
+            {% else %}
+                None
+            {% endif %}
+        </p>
         <p><strong>Faculty:</strong> {{ user.faculty }}</p>
         <p><strong>Student ID:</strong> {{ user.student_id }}</p>
         <p><strong>Email:</strong> {{ user.user_email }}</p>

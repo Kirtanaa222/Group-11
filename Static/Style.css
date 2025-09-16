@@ -300,11 +300,13 @@ body {
 }
 
 .profile-info {
+    background: rgba(255, 255, 255, 0.468);
     margin-top: 60px; 
     text-align: center;
     padding: 20px;
-    background: #fff;
     border-radius: 12px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .profile-info h1 {
@@ -332,6 +334,11 @@ body {
     background-color: #4a65a1;
 }
 
+.subjects-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+}
 
 .mmu-reminder {
     background-color: #c2a3de;
@@ -398,6 +405,19 @@ body {
 
 .faculty-search button:hover {
     background: #7a0e8b;
+}
+
+.faculty-search input[type="text"] {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+.search-results h2 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .search-label {
