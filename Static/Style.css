@@ -305,8 +305,8 @@ body {
 }
 
 .profile-avatar img {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
@@ -423,6 +423,19 @@ body {
 
 .faculty-search button:hover {
     background: #7a0e8b;
+}
+
+.faculty-search input[type="text"] {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+.search-results h2 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .search-label {

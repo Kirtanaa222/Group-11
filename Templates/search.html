@@ -18,12 +18,17 @@
 </div>
 </nav>
 <div class="search-results">
-    <h2>Users{% if faculty %} in {{ faculty }}{% endif %}</h2>
+    <h2>
+        Users
+        {% if faculty %} in {{ faculty }}{% endif %}
+        {% if subject %} (Subject: {{ subject }}){% endif %}
+    </h2>
     <ul>
         {% for user in users %}
         <li class="user-card">
             <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.png') }}" alt="{{ user.username }}'s avatar" class="avatar">
             <span>{{ user.username }} ({{ user.faculty }})</span>
+            <span>Subjects: {{ user.preferred_subjects or "None" }}</span>
             <a href="{{ url_for('display_profile', user_id=user.id) }}" class="btn">View</a>
         </li>
         {% else %}

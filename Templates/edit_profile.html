@@ -63,18 +63,31 @@
             <p><strong>Student ID:</strong> {{ user.student_id }}</p>
             <p><strong>Email:</strong> {{ user.user_email }}</p>
 
-            {% if email_editable %}
-                <p><strong>MMU Email:</strong> 
-                    <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
-                </p>
-                {% if error %}
-                    <p style="color:red;">{{ error }}</p>
-                {% endif %}
-            {% else %}
-                <p><strong>MMU Email:</strong> {{ user.mmu_email }}</p>
+            {% if banned %}
+            <div style="color: red; font-weight: bold;">
+                Your account is banned because you have not updated your MMU email.<br>
+                Please update your MMU email below to get verified and unbanned.
+            </div>
+            <p><strong>MMU Email:</strong> 
+                <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
+            </p>
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
             {% endif %}
 
-            <button type="submit">Save All</button>
+            <button type="submit">Save</button>
+
+        {% elif email_editable %}
+            <p><strong>MMU Email:</strong> 
+                <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
+            </p>
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+            <button type="submit">Save</button>
+        {% else %}
+            <p><strong>MMU Email:</strong> {{ user.mmu_email }}</p>
+        {% endif %}
         </form>
     </div>
 
