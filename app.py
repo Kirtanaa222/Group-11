@@ -347,6 +347,16 @@ def edit_profile(user_id):
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
+        if form_name == "avatar":
+            file = request.files.get("avatar")
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                file.save(path)
+                user.avatar = f"uploads/{filename}"
+                db.session.commit()
+            return redirect(url_for("edit_profile", user_id=user.id))
+
         if form_name == "all":
             bio_text = request.form.get("bio", "")
             user.bio = bio_text
