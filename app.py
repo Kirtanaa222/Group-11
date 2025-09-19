@@ -3,15 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
+from itsdangerous import URLSafeTimedSerializer
 import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
 from datetime import datetime, timedelta
 from flask import abort
 from flask_mail import Mail, Message
-import requests
 from flask_socketio import SocketIO, emit, join_room
-from itsdangerous import URLSafeTimedSerializer
-
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
@@ -42,6 +40,8 @@ class User(db.Model):
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
+    preferred_subjects = db.Column(db.String(100), nullable=True)
+    #admin profile
     verified = db.Column(db.Boolean, default=False)
     status = db.Column(db.String(20), default='active')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
@@ -114,9 +114,38 @@ def admin_unban_user(user_id):
 
 #---------------------------home----------------------------------
 
+# Email config (use your own SMTP settings)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'kdkirtu@gmail.com'
+app.config['MAIL_PASSWORD'] = 'quzv jfzf gsgt ntix'
+mail = Mail(app)
+
+def send_verification_email(user):
+    msg = Message(
+        subject="Your Account Has Been Verified",
+        sender=app.config['MAIL_USERNAME'],
+        recipients=[user.user_email]
+    )
+    msg.body = f"""
+    Hi {user.username},
+
+    Congratulations! Your account has been verified because you updated your MMU email within the required time.
+
+    You now have full access to the platform.
+
+    Regards,
+    Admin Team
+    """
+    mail.send(msg)
+
+#------------------------------------USER----------------------------------------
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
+
+#---------------------------signup----------------------------------
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -208,6 +237,33 @@ def reset_pw(token):
         return redirect(url_for("login"))
 
     return render_template("reset_pw.html")
+#------------------------------unlock_account---------------------------------
+@app.route("/unlock_acc", methods=["GET", "POST"])
+def unlock_account():
+    error = None
+    success = None
+    if request.method == "POST":
+        username = request.form.get("username")
+        student_id = request.form.get("student_id")
+        mmu_email = request.form.get("mmu_email")
+
+        user = User.query.filter_by(username=username, student_id=student_id).first()
+        if not user or user.status != 'banned':
+            error = "Account not found or not banned."
+        elif User.query.filter_by(mmu_email=mmu_email).first() and user.mmu_email != mmu_email:
+            error = "MMU email already exists. Please use a different MMU email."
+        elif not is_mmu_email(mmu_email):
+            error = "Please enter a valid MMU email (@mmu.edu.my OR @student.mmu.edu.my)."
+        else:
+            user.mmu_email = mmu_email
+            user.mmu_email_updated_at = datetime.utcnow()
+            user.verified = True
+            user.status = 'active'
+            db.session.commit()
+            send_verification_email(user)
+            # Redirect to login page with success message
+            return redirect(url_for("login", success="Your account has been updated and unbanned. You can now log in."))
+    return render_template("unlock_acc.html", error=error, success=success)
 
 #----------------------profile----------------------------
 def is_mmu_email(email):
@@ -291,6 +347,16 @@ def edit_profile(user_id):
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
+        if form_name == "avatar":
+            file = request.files.get("avatar")
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                file.save(path)
+                user.avatar = f"uploads/{filename}"
+                db.session.commit()
+            return redirect(url_for("edit_profile", user_id=user.id))
+
         if form_name == "all":
             bio_text = request.form.get("bio", "")
             user.bio = bio_text
@@ -348,7 +414,7 @@ def edit_profile(user_id):
         error=error,
         email_editable=email_editable
     )
-
+#------------------------------search---------------------------------
 
 @app.route("/search_users")
 def search_users():

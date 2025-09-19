@@ -61,42 +61,43 @@ body.interface {
                  0 0 160px #fff;
 }
 
-
 .navbar {
-    
-    color: white;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    position: fixed;  
-    top: 0;
-    width: 98%;
+    justify-content: space-between;
+    flex-wrap: nowrap;          
+    width: 99%;
+    box-sizing: border-box;
+    padding: 12px 12px;
     z-index: 1000;
 }
 
 .navbar .logo {
-    font-size: 28px;
-    font-weight: bold;
+  font-size: 28px;
+  font-weight: bold;
+  white-space: nowrap;        
+  display: inline-block;      
+  line-height: 1;             
+  margin-right: 16px;
 }
 
 .navbar .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1 0 auto;            
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+.navbar .nav-links a {
+  white-space: nowrap;
 }
 
 .navbar .nav-links li {
     display: inline;
-}
-
-.navbar .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 5px;
 }
 
 .navbar .nav-links a:hover {
@@ -305,8 +306,8 @@ body {
 }
 
 .profile-avatar img {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
