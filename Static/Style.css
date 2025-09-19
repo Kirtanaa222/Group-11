@@ -11,6 +11,22 @@ body {
     padding: 0;
 }
 
+html, body, * {
+    cursor: url("img/cursor.png") 0 0, auto !important;  
+}
+
+a, button, input, select, textarea {
+    cursor: url("img/cursor.png") 0 0, auto !important;  
+}
+
+button:hover, 
+a:hover, 
+input:hover {
+    cursor: url("img/cursor.png") 0 0, auto !important; 
+    box-shadow: 0 0 15px rgba(179, 140, 213, 0.8); /* glowing effect */
+    transition: box-shadow 0.3s ease;
+}
+
 body.interface {
     font-family: Arial, sans-serif;
     background: #f4f6f8;
