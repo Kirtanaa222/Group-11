@@ -1,13 +1,26 @@
 body {
     font-family: Arial, sans-serif;
+    color: #ffffff;
     background: #f4f6f8;
-    background-image: url("img/purplemarble.jpeg");
+    background-image: url("img/home background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    height: 100vh;
+}
+
+body.interface {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    background-image: url("img/interface background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: auto;
+    margin-top: 0;
+    height: 100%;
 }
 
 .logo {
@@ -48,42 +61,43 @@ body {
                  0 0 160px #fff;
 }
 
-
 .navbar {
-    background-color: #bd82cf;
-    color: white;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    position: fixed;  
-    top: 0;
-    width: 98%;
+    justify-content: space-between;
+    flex-wrap: nowrap;          
+    width: 99%;
+    box-sizing: border-box;
+    padding: 12px 12px;
     z-index: 1000;
 }
 
 .navbar .logo {
-    font-size: 28px;
-    font-weight: bold;
+  font-size: 28px;
+  font-weight: bold;
+  white-space: nowrap;        
+  display: inline-block;      
+  line-height: 1;             
+  margin-right: 16px;
 }
 
 .navbar .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: 1 0 auto;            
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+}
+
+.navbar .nav-links a {
+  white-space: nowrap;
 }
 
 .navbar .nav-links li {
     display: inline;
-}
-
-.navbar .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 5px;
 }
 
 .navbar .nav-links a:hover {
@@ -93,20 +107,25 @@ body {
 .container {
     padding: 120px 20px 20px; 
     text-align: center;
+    justify-content: center;
 }
 
 .form-box {
-    background: white;
-    padding: 30px;
+    justify-content: center;
+    color: #ffffff;
+    font-style: inherit;
+    padding: 50px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
     width: 300px;
+    height: fit-content;
     text-align: center;
     margin: 100px auto;
+    overflow-wrap: break-word;
 }
 
 .form-box h1 {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .form-box input {
@@ -287,8 +306,8 @@ body {
 }
 
 .profile-avatar img {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
@@ -303,8 +322,9 @@ body {
     margin-top: 60px; 
     text-align: center;
     padding: 20px;
-    background: #fff;
     border-radius: 12px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 .profile-info h1 {
@@ -332,6 +352,11 @@ body {
     background-color: #4a65a1;
 }
 
+.subjects-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
+}
 
 .mmu-reminder {
     background-color: #c2a3de;
@@ -360,6 +385,7 @@ body {
 
 .search-results {
     background: #fff;
+    color: #000000;
     padding: 30px 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -398,6 +424,19 @@ body {
 
 .faculty-search button:hover {
     background: #7a0e8b;
+}
+
+.faculty-search input[type="text"] {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+.search-results h2 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
 .search-label {

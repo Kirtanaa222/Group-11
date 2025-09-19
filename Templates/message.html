@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Messaging</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <h2>Send a Message</h2>
+    <p>Messaging: <span id="currentRecipient"></span></p>
+    <input type="text" id="recipient" placeholder="Recipient Username" value="{{ recipient }}">
+    <input type="text" id="message" placeholder="Your Message">
+    <button onclick="sendMessage()">Send</button>
+
+    <h3>Messages:</h3>
+    <ul id="messages">{% for msg in messages %}
+    <li>{{ msg.sender }}: {{ msg.content }}</li>
+{% endfor %}</ul>
+
+   <script>
+    var socket = io();
+    var username = "{{ username }}";
+    socket.emit('join', {username: username});
+
+    // Add this to update the recipient display
+    document.getElementById('recipient').addEventListener('input', function() {
+        document.getElementById('currentRecipient').textContent = this.value;
+    });
+
+    function sendMessage() {
+        var recipient = document.getElementById('recipient').value;
+        var message = document.getElementById('message').value;
+        socket.emit('send_message', {recipient: recipient, message: message});
+    }
+
+    socket.on('receive_message', function(data) {
+        var li = document.createElement('li');
+        li.textContent = data.sender + ": " + data.message;
+        document.getElementById('messages').appendChild(li);
+        document.getElementById('message').value = '';
+    });
+</script>
+</body>
+</html>
