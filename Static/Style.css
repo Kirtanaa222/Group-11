@@ -25,7 +25,7 @@ body.interface {
 
 .logo {
     cursor: pointer;
-    font-size: 30px;
+    font-size: 60px;
     font-weight: bold;
     color: white;
     letter-spacing: 2px;
@@ -63,12 +63,12 @@ body.interface {
 
 .navbar {
     display: flex;
+    justify-content: space-between; /* push left group & right group apart */
     align-items: center;
-    justify-content: space-between;
+    padding: 10px 20px;
     flex-wrap: nowrap;          
     width: 99%;
     box-sizing: border-box;
-    padding: 12px 12px;
     z-index: 1000;
 }
 
@@ -79,6 +79,12 @@ body.interface {
   display: inline-block;      
   line-height: 1;             
   margin-right: 16px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* space between logo and nav links */
 }
 
 .navbar .nav-links {
@@ -92,17 +98,25 @@ body.interface {
   flex-wrap: nowrap;
 }
 
-.navbar .nav-links a {
-  white-space: nowrap;
-}
-
 .navbar .nav-links li {
     display: inline;
 }
 
-.navbar .nav-links a:hover {
-    background-color: #575757;
+.navbar .nav-links a {
+    font-family: Arial, sans-serif;  
+    font-size: 20px;                 /* smaller than logo */
+    font-weight: bold;               
+    letter-spacing: 1px;             
+    color: #ffffff;                  
+    text-decoration: none;           /* remove underline */
+    transition: color 0.2s;
 }
+
+.navbar .nav-links a:hover {
+    color: #a877d3; /* purple hover effect */
+}
+
+
 
 .container {
     padding: 120px 20px 20px; 
@@ -440,10 +454,10 @@ body {
 }
 
 .search-label {
-    margin-right: 10px;
-    margin-left: 680px;
     font-weight: bold;
     color: white;
+    white-space: nowrap; /* keep it in one line */
+    margin-right: 8px;
 }
 
 .search-bar-group {
