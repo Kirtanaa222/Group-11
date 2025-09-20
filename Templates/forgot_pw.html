@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body class="interface">
+    <div class="form-box">
+        <h1>Forgot Password</h1>
+
+        {% if message %}
+            <p style="color: rgb(11, 244, 11);">{{ message }}</p>
+        {% endif %}
+
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST">
+            <input type="email" name="email" placeholder="Enter your registered email" required>
+            <button type="submit" class="btn">Send Reset Link</button>
+        </form>
+
+        <p><a href="{{ url_for('login') }}">Back to Login</a></p>
+    </div>
+</body>
+</html>

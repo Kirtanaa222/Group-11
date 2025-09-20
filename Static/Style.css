@@ -1,18 +1,47 @@
 body {
     font-family: Arial, sans-serif;
+    color: #ffffff;
     background: #f4f6f8;
-    background-image: url("img/purplemarble.jpeg");
+    background-image: url("img/home background.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    min-height: 100vh;
     margin: 0;
     padding: 0;
-    height: 100vh;
+}
+
+html, body, * {
+    cursor: url("img/cursor.png") 0 0, auto !important;  
+}
+
+a, button, input, select, textarea {
+    cursor: url("img/cursor.png") 0 0, auto !important;  
+}
+
+button:hover, 
+a:hover, 
+input:hover {
+    cursor: url("img/cursor.png") 0 0, auto !important; 
+    box-shadow: 0 0 15px rgba(179, 140, 213, 0.8); /* glowing effect */
+    transition: box-shadow 0.3s ease;
+}
+
+body.interface {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    background-image: url("img/interface background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: auto;
+    margin-top: 0;
+    height: 100%;
 }
 
 .logo {
     cursor: pointer;
-    font-size: 30px;
+    font-size: 60px;
     font-weight: bold;
     color: white;
     letter-spacing: 2px;
@@ -48,31 +77,35 @@ body {
                  0 0 160px #fff;
 }
 
-
 .navbar {
-    background-color: #bd82cf;
-    color: white;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* push left group & right group apart */
     align-items: center;
-    padding: 12px 20px;
-    position: fixed;  
-    top: 0;
-    width: 98%;
+    padding: 10px 20px;
+    flex-wrap: nowrap;          
+    width: 99%;
+    box-sizing: border-box;
     z-index: 1000;
 }
 
 .navbar .logo {
-    font-size: 28px;
-    font-weight: bold;
+  font-size: 28px;
+  font-weight: bold;
+  white-space: nowrap;        
+  display: inline-block;      
+  line-height: 1;             
+  margin-right: 16px;
 }
 
 .navbar .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-    margin: 0;
-    padding: 0;
+  display: flex;
+  gap: 20px;
+  margin: 15px auto;
+  padding: 0;
+  list-style: none;
+  flex: 1 0 auto;            
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 }
 
 .navbar .nav-links li {
@@ -80,33 +113,43 @@ body {
 }
 
 .navbar .nav-links a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 12px;
-    border-radius: 5px;
+    font-family: Arial, sans-serif;  
+    font-size: 20px;                 /* smaller than logo */
+    font-weight: bold;               
+    letter-spacing: 1px;             
+    color: #ffffff;                  
+    text-decoration: none;           /* remove underline */
+    transition: color 0.2s;
 }
 
 .navbar .nav-links a:hover {
-    background-color: #575757;
+    color: #a877d3; /* purple hover effect */
 }
+
+
 
 .container {
     padding: 120px 20px 20px; 
     text-align: center;
+    justify-content: center;
 }
 
 .form-box {
-    background: white;
-    padding: 30px;
+    justify-content: center;
+    color: #ffffff;
+    font-style: inherit;
+    padding: 50px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
     width: 300px;
+    height: fit-content;
     text-align: center;
     margin: 100px auto;
+    overflow-wrap: break-word;
 }
 
 .form-box h1 {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .form-box input {
@@ -287,8 +330,8 @@ body {
 }
 
 .profile-avatar img {
-    width: 150px;
-    height: 150px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
@@ -300,7 +343,6 @@ body {
 }
 
 .profile-info {
-    background: rgba(255, 255, 255, 0.468);
     margin-top: 60px; 
     text-align: center;
     padding: 20px;
@@ -345,7 +387,7 @@ body {
     color: #000000;
     border: 1px solid #5f48ce;
     padding: 10px;
-    margin: 15px auto;
+    margin: 0px auto;
     width: 90%;
     text-align: center;
     border-radius: 5px;
@@ -367,6 +409,7 @@ body {
 
 .search-results {
     background: #fff;
+    color: #000000;
     padding: 30px 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
@@ -379,8 +422,9 @@ body {
 .faculty-search {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    margin-left: auto;
+    margin: 0 auto;
 }
 
 .faculty-search select {
@@ -407,18 +451,35 @@ body {
     background: #7a0e8b;
 }
 
+.faculty-search input[type="text"] {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+.search-results h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
 .search-label {
-    margin-right: 10px;
-    margin-left: 680px;
     font-weight: bold;
     color: white;
+    white-space: nowrap; /* keep it in one line */
+    margin-right: 8px;
 }
 
 .search-bar-group {
+    position: fixed;
+    top: 20px;
+    right: 20px;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    margin-left: auto;
     gap: 10px;
+    z-index: 1500;
 }
 
 .avatar {
@@ -434,4 +495,80 @@ body {
     justify-content: space-between;
     padding: 10px 15px;
     border-bottom: 1px solid #eee;
+}
+
+.hero {
+    text-align: center;
+    padding: 100px 20px 80px;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+}
+
+.hero p {
+    margin: 20px auto;
+    font-size: 18px;
+    max-width: 600px;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    margin-top: 20px;
+    background: #f472b6;
+    color: #000;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.cta-btn:hover {
+    background: #ec4899;
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    padding: 50px 40px;
+    color: #fff;
+}
+
+.feature {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    transition: 0.3s;
+    backdrop-filter: blur(6px);
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.feature h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    margin-top: 50px;
+    font-size: 14px;
 }
