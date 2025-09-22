@@ -12,9 +12,17 @@
     <button onclick="sendMessage()">Send</button>
 
     <h3>Messages:</h3>
-    <ul id="messages">{% for msg in messages %}
-    <li>{{ msg.sender }}: {{ msg.content }}</li>
-{% endfor %}</ul>
+
+    <ul id="messages">
+    {% for msg in messages %}
+        <li>
+            {{ msg.sender }}: {{ msg.content }}
+            {% if msg.sender != username %}
+                <button type="button" onclick="replyTo('{{ msg.sender }}')">Reply</button>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
 
    <script>
     var socket = io();
@@ -30,6 +38,12 @@
         var recipient = document.getElementById('recipient').value;
         var message = document.getElementById('message').value;
         socket.emit('send_message', {recipient: recipient, message: message});
+    }
+
+    function replyTo(username) {
+        document.getElementById('recipient').value = username;
+        document.getElementById('recipient').dispatchEvent(new Event('input'));
+        document.getElementById('message').focus();
     }
 
     socket.on('receive_message', function(data) {

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Timetable</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body>
+    <div class="timetable-section">
+        <h2>Weekly Timetable</h2>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <form method="POST" style="margin-bottom: 30px;">
+            <label>Day of Week:
+                <select name="day_of_week" required>
+                    {% for day in days %}
+                    <option value="{{ day }}">{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Start Time: <input type="time" name="start_time" required></label>
+            <label>End Time: <input type="time" name="end_time" required></label>
+            <label>Subject: <input type="text" name="subject" required></label>
+            <label>Description: <input type="text" name="description"></label>
+            <button type="submit" class="btn">Add Entry</button>
+        </form>
+        <h3 style="color:#7a0e8b;">Your Timetable</h3>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Subject</th>
+                <th>Description</th>
+            </tr>
+            {% for entry in entries %}
+            <tr>
+                <td>{{ entry.day_of_week }}</td>
+                <td>{{ entry.start_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.end_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.subject }}</td>
+                <td>{{ entry.description or '' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('profile') }}">Back to Profile</a>
+    </div>
+</body>
+</html>

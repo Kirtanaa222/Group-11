@@ -41,5 +41,28 @@
 
     </div>
 
+    <div class="timetable-section">
+        <h2>Your Timetable</h2>
+        <table>
+            <tr>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Subject</th>
+                <th>Description</th>
+            </tr>
+            {% for entry in timetable_entries %}
+            <tr>
+                <td>{{ entry.day_of_week }}</td>
+                <td>{{ entry.start_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.end_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.subject }}</td>
+                <td>{{ entry.description or '' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><a href="{{ url_for('timetable') }}">Edit Timetable</a></p>
+    </div>
+
 </body>
 </html>
