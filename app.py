@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
-from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash 
 from werkzeug.utils import secure_filename
 from itsdangerous import URLSafeTimedSerializer
@@ -8,7 +7,7 @@ import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
 from datetime import datetime, timedelta
 from flask import abort
-from flask_mail import Mail, Message
+from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
@@ -98,7 +97,7 @@ def admin_ban_user(user_id):
     return redirect(url_for('admin_dashboard'))
 
 def send_mmu_reminder_email(user):
-    msg = Message(
+    msg = MailMessage(
         subject="Reminder: Update Your MMU Email",
         sender=app.config['MAIL_USERNAME'],
         recipients=[user.user_email]
@@ -124,7 +123,6 @@ def admin_unban_user(user_id):
     return redirect(url_for('admin_dashboard'))
 
 #---------------------------home----------------------------------
-
 # Email config (use your own SMTP settings)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -134,7 +132,7 @@ app.config['MAIL_PASSWORD'] = 'quzv jfzf gsgt ntix'
 mail = Mail(app)
 
 def send_verification_email(user):
-    msg = Message(
+    msg = MailMessage(
         subject="Your Account Has Been Verified",
         sender=app.config['MAIL_USERNAME'],
         recipients=[user.user_email]
@@ -157,7 +155,6 @@ def home():
     return render_template("home.html", username=session.get("username"))
 
 #---------------------------signup----------------------------------
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -186,7 +183,6 @@ def signup():
     return render_template("signup.html")
 
 #---------------------------login----------------------------------
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -210,7 +206,6 @@ def login():
     return render_template("login.html")
 
 #---------------------------forgotpassword----------------------------------
-
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_pw():
     if request.method == "POST":
@@ -219,17 +214,34 @@ def forgot_pw():
         if user:
             token = serializer.dumps(email, salt="reset-salt")
             reset_url = url_for("reset_pw", token=token, _external=True)
-            return render_template("forgot_pw.html", reset_url=reset_url)
+
+            msg = MailMessage(
+                subject="Password Reset Request",
+                sender=app.config['MAIL_USERNAME'],
+                recipients=[email]
+            )
+            msg.body = f"""
+Hi {user.username},
+
+You requested to reset your password. Click the link below to reset it:
+{reset_url}
+
+This link will expire in 10 minutes.
+
+If you did not request this, please ignore this email.
+"""
+            mail.send(msg)
+
+            return render_template("forgot_pw.html", message="A reset link has been sent to your email.")
         else:
-            return render_template("forgot_pw.html", message="Email not found.")
+            return render_template("forgot_pw.html", error="Email not found.")
     return render_template("forgot_pw.html")
 
 #-----------------------------resetpassword---------------------------------------
-
 @app.route("/reset-password/<token>", methods=["GET", "POST"])
 def reset_pw(token):
     try:
-        email = serializer.loads(token, salt="reset-salt", max_age=900)  # valid for 15 minutes
+        email = serializer.loads(token, salt="reset-salt", max_age=600)  # valid for 10mins
     except Exception:
         return render_template("reset_pw.html", error="The reset link is invalid or has expired.")
 
@@ -248,6 +260,7 @@ def reset_pw(token):
         return redirect(url_for("login"))
 
     return render_template("reset_pw.html")
+
 #------------------------------unlock_account---------------------------------
 @app.route("/unlock_acc", methods=["GET", "POST"])
 def unlock_account():
@@ -362,6 +375,16 @@ def edit_profile(user_id):
     if request.method == "POST":
         form_name = request.form.get("form_name")
 
+        if form_name == "avatar":
+            file = request.files.get("avatar")
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                file.save(path)
+                user.avatar = f"uploads/{filename}"
+                db.session.commit()
+            return redirect(url_for("edit_profile", user_id=user.id))
+
         if form_name == "all":
             bio_text = request.form.get("bio", "")
             user.bio = bio_text
@@ -423,18 +446,26 @@ def edit_profile(user_id):
 
 @app.route("/search_users")
 def search_users():
-    faculty = request.args.get("faculty")
-    subject = request.args.get("subject")
+    faculty = request.args.get("faculty", "").strip()
+    subject = request.args.get("subject", "").strip()
 
     query = User.query
 
+    # Case-insensitive faculty match
     if faculty:
-        query = query.filter_by(faculty=faculty)
+        query = query.filter(User.faculty.ilike(faculty))
+
+    # Case-insensitive subject search (partial match)
     if subject:
         query = query.filter(User.preferred_subjects.ilike(f"%{subject}%"))
 
     users = query.all()
-    return render_template("search.html", users=users, faculty=faculty, subject=subject)
+    return render_template(
+        "search.html",
+        users=users,
+        faculty=faculty,
+        subject=subject
+    )
 
 
 
