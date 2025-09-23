@@ -532,6 +532,7 @@ def handle_send_message(data):
     # Deliver to recipient if online
     emit('receive_message', {'sender': sender, 'message': message}, room=recipient)
 
+
 #--------------logout------------------------------
 @app.route("/logout")
 def logout():
