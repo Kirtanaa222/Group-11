@@ -33,12 +33,14 @@
                 <option value="Faculty Of Business (FOB)">FOB</option>
                 <option value="Faculty Of Cinematic Arts (FCA)">FCA</option>
                 <option value="Faculty Of Computing and Informatics (FCI)">FCI</option>
-                <option value="Faculty Of Creative Multimedia (FCM)">FCM</option>                    <option value="Faculty Of Engineering and Technology (FET)">FET</option>
+                <option value="Faculty Of Creative Multimedia (FCM)">FCM</option>
+                <option value="Faculty Of Engineering and Technology (FET)">FET</option>
                 <option value="Faculty Of Information Science and Technology (FIST)">FIST</option>
                 <option value="Faculty Of Law (FOL)">FOL</option>
                 <option value="Faculty Of Management (FOM)">FOM</option>
             </select>
-            <input type="text" name="subject" placeholder="Enter subject (e.g. Math)" value="{{ request.args.get('subject', '') }}">                <button type="submit">Search</button>
+            <input type="text" name="subject" placeholder="Enter subject (e.g. Math)" value="{{ request.args.get('subject', '') }}">
+            <button type="submit">Search</button>
         </form>
     </div>
 
@@ -56,9 +58,33 @@
 
             <!-- Show admin dashboard link if user is admin -->
         {% if session.get('is_admin') %}
-            <p><a href="{{ url_for('admin_dashboard') }}">Go to Admin Dashboard</a></p>
+            <p><a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">Go to Admin Dashboard</a></p>
         {% endif %}
+    </div>
 
+    <div class="timetable-section">
+        <h2>Your Timetable</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Subject</th>
+                <th>Description</th>
+            </tr>
+            {% for entry in timetable_entries %}
+            <tr>
+                <td>{{ entry.date.strftime('%Y-%m-%d') if entry.date else '' }}</td>
+                <td>{{ entry.day_of_week }}</td>
+                <td>{{ entry.start_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.end_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.subject }}</td>
+                <td>{{ entry.description or '' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><a href="{{ url_for('timetable') }}">Edit Timetable</a></p>
     </div>
 
 </body>

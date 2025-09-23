@@ -1,3 +1,186 @@
+.back-btn {
+    display: inline-block;
+    margin-top: 24px;
+    text-decoration: none;
+    text-align: center;
+}
+.pink-btn {
+    background: #e75480 !important; /* Pink */
+    color: #fff !important;
+    border: none;
+}
+
+.pink-btn:hover {
+    background: #c2185b !important; /* Darker pink on hover */
+    color: #fff !important;
+}
+/* --- Admin Section Styling --- */
+.admin-section {
+    background: #fce1f6;
+    color: #4a277a;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(122, 14, 139, 0.08);
+    padding: 40px 40px 32px 40px;
+    margin: 40px auto;
+    max-width: 1100px;
+    min-width: 80vw;
+    text-align: center;
+    border: 2px solid #ff00c3;
+}
+
+.admin-section h2 {
+    color: #7a0e8b;
+    margin-bottom: 24px;
+    font-size: 2.2em;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(168,119,211,0.10);
+    margin-bottom: 10px;
+    font-size: 1.08em;
+}
+
+.admin-table th, .admin-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #e5d6f3;
+    border-right: 2px solid #fff; /* White vertical lines */
+    text-align: center;
+}
+
+.admin-table th {
+    background: #7a0e8b;
+    color: #fff;
+    font-weight: 600;
+    border-top: none;
+    border-bottom: 2px solid #7a0e8b;
+    letter-spacing: 1px;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+    border-right: none; /* No right border on last column */
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:nth-child(even) td {
+    background: #f3e8fa;
+}
+
+.admin-table tr:hover td {
+    background: #e9d6f7;
+    transition: background 0.2s;
+}
+
+.admin-btn {
+    background: #7a0e8b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 22px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    font-size: 1em;
+    box-shadow: 0 2px 8px rgba(168,119,211,0.08);
+}
+
+.admin-btn:hover {
+    background: #a877d3;
+    box-shadow: 0 4px 16px rgba(122, 14, 139, 0.15);
+}
+
+/* Timetable Section Styling */
+.timetable-section {
+    background: rgba(255,255,255,0.90);
+    color: #4a277a;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(168,119,211,0.10);
+    padding: 40px 40px 32px 40px;
+    margin: 32px auto 32px auto;
+    max-width: 1300px;
+    min-width: 70vw;
+    text-align: center;
+}
+
+.timetable-section h2 {
+    color: #7a0e8b;
+    margin-bottom: 18px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+.timetable-section table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(168,119,211,0.08);
+    margin-bottom: 10px;
+}
+
+.timetable-section th, .timetable-section td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #e5d6f3;
+    font-size: 1.05em;
+    border-right: 2px solid #fff; /* White vertical lines between columns */
+}
+
+.timetable-section th:last-child,
+.timetable-section td:last-child {
+    border-right: none; /* No right border on last column */
+}
+
+.timetable-section th {
+    background: #a877d3;
+    color: #fff;
+    font-weight: 600;
+    border-top: none;
+    border-bottom: 2px solid #7a0e8b;
+}
+
+.timetable-section tr:last-child td {
+    border-bottom: none;
+}
+
+.timetable-section tr:nth-child(even) td {
+    background: #f7f2fa;
+}
+
+.timetable-section tr:hover td {
+    background: #e9d6f7;
+    transition: background 0.2s;
+}
+
+.timetable-section a {
+    color: #fff;
+    background: #a877d3;
+    padding: 7px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 10px;
+    display: inline-block;
+    transition: background 0.2s;
+}
+.timetable-section a:hover {
+
+    background: #7a0e8b;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     color: #ffffff;
@@ -572,3 +755,96 @@ footer {
     margin-top: 50px;
     font-size: 14px;
 }
+
+/* Chat Container */
+.chat-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    padding: 20px;
+    animation: ease-in 0.3s fadeIn;
+}
+
+.chat-header {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+#messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#messages li {
+    display: inline-block;
+    clear: both;
+    padding: 12px 18px;
+    margin: 8px 0;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 70%;
+    word-wrap: break-word;
+    animation: popIn 0.3s ease;
+}
+
+#messages li.sender {
+    background: #a877d3;
+    color: #fff;
+    float: right;
+    border-bottom-right-radius: 8px;
+}
+
+
+#messages li.recipient {
+    background: #f8a5c2;
+    color: #000;
+    float: left;
+    border-bottom-left-radius: 8px;
+}
+
+/* Input area */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.chat-input button {
+    padding: 10px 18px;
+    border-radius: 25px;
+    background: #a877d3;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.chat-input button:hover {
+    background: #7a0e8b;
+    transform: scale(1.05);
+}
+
+/* Pop-in animation */
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
