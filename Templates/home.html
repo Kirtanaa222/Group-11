@@ -5,58 +5,47 @@
     <title>StudyBae!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
 </head>
+
 <body>
-    <!-- navbar -->
     <nav class="navbar">
-    <div class="logo">
-        <span>Study</span><span>B</span><span>a</span><span>e</span>
-    </div>
-    <ul class="nav-links">
-        <li><a href="{{ url_for('home') }}">Home</a></li>
-        {% if username %}
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        {% else %}
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-        {% endif %}
-    </ul>
-    <div class="search-bar-group"></div>
-<span class="search-label">Search for your studybae :</span>
-<form class="faculty-search" method="get" action="{{ url_for('search_users') }}">
-    <!-- Faculty Dropdown -->
-    <select name="faculty">
-        <option value="">All Faculties</option>
-        <option value="Faculty Of Applied Communication (FAC)">FAC</option>
-        <option value="Faculty Of Artificial Intelligence And Engineering (FAIE)">FAIE</option>
-        <option value="Faculty Of Business (FOB)">FOB</option>
-        <option value="Faculty Of Cinematic Arts (FCA)">FCA</option>
-        <option value="Faculty Of Computing And Informatics (FCI)">FCI</option>
-        <option value="Faculty Of Creative Multimedia (FCM)">FCM</option>
-        <option value="Faculty Of Engineering And Technology (FET)">FET</option>
-        <option value="Faculty Of Information Science And Technology (FIST)">FIST</option>
-        <option value="Faculty Of Law (FOL)">FOL</option>
-        <option value="Faculty Of Management (FOM)">FOM</option>
-    </select>
-
-    <!-- search subjects -->
-    <input type="text" name="subject" placeholder="Enter subject (e.g. Math)" value="{{ request.args.get('subject', '') }}">
-
-    <button type="submit">Search</button>
-</form>
-
+        <div class="logo">
+            <span>Study</span><span>B</span><span>a</span><span>e</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            {% if username %}
+                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Login</a></li>
+                <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+            {% endif %}
+        </ul>
     </nav>
 
-    <!-- main content -->
-    <div class="container">
-        {% if username %}
-            <h1>Welcome back, {{ username }}!</h1>
-        {% else %}
-            <h1>Welcome to StudyBae!</h1>
-            <p>Please <a href="{{ url_for('login') }}">login</a> or <a href="{{ url_for('signup') }}">sign up</a>.</p>
-        {% endif %}
-    </div>
+    <section class="hero">
+        <h1>Find Your Perfect Study Partner</h1>
+        <p>Connect with classmates, match by faculty & subjects, and study smarter together.</p>
+        <a href="{{ url_for('signup') }}" class="cta-btn">Get Started</a>
+    </section>
 
+    <section class="features">
+        <div class="feature">
+            <h2>Match by Faculty</h2>
+            <p>Search students from your own faculty or across all.</p>
+        </div>
+        <div class="feature">
+            <h2>Find by Subject</h2>
+            <p>Look for study partners in your exact subject of interest.</p>
+        </div>
+        <div class="feature">
+            <h2>Study Together</h2>
+            <p>Collaborate, share notes, and achieve your academic goals faster.</p>
+        </div>
+    </section>
 
+    <footer>
+        <p>&copy; 2025 StudyBae. All rights reserved.</p>
+    </footer>
 </body>
-</html> 
+</html>
