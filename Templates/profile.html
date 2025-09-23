@@ -45,21 +45,28 @@
     </div>
 
     <div class="main">
-        
-        {% if mmu_reminder %}
+    {% if mmu_reminder %}
         <div class="mmu-reminder">
             <p>{{ mmu_reminder }}</p>
+            {% if days_left is not none and days_left <= 3 and days_left > 0 %}
+                <div style="color:#d72660; font-weight:bold; margin-top:8px;">
+                    <b>Hurry!</b> Only {{ days_left }} days left to update your MMU email!
+                </div>
+            {% elif days_left == 0 %}
+                <div style="color:#d72660; font-weight:bold; margin-top:8px;">
+                    <b>Final day!</b> Update your MMU email now to avoid being banned.
+                </div>
+            {% endif %}
             <a href="{{ url_for('edit_profile', user_id=session['user_id']) }}">Update MMU Email</a>
         </div>
-        {% endif %}
-
-        <h1>Welcome, {{ username }}</h1>
-        <p>This is your profile page.</p>
-
-            <!-- Show admin dashboard link if user is admin -->
-        {% if session.get('is_admin') %}
-            <p><a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">Go to Admin Dashboard</a></p>
-        {% endif %}
+    {% endif %}  
+    {% if session.get('is_admin') %}
+        <p>
+            <a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">
+                Go to Admin Dashboard
+            </a>
+        </p>
+    {% endif %}  
     </div>
 
     <div class="timetable-section">
