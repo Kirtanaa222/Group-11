@@ -64,6 +64,7 @@ class TimetableEntry(db.Model):
     end_time = db.Column(db.Time, nullable=False)
     subject = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=True)
+    date = db.Column(db.Date, nullable=True)  # <-- Add this line
 
 with app.app_context():
     db.create_all()
@@ -127,8 +128,8 @@ def admin_unban_user(user_id):
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'kdkirtu@gmail.com'
-app.config['MAIL_PASSWORD'] = 'quzv jfzf gsgt ntix'
+app.config['MAIL_USERNAME'] = 'StudyBaeDev@gmail.com'
+app.config['MAIL_PASSWORD'] = 'cjtc orjl ycpb lbtj'
 mail = Mail(app)
 
 def send_verification_email(user):
@@ -470,8 +471,6 @@ def search_users():
 
 
 #------------------------------timetable---------------------------------
-from datetime import time
-
 @app.route("/timetable", methods=["GET", "POST"])
 def timetable():
     if "user_id" not in session:
@@ -479,6 +478,7 @@ def timetable():
     user_id = session["user_id"]
     error = None
     if request.method == "POST":
+        date_str = request.form.get("date")
         day_of_week = request.form.get("day_of_week")
         start_time = request.form.get("start_time")
         end_time = request.form.get("end_time")
@@ -491,14 +491,14 @@ def timetable():
                 start_time=datetime.strptime(start_time, "%H:%M").time(),
                 end_time=datetime.strptime(end_time, "%H:%M").time(),
                 subject=subject,
-                description=description
+                description=description,
+                date=datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
             )
             db.session.add(entry)
             db.session.commit()
         except Exception as e:
             error = "Invalid input or time format."
 
-    # Get all entries for this user, ordered by day and time
     entries = TimetableEntry.query.filter_by(user_id=user_id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     return render_template("timetable.html", entries=entries, days=days, error=error)

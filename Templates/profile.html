@@ -56,15 +56,15 @@
 
             <!-- Show admin dashboard link if user is admin -->
         {% if session.get('is_admin') %}
-            <p><a href="{{ url_for('admin_dashboard') }}">Go to Admin Dashboard</a></p>
+            <p><a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">Go to Admin Dashboard</a></p>
         {% endif %}
-
     </div>
 
     <div class="timetable-section">
         <h2>Your Timetable</h2>
         <table>
             <tr>
+                <th>Date</th>
                 <th>Day</th>
                 <th>Start</th>
                 <th>End</th>
@@ -73,6 +73,7 @@
             </tr>
             {% for entry in timetable_entries %}
             <tr>
+                <td>{{ entry.date.strftime('%Y-%m-%d') if entry.date else '' }}</td>
                 <td>{{ entry.day_of_week }}</td>
                 <td>{{ entry.start_time.strftime('%H:%M') }}</td>
                 <td>{{ entry.end_time.strftime('%H:%M') }}</td>
