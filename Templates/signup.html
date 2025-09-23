@@ -3,6 +3,8 @@
 <head>
     <title>Sign Up</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+
 </head>
 <body class="interface">
     <div class="form-box">
@@ -34,7 +36,10 @@
 
             <button type="submit" class="btn">Sign Up</button>
         </form>
+        
         <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+        <a href="{{ url_for('home') }}" class="back_btn">Back</a>
+        
     </div>
 </body>
 </html>

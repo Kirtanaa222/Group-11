@@ -317,6 +317,13 @@ body.interface {
     justify-content: center;
 }
 
+.back_btn {
+    font-family: 'Chewy', cursive;
+    font-size: 30px;   
+    text-decoration: none;
+    color: #b384dc;
+}
+
 .form-box {
     justify-content: center;
     color: #ffffff;
@@ -680,6 +687,7 @@ body {
     border-bottom: 1px solid #eee;
 }
 
+/*------------------------------------home------------------------------------*/
 .hero {
     text-align: center;
     padding: 100px 20px 80px;
