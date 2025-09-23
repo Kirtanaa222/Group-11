@@ -572,3 +572,95 @@ footer {
     margin-top: 50px;
     font-size: 14px;
 }
+
+/* Chat Container */
+.chat-container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    padding: 20px;
+    animation: ease-in 0.3s fadeIn;
+}
+
+.chat-header {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+#messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#messages li {
+    display: inline-block;
+    clear: both;
+    padding: 12px 18px;
+    margin: 8px 0;
+    border-radius: 25px;
+    font-size: 16px;
+    max-width: 70%;
+    word-wrap: break-word;
+    animation: popIn 0.3s ease;
+}
+
+#messages li.sender {
+    background: #a877d3;
+    color: #fff;
+    float: right;
+    border-bottom-right-radius: 8px;
+}
+
+
+#messages li.recipient {
+    background: #f8a5c2;
+    color: #000;
+    float: left;
+    border-bottom-left-radius: 8px;
+}
+
+/* Input area */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.chat-input button {
+    padding: 10px 18px;
+    border-radius: 25px;
+    background: #a877d3;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.chat-input button:hover {
+    background: #7a0e8b;
+    transform: scale(1.05);
+}
+
+/* Pop-in animation */
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
