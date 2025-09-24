@@ -304,7 +304,7 @@ def profile():
     if user.status == 'banned':
         return redirect(url_for("unlock_account")) # Redirect banned users to unlock page
     
-    avatar = user.avatar or "default_avatar.png"
+    avatar = user.avatar or "img/default_avatar.png"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 
@@ -337,7 +337,7 @@ def display_profile(user_id):
     if not user:
         return "User not found", 404
 
-    avatar = user.avatar or "default_avatar.png"
+    avatar = user.avatar or "img/default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 
@@ -361,7 +361,7 @@ def edit_profile(user_id):
     if session["user_id"] != user_id and not session.get("is_admin"):
         abort(403)
 
-    avatar = user.avatar or "default_avatar.png"
+    avatar = user.avatar or "img/default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
     error = None

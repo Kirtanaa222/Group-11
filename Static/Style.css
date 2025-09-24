@@ -213,7 +213,7 @@ input:hover {
 body.interface {
     font-family: Arial, sans-serif;
     background: #f4f6f8;
-    background-image: url("img/interface background.jpg");
+    background-image: url("img/interface background1.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -856,3 +856,29 @@ footer {
     to { transform: scale(1); opacity: 1; }
 }
 
+.multi-select input[type="checkbox"] {
+    display: none; /* undisplay the small boxes*/
+}
+
+.multi-select label {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 6px 6px 0 0;
+    border: 1px solid #666;
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    background: #b0c0e9;
+    transition: all 0.2s ease-in-out;
+    font-size: 14px;
+}
+
+.multi-select label:hover {
+    background: #ddd;
+}
+
+.multi-select input[type="checkbox"]:checked + label {
+    background: #333;
+    color: #fff;
+    border-color: #333;
+}
