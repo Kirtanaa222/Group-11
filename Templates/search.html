@@ -20,7 +20,7 @@
     <h2>
         Users
         {% if faculty %} in {{ faculty }}{% endif %}
-        {% if subject %} (Subject: {{ subject }}){% endif %}
+        {% if subject %} with subject {{ subject }} {% endif %}
     </h2>
     <ul>
         {% for user in users %}
