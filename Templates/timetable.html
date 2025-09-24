@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Timetable</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body>
+    <div class="timetable-section">
+        <h2>Weekly Timetable</h2>
+        {% if error %}<p class="error">{{ error }}</p>{% endif %}
+        <form method="POST" style="margin-bottom: 30px;">
+            <label>Date: <input type="date" name="date" id="date-input"></label>
+            <label>Day of Week:
+                <select name="day_of_week" id="day-of-week" required>
+                    {% for day in days %}
+                    <option value="{{ day }}">{{ day }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>Start Time: <input type="time" name="start_time" required></label>
+            <label>End Time: <input type="time" name="end_time" required></label>
+            <label>Subject: <input type="text" name="subject" required></label>
+            <label>Description: <input type="text" name="description"></label>
+            <button type="submit" class="btn">Add Entry</button>
+        </form>
+
+        <script>
+        document.getElementById('date-input').addEventListener('change', function() {
+            const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            const dateValue = this.value;
+            if (dateValue) {
+                const date = new Date(dateValue);
+                // getDay(): 0=Sunday, 1=Monday, ..., 6=Saturday
+                let jsDay = date.getDay();
+                // Adjust so 0=Monday, 6=Sunday for your dropdown
+                let dropdownDay = jsDay === 0 ? 6 : jsDay - 1;
+                document.getElementById('day-of-week').selectedIndex = dropdownDay;
+            }
+        });
+        </script>
+        
+        <h3 style="color:#7a0e8b;">Your Timetable</h3>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Subject</th>
+                <th>Description</th>
+            </tr>
+            {% for entry in entries %}
+            <tr>
+                <td>{{ entry.date.strftime('%Y-%m-%d') if entry.date else '' }}</td>
+                <td>{{ entry.day_of_week }}</td>
+                <td>{{ entry.start_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.end_time.strftime('%H:%M') }}</td>
+                <td>{{ entry.subject }}</td>
+                <td>{{ entry.description or '' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+                <a href="{{ url_for('profile') }}">Back to Profile</a>
+            </div>
+</body>
+</html>

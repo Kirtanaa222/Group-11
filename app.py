@@ -47,12 +47,24 @@ class User(db.Model):
     admin = db.Column(db.Boolean, default=False) 
     mmu_email_updated_at = db.Column(db.DateTime, nullable=True)
 
+#Message
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     sender = db.Column(db.String(50), nullable=False)
     recipient = db.Column(db.String(50), nullable=False)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Timetable
+class TimetableEntry(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    day_of_week = db.Column(db.String(10), nullable=False)  # e.g., 'Monday'
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+    subject = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=True)
+    date = db.Column(db.Date, nullable=True)  # <-- Add this line
 
 with app.app_context():
     db.create_all()
@@ -111,13 +123,12 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
-#---------------------------home----------------------------------
 # Email config (use your own SMTP settings)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'kdkirtu@gmail.com'
-app.config['MAIL_PASSWORD'] = 'quzv jfzf gsgt ntix'
+app.config['MAIL_USERNAME'] = 'StudyBaeDev@gmail.com'
+app.config['MAIL_PASSWORD'] = 'cjtc orjl ycpb lbtj'
 mail = Mail(app)
 
 def send_verification_email(user):
@@ -138,7 +149,7 @@ def send_verification_email(user):
     """
     mail.send(msg)
 
-#------------------------------------USER----------------------------------------
+#---------------------------home----------------------------------
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))
@@ -302,13 +313,17 @@ def profile():
     if not is_mmu_email(user.mmu_email):
         mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
 
+    # Fetch user's timetable entries
+    timetable_entries = TimetableEntry.query.filter_by(user_id=user.id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
+
     #send data to profile.html to display the profile page
     return render_template("profile.html",
                            username=user.username,
                            avatar=avatar,
                            background=background,
                            bio=bio,
-                           mmu_reminder=mmu_reminder)
+                           mmu_reminder=mmu_reminder,
+                           timetable_entries=timetable_entries)
 
 #------------------------------display_profile-----------------------------
 
@@ -452,6 +467,40 @@ def search_users():
         subject=subject
     )
 
+
+
+#------------------------------timetable---------------------------------
+@app.route("/timetable", methods=["GET", "POST"])
+def timetable():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    user_id = session["user_id"]
+    error = None
+    if request.method == "POST":
+        date_str = request.form.get("date")
+        day_of_week = request.form.get("day_of_week")
+        start_time = request.form.get("start_time")
+        end_time = request.form.get("end_time")
+        subject = request.form.get("subject")
+        description = request.form.get("description")
+        try:
+            entry = TimetableEntry(
+                user_id=user_id,
+                day_of_week=day_of_week,
+                start_time=datetime.strptime(start_time, "%H:%M").time(),
+                end_time=datetime.strptime(end_time, "%H:%M").time(),
+                subject=subject,
+                description=description,
+                date=datetime.strptime(date_str, "%Y-%m-%d").date() if date_str else None
+            )
+            db.session.add(entry)
+            db.session.commit()
+        except Exception as e:
+            error = "Invalid input or time format."
+
+    entries = TimetableEntry.query.filter_by(user_id=user_id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    return render_template("timetable.html", entries=entries, days=days, error=error)
 
 #------------------------------chat---------------------------------
 @app.route("/message")

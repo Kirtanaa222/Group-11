@@ -1,3 +1,186 @@
+.back-btn {
+    display: inline-block;
+    margin-top: 24px;
+    text-decoration: none;
+    text-align: center;
+}
+.pink-btn {
+    background: #e75480 !important; /* Pink */
+    color: #fff !important;
+    border: none;
+}
+
+.pink-btn:hover {
+    background: #c2185b !important; /* Darker pink on hover */
+    color: #fff !important;
+}
+/* --- Admin Section Styling --- */
+.admin-section {
+    background: #fce1f6;
+    color: #4a277a;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(122, 14, 139, 0.08);
+    padding: 40px 40px 32px 40px;
+    margin: 40px auto;
+    max-width: 1100px;
+    min-width: 80vw;
+    text-align: center;
+    border: 2px solid #ff00c3;
+}
+
+.admin-section h2 {
+    color: #7a0e8b;
+    margin-bottom: 24px;
+    font-size: 2.2em;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(168,119,211,0.10);
+    margin-bottom: 10px;
+    font-size: 1.08em;
+}
+
+.admin-table th, .admin-table td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #e5d6f3;
+    border-right: 2px solid #fff; /* White vertical lines */
+    text-align: center;
+}
+
+.admin-table th {
+    background: #7a0e8b;
+    color: #fff;
+    font-weight: 600;
+    border-top: none;
+    border-bottom: 2px solid #7a0e8b;
+    letter-spacing: 1px;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+    border-right: none; /* No right border on last column */
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:nth-child(even) td {
+    background: #f3e8fa;
+}
+
+.admin-table tr:hover td {
+    background: #e9d6f7;
+    transition: background 0.2s;
+}
+
+.admin-btn {
+    background: #7a0e8b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 22px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    font-size: 1em;
+    box-shadow: 0 2px 8px rgba(168,119,211,0.08);
+}
+
+.admin-btn:hover {
+    background: #a877d3;
+    box-shadow: 0 4px 16px rgba(122, 14, 139, 0.15);
+}
+
+/* Timetable Section Styling */
+.timetable-section {
+    background: rgba(255,255,255,0.90);
+    color: #4a277a;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(168,119,211,0.10);
+    padding: 40px 40px 32px 40px;
+    margin: 32px auto 32px auto;
+    max-width: 1300px;
+    min-width: 70vw;
+    text-align: center;
+}
+
+.timetable-section h2 {
+    color: #7a0e8b;
+    margin-bottom: 18px;
+    font-size: 2em;
+    letter-spacing: 1px;
+}
+
+.timetable-section table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(168,119,211,0.08);
+    margin-bottom: 10px;
+}
+
+.timetable-section th, .timetable-section td {
+    padding: 14px 10px;
+    border-bottom: 1px solid #e5d6f3;
+    font-size: 1.05em;
+    border-right: 2px solid #fff; /* White vertical lines between columns */
+}
+
+.timetable-section th:last-child,
+.timetable-section td:last-child {
+    border-right: none; /* No right border on last column */
+}
+
+.timetable-section th {
+    background: #a877d3;
+    color: #fff;
+    font-weight: 600;
+    border-top: none;
+    border-bottom: 2px solid #7a0e8b;
+}
+
+.timetable-section tr:last-child td {
+    border-bottom: none;
+}
+
+.timetable-section tr:nth-child(even) td {
+    background: #f7f2fa;
+}
+
+.timetable-section tr:hover td {
+    background: #e9d6f7;
+    transition: background 0.2s;
+}
+
+.timetable-section a {
+    color: #fff;
+    background: #a877d3;
+    padding: 7px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 10px;
+    display: inline-block;
+    transition: background 0.2s;
+}
+.timetable-section a:hover {
+
+    background: #7a0e8b;
+}
+
+
 body {
     font-family: Arial, sans-serif;
     color: #ffffff;
@@ -132,6 +315,13 @@ body.interface {
     padding: 120px 20px 20px; 
     text-align: center;
     justify-content: center;
+}
+
+.back_btn {
+    font-family: 'Chewy', cursive;
+    font-size: 30px;   
+    text-decoration: none;
+    color: #b384dc;
 }
 
 .form-box {
@@ -407,58 +597,7 @@ body {
     background-color: #cf8ad7;
 }
 
-.search-results {
-    background: #fff;
-    color: #000000;
-    padding: 30px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    margin: 40px auto 0 auto;
-    width: 90%;
-    max-width: 700px;
-    text-align: center;
-}
-
-.faculty-search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto;
-}
-
-.faculty-search select {
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    background: #f8f8fa;
-    color: #333;
-}
-
-.faculty-search button {
-    padding: 8px 6px;
-    border-radius: 6px;
-    border: none;
-    background: #a877d3;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.faculty-search button:hover {
-    background: #7a0e8b;
-}
-
-.faculty-search input[type="text"] {
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    background: #f8f8fa;
-    color: #333;
-}
+/* --- Search Page Styling --- */
 .search-results h2 {
     margin-bottom: 20px;
     color: #333;
@@ -482,21 +621,116 @@ body {
     z-index: 1500;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.user-card {
+.faculty-search {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto;
 }
 
+.faculty-search input[type="text"],
+.faculty-search select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+
+.faculty-search button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #a877d3;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.faculty-search button:hover {
+    background: #7a0e8b;
+    transform: scale(1.05);
+}
+
+
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+    padding: 0 20px;
+}
+
+
+.profile-card {
+    position: relative;       /* make avatar position relative to the card */
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 25px;
+    padding: 60px 20px 25px;  /* extra top padding so text doesn’t overlap avatar */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.profile-avatar {
+    position: absolute;
+    top: -40px;               /* raise avatar above the card */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    background: #fff;
+}
+
+.profile-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+}
+
+
+
+.profile-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+    color: #222;
+}
+
+.profile-card p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+/* 🌈 Gradient Button */
+.view-profile-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(90deg, #6a11cb, #b491f1); /* purple → light purple */
+    color: white;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.view-profile-btn:hover {
+    background: linear-gradient(90deg, #7b2ff7, #cbb4ec); /* brighter hover */
+    transform: scale(1.05);
+}
+
+
+/*------------------------------------home------------------------------------*/
 .hero {
     text-align: center;
     padding: 100px 20px 80px;

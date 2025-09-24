@@ -16,24 +16,25 @@
     </ul>
 </div>
 </nav>
-<div class="search-results">
-    <h2>
-        Users
-        {% if faculty %} in {{ faculty }}{% endif %}
-        {% if subject %} with subject {{ subject }} {% endif %}
-    </h2>
-    <ul>
+<div class="results-container">
+    {% if users %}
         {% for user in users %}
-        <li class="user-card">
-            <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.png') }}" alt="{{ user.username }}'s avatar" class="avatar">
-            <span>{{ user.username }} ({{ user.faculty }})</span>
-            <span>Subjects: {{ user.preferred_subjects or "None" }}</span>
-            <a href="{{ url_for('display_profile', user_id=user.id) }}" class="btn">View</a>
-        </li>
-        {% else %}
-            <li>No users found.</li>
+            <div class="profile-card">
+                <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.png') }}" 
+                     alt="{{ user.username }}'s avatar" class="profile-avatar">
+
+                <h2>{{ user.username }}</h2>
+                <p><strong>Faculty:</strong> {{ user.faculty }}</p>
+                <p><strong>Subjects:</strong> {{ user.preferred_subjects }}</p>
+
+                <a href="{{ url_for('profile', username=user.username) }}" class="view-profile-btn">
+                    View Profile
+                </a>
+            </div>
         {% endfor %}
-    </ul>
+    {% else %}
+        <p class="no-results">No users found for your search.</p>
+    {% endif %}
 </div>
 </body>
 </html>

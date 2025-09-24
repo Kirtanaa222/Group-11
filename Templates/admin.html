@@ -1,27 +1,39 @@
-<h2>Admin Dashboard</h2>
-<table>
-  <tr>
-    <th>Username</th>
-    <th>Email</th>
-    <th>Status</th>
-    <th>Action</th>
-  </tr>
-  {% for user in users %}
-  <tr>
-    <td>{{ user.username }}</td>
-    <td>{{ user.user_email }}</td>
-    <td>{{ user.status }}</td>
-    <td>
-      {% if user.status == 'banned' %}
-        <form method="post" action="{{ url_for('admin_unban_user', user_id=user.id) }}">
-          <button type="submit">Unban</button>
-        </form>
-      {% else %}
-        <form method="post" action="{{ url_for('admin_ban_user', user_id=user.id) }}">
-          <button type="submit">Ban</button>
-        </form>
-      {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+</head>
+<body>
+    <div class="admin-section">
+        <h2>Admin Dashboard</h2>
+        <table class="admin-table">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.user_email }}</td>
+                <td>{{ user.status }}</td>
+                <td>
+                    {% if user.status == 'banned' %}
+                        <form method="post" action="{{ url_for('admin_unban_user', user_id=user.id) }}">
+                            <button type="submit" class="admin-btn">Unban</button>
+                        </form>
+                    {% else %}
+                        <form method="post" action="{{ url_for('admin_ban_user', user_id=user.id) }}">
+                            <button type="submit" class="admin-btn">Ban</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+           <p><a href="{{ url_for('profile') }}" class="admin-btn back-btn">Back to Profile</a></p>
+    </div>
+</body>
+</html>
