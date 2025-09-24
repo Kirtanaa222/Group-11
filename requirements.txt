@@ -1,0 +1,8 @@
+Flask
+Flask-SQLAlchemy
+Flask-Mail
+Flask-SocketIO
+eventlet
+psycopg2-binary
+itsdangerous
+Werkzeug
