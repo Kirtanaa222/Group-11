@@ -123,7 +123,6 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
-#---------------------------home----------------------------------
 # Email config (use your own SMTP settings)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -150,7 +149,7 @@ def send_verification_email(user):
     """
     mail.send(msg)
 
-#------------------------------------USER----------------------------------------
+#---------------------------home----------------------------------
 @app.route("/")
 def home():
     return render_template("home.html", username=session.get("username"))

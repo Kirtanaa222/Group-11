@@ -12,7 +12,6 @@
             <span>Study</span><span>B</span><span>a</span><span>e</span>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ url_for('home') }}">Home</a></li>
             {% if username %}
                 <li><a href="{{ url_for('profile') }}">Profile</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
@@ -26,7 +25,11 @@
     <section class="hero">
         <h1>Find Your Perfect Study Partner</h1>
         <p>Connect with classmates, match by faculty & subjects, and study smarter together.</p>
-        <a href="{{ url_for('signup') }}" class="cta-btn">Get Started</a>
+        {% if username %}
+            <a href="{{ url_for('profile') }}" class="cta-btn">Get Started</a>
+        {% else %}
+            <a href="{{ url_for('signup') }}" class="cta-btn">Get Started</a>
+        {% endif %}
     </section>
 
     <section class="features">
