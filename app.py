@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from flask import abort
 from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
+import eventlet
+eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
