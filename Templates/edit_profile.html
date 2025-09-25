@@ -48,7 +48,7 @@
 
             <p><strong>Preferred Subjects:</strong></p>
             <div class="multi-select">
-                {% set all_subjects = ["Math", "Physics", "Computer Science", "Business", "Engineering", "Psychology", "AI", "Art"] %}
+                {% set all_subjects = ["Math", "Physics", "Computer Science", "Business", "Engineering", "Accounting", "English", "Law", "Data Science", "Cybersecurity"] %}
                 {% for subject in all_subjects %}
                     <input type="checkbox" id="subject-{{ loop.index }}" name="subjects" value="{{ subject }}"
                         {% if user.preferred_subjects and subject in user.preferred_subjects.split(",") %}
