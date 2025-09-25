@@ -200,7 +200,7 @@ def login():
             session["user_id"] = user.id
             session["username"] = user.username
             session["is_admin"] = user.admin
-            return redirect(url_for("profile"))
+            return redirect(url_for("study_space"))
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")

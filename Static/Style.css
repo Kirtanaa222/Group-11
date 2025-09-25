@@ -212,18 +212,6 @@ input:hover {
     transition: box-shadow 0.3s ease;
 }
 
-body.interface {
-    font-family: 'Nunito', sans-serif;
-    background: #f4f6f8;
-    background-image: url("img/interface background1.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin: auto;
-    margin-top: 0;
-    height: 100%;
-}
-
 .logo {
     cursor: pointer;
     font-size: 60px;
@@ -323,7 +311,7 @@ body.interface {
     font-family: 'Chewy', cursive;
     font-size: 30px;   
     text-decoration: none;
-    color: #b384dc;
+    color: #513474;
 }
 
 .form-box {
@@ -331,9 +319,11 @@ body.interface {
     color: #ffffff;
     font-style: inherit;
     padding: 50px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
-    width: 300px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.1); /* transparent */
+    backdrop-filter: blur(10px);          /* make it blurry */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    width: 320px;
     height: fit-content;
     text-align: center;
     margin: 100px auto;
@@ -401,7 +391,8 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #bd82cf;
+    background: linear-gradient(180deg, #a085be, #6d8fca); 
+    color: #fff;
     overflow-x: hidden;
     transition: 0.3s;
     z-index: 2000;
@@ -428,7 +419,7 @@ body {
 .openbtn {
     font-size: 20px;
     cursor: pointer;
-    background-color: #bd82cf;
+    background-color: #a085be;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -691,7 +682,6 @@ body {
     border-bottom: 1px solid #eee;
 }
 
-/*------------------------------------home------------------------------------*/
 .hero {
     text-align: center;
     padding: 100px 20px 80px;
@@ -702,15 +692,20 @@ body {
     font-size: 48px;
     font-weight: bold;
     margin-bottom: 20px;
-    text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    text-shadow: 
+        0 0 6px rgba(194, 189, 189, 0.503), 
+        0 0 12px rgba(194, 189, 189, 0.503);
 }
 
 .hero p {
     margin: 20px auto;
-    font-size: 18px;
+    font-size: 20px;
     max-width: 600px;
     opacity: 0.9;
     line-height: 1.6;
+    text-shadow: 
+        0 0 6px rgba(194, 189, 189, 0.503), 
+        0 0 12px rgba(194, 189, 189, 0.503);
 }
 
 .cta-btn {
