@@ -856,3 +856,64 @@ footer {
     to { transform: scale(1); opacity: 1; }
 }
 
+/* Unlock Account Page Styling */
+.unlock-container {
+    background: #f7f2fa;
+    color: #4a277a;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(122, 14, 139, 0.08);
+    padding: 36px 32px 28px 32px;
+    margin: 60px auto;
+    max-width: 400px;
+    min-width: 300px;
+    text-align: center;
+    border: 2px solid #a877d3;
+}
+
+.unlock-container h2 {
+    color: #7a0e8b;
+    margin-bottom: 22px;
+    font-size: 1.7em;
+    font-weight: 700;
+}
+
+.unlock-container label {
+    display: block;
+    margin: 14px 0 6px 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+.unlock-container input[type="text"],
+.unlock-container input[type="email"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1.5px solid #a877d3;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 1em;
+    background: #fff;
+    color: #4a277a;
+}
+
+.unlock-container button {
+    background: #7a0e8b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 28px;
+    font-weight: 600;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.unlock-container button:hover {
+    background: #a877d3;
+}
+
+.unlock-container p {
+    margin: 12px 0;
+    font-size: 1.05em;
+}

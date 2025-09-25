@@ -4,10 +4,11 @@
     <title>Unlock Account</title>
 </head>
 <body>
-    <h2>Unlock Your Account</h2>
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+    <div class="unlock-container">
+        <h2>Unlock Your Account</h2>
+        {% if error %}
+            <p style="color:red;">{{ error }}</p>
+        {% endif %}
         {% if success %}
             <p style="color:green;">{{ success }}</p>
         {% else %}
@@ -21,5 +22,6 @@
                 <button type="submit">Update MMU Email</button>
             </form>
         {% endif %}
+    </div>
 </body>
 </html>
