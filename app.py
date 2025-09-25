@@ -311,7 +311,7 @@ def study_space():
     #check if user update mmu email
     mmu_reminder = None
     if not is_mmu_email(user.mmu_email):
-        mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
+        mmu_reminder = "Update your MMU email within 7 days or your account will be blocked! Click below now."
 
     # Fetch user's timetable entries
     timetable_entries = TimetableEntry.query.filter_by(user_id=user.id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
