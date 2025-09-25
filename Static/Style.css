@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+
 .back-btn {
     display: inline-block;
     margin-top: 24px;
@@ -182,7 +184,7 @@
 
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
     color: #ffffff;
     background: #f4f6f8;
     background-image: url("img/home background.jpg");
@@ -211,7 +213,7 @@ input:hover {
 }
 
 body.interface {
-    font-family: Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
     background: #f4f6f8;
     background-image: url("img/interface background1.jpg");
     background-size: cover;
@@ -390,7 +392,7 @@ body.interface {
 
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 .sidenav {
@@ -546,10 +548,12 @@ body {
 }
 
 .profile-info textarea {
-    width: 100%;
+    width: 70%;
     border-radius: 8px;
+    border: 1px solid #ccc;
     padding: 8px;
-    resize: vertical;
+    resize: none;
+    box-sizing: border-box;
 }
 
 .profile-info button {
