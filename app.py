@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch()
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
 from werkzeug.security import generate_password_hash, check_password_hash 
@@ -9,8 +11,6 @@ from datetime import datetime, timedelta
 from flask import abort
 from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
-import eventlet
-eventlet.monkey_patch()
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
