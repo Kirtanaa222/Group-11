@@ -4,23 +4,29 @@
     <title>Unlock Account</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
 </head>
-<body>
+<body class="centered-page">
     <div class="unlock-container">
         <h2>Unlock Your Account</h2>
         {% if error %}
-            <p style="color:red;">{{ error }}</p>
+            <p class="error-msg">{{ error }}</p>
         {% endif %}
         {% if success %}
-            <p style="color:green;">{{ success }}</p>
+            <p class="success-msg">{{ success }}</p>
         {% else %}
             <form method="POST">
-                <label>Username:</label>
-                <input type="text" name="username" required><br>
-                <label>Student ID:</label>
-                <input type="text" name="student_id" required><br>
-                <label>MMU Email:</label>
-                <input type="email" name="mmu_email" required><br>
-                <button type="submit">Update MMU Email</button>
+                <div class="input-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="student_id">Student ID:</label>
+                    <input type="text" id="student_id" name="student_id" required>
+                </div>
+                <div class="input-group">
+                    <label for="mmu_email">MMU Email:</label>
+                    <input type="email" id="mmu_email" name="mmu_email" required>
+                </div>
+                <button type="submit" class="unlock-btn">Update MMU Email</button>
             </form>
         {% endif %}
     </div>

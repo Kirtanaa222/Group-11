@@ -856,64 +856,102 @@ footer {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* Unlock Account Page Styling */
+/* Center the page and set background image */
+body.centered-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f6f8;
+    background-image: url("img/interface background.jpg"); /* Use your login bg path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Card style for unlock form */
 .unlock-container {
-    background: #f7f2fa;
+    background: rgba(255, 255, 255, 0.92);
     color: #4a277a;
-    border-radius: 14px;
-    box-shadow: 0 4px 24px rgba(122, 14, 139, 0.08);
-    padding: 36px 32px 28px 32px;
-    margin: 60px auto;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(122, 14, 139, 0.12);
+    padding: 38px 36px 30px 36px;
     max-width: 400px;
-    min-width: 300px;
+    width: 100%;
     text-align: center;
     border: 2px solid #a877d3;
 }
 
+/* Heading style */
 .unlock-container h2 {
     color: #7a0e8b;
-    margin-bottom: 22px;
-    font-size: 1.7em;
+    margin-bottom: 26px;
+    font-size: 2em;
     font-weight: 700;
+    letter-spacing: 1px;
 }
 
-.unlock-container label {
-    display: block;
-    margin: 14px 0 6px 0;
-    font-weight: 500;
+/* Input group styling */
+.input-group {
+    margin-bottom: 18px;
     text-align: left;
 }
 
-.unlock-container input[type="text"],
-.unlock-container input[type="email"] {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1.5px solid #a877d3;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    font-size: 1em;
-    background: #fff;
+.input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
     color: #4a277a;
 }
 
-.unlock-container button {
+.input-group input[type="text"],
+.input-group input[type="email"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #a877d3;
+    border-radius: 7px;
+    font-size: 1em;
+    background: #fff;
+    color: #4a277a;
+    box-sizing: border-box;
+    margin-bottom: 2px;
+    transition: border 0.2s;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="email"]:focus {
+    border: 1.5px solid #7a0e8b;
+    outline: none;
+}
+
+/* Button style */
+.unlock-btn {
     background: #7a0e8b;
     color: #fff;
     border: none;
-    border-radius: 6px;
-    padding: 10px 28px;
+    border-radius: 7px;
+    padding: 12px 0;
+    width: 50%;
     font-weight: 600;
-    font-size: 1em;
+    font-size: 1.1em;
     cursor: pointer;
     margin-top: 10px;
     transition: background 0.2s;
 }
 
-.unlock-container button:hover {
+.unlock-btn:hover {
     background: #a877d3;
 }
 
-.unlock-container p {
-    margin: 12px 0;
-    font-size: 1.05em;
+/* Error and success messages */
+.error-msg {
+    color: #d72660;
+    margin-bottom: 12px;
+}
+
+.success-msg {
+    color: #2ecc71;
+    margin-bottom: 12px;
 }
