@@ -11,7 +11,7 @@ from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 serializer = URLSafeTimedSerializer(app.secret_key)
@@ -308,9 +308,12 @@ def profile():
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 
-    #check if user update mmu email
+# MMU email reminder with countdown
     mmu_reminder = None
+    days_left = None
     if not is_mmu_email(user.mmu_email):
+        delta = timedelta(days=7) - (datetime.utcnow() - user.created_at)
+        days_left = max(delta.days, 0)
         mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
 
     # Fetch user's timetable entries
@@ -323,7 +326,8 @@ def profile():
                            background=background,
                            bio=bio,
                            mmu_reminder=mmu_reminder,
-                           timetable_entries=timetable_entries)
+                           timetable_entries=timetable_entries,
+                           days_left=days_left)
 
 #------------------------------display_profile-----------------------------
 

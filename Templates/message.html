@@ -16,18 +16,6 @@
         </ul>
     </nav>
 
-    <h3>Messages:</h3>
-
-    <ul id="messages">
-    {% for msg in messages %}
-        <li>
-            {{ msg.sender }}: {{ msg.content }}
-            {% if msg.sender != username %}
-                <button type="button" onclick="replyTo('{{ msg.sender }}')">Reply</button>
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
     <div class="chat-container">
         <div class="chat-header">
             Messaging: <span id="currentRecipient">{{ recipient }}</span>
@@ -37,6 +25,9 @@
             {% for msg in messages %}
                 <li class="{% if msg.sender == username %}sender{% else %}recipient{% endif %}">
                     {{ msg.sender }}: {{ msg.content }}
+                    {% if msg.sender != username %}
+                        <button type="button" onclick="replyTo('{{ msg.sender }}')">Reply</button>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -53,22 +44,15 @@
         var username = "{{ username }}";
         socket.emit('join', {username: username});
 
-    function replyTo(username) {
-        document.getElementById('recipient').value = username;
-        document.getElementById('recipient').dispatchEvent(new Event('input'));
-        document.getElementById('message').focus();
-    }
-
-    socket.on('receive_message', function(data) {
-        var li = document.createElement('li');
-        li.textContent = data.sender + ": " + data.message;
-        document.getElementById('messages').appendChild(li);
-        document.getElementById('message').value = '';
-    });
-</script>
         document.getElementById('recipient').addEventListener('input', function() {
             document.getElementById('currentRecipient').textContent = this.value;
         });
+
+        function replyTo(sender) {
+            document.getElementById('recipient').value = sender;
+            document.getElementById('recipient').dispatchEvent(new Event('input'));
+            document.getElementById('message').focus();
+        }
 
         function sendMessage() {
             var recipient = document.getElementById('recipient').value;
@@ -82,6 +66,14 @@
             var li = document.createElement('li');
             li.className = data.sender === username ? "sender" : "recipient";
             li.textContent = data.sender + ": " + data.message;
+            if (data.sender !== username) {
+                var btn = document.createElement('button');
+                btn.type = "button";
+                btn.textContent = "Reply";
+                btn.onclick = function() { replyTo(data.sender); };
+                li.appendChild(document.createTextNode(' '));
+                li.appendChild(btn);
+            }
             document.getElementById('messages').appendChild(li);
             document.getElementById('message').value = '';
         });
