@@ -289,14 +289,14 @@ def unlock_account():
             return redirect(url_for("login", success="Your account has been updated and unbanned. You can now log in."))
     return render_template("unlock_acc.html", error=error, success=success)
 
-#----------------------profile----------------------------
+#--------------------------------study space----------------------------
 def is_mmu_email(email):
     if not email:
         return False
     return email.endswith("@mmu.edu.my") or email.endswith("@student.mmu.edu.my")
 
-@app.route("/profile", methods=["GET", "POST"])
-def profile():
+@app.route("/study_space", methods=["GET", "POST"])
+def study_space():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
@@ -316,8 +316,8 @@ def profile():
     # Fetch user's timetable entries
     timetable_entries = TimetableEntry.query.filter_by(user_id=user.id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
 
-    #send data to profile.html to display the profile page
-    return render_template("profile.html",
+    #send data to study_space.html to display the study_space page
+    return render_template("study_space.html",
                            username=user.username,
                            avatar=avatar,
                            background=background,

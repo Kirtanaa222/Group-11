@@ -13,7 +13,7 @@
         </div>
         <ul class="nav-links">
             {% if username %}
-                <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li><a href="{{ url_for('study_space') }}">Study Space</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% else %}
                 <li><a href="{{ url_for('login') }}">Login</a></li>
@@ -26,7 +26,7 @@
         <h1>Find Your Perfect Study Partner</h1>
         <p>Connect with classmates, match by faculty & subjects, and study smarter together.</p>
         {% if username %}
-            <a href="{{ url_for('profile') }}" class="cta-btn">Get Started</a>
+            <a href="{{ url_for(study_space') }}" class="cta-btn">Get Started</a>
         {% else %}
             <a href="{{ url_for('signup') }}" class="cta-btn">Get Started</a>
         {% endif %}

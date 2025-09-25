@@ -11,7 +11,7 @@
     </div>
 <div>
     <ul class="nav-links">
-        <li><a href="{{ url_for('profile') }}">Back</a></li>
+        <li><a href="{{ url_for('study_space') }}">Back</a></li>
         <li><a href="{{ url_for('logout') }}">Logout</a></li>
     </ul>
 </div>
@@ -25,7 +25,7 @@
     <ul>
         {% for user in users %}
         <li class="user-card">
-            <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.png') }}" alt="{{ user.username }}'s avatar" class="avatar">
+            <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.jpg') }}" alt="{{ user.username }}'s avatar" class="avatar">
             <span>{{ user.username }} ({{ user.faculty }})</span>
             <span>Subjects: {{ user.preferred_subjects or "None" }}</span>
             <a href="{{ url_for('display_profile', user_id=user.id) }}" class="btn">View</a>
