@@ -225,7 +225,6 @@ body.interface {
 }
 
 .logo {
-    cursor: pointer;
     font-size: 60px;
     font-weight: bold;
     color: white;
@@ -323,7 +322,7 @@ body.interface {
     font-family: 'Chewy', cursive;
     font-size: 30px;   
     text-decoration: none;
-    color: #513474;
+    color: #ffffff;
 }
 
 .form-box {
@@ -332,8 +331,8 @@ body.interface {
     font-style: inherit;
     padding: 50px;
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1); /* transparent */
-    backdrop-filter: blur(10px);          /* make it blurry */
+    background: rgba(255, 255, 255, 0.097); /* transparent */
+    backdrop-filter: blur(7px);          /* make it blurry */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     width: 320px;
     height: fit-content;
@@ -343,6 +342,10 @@ body.interface {
 }
 
 .form-box h1 {
+    margin-bottom: 40px;
+}
+
+.form-box h2 {
     margin-bottom: 40px;
 }
 
@@ -739,6 +742,11 @@ body {
     color: white;
 }
 
+.hero-icon{
+    width: 80px;
+    height: 80px;
+}
+
 .hero h1 {
     font-size: 48px;
     font-weight: bold;
@@ -906,95 +914,10 @@ footer {
     to { transform: scale(1); opacity: 1; }
 }
 
-/* Center the page and set background image */
-body.centered-page {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f4f6f8;
-    background-image: url("img/final_bg.jpg"); /* Use your login bg path */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    margin: 0;
-    padding: 0;
+.link-color{
+    color: rgb(195, 178, 236);
+    text-decoration: none;
 }
-
-/* Card style for unlock form */
-.unlock-container {
-    background: rgba(255, 255, 255, 0.92);
-    color: #4a277a;
-    border-radius: 18px;
-    box-shadow: 0 8px 32px rgba(122, 14, 139, 0.12);
-    padding: 38px 36px 30px 36px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-    border: 2px solid #a877d3;
-}
-
-/* Heading style */
-.unlock-container h2 {
-    color: #7a0e8b;
-    margin-bottom: 26px;
-    font-size: 2em;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-/* Input group styling */
-.input-group {
-    margin-bottom: 18px;
-    text-align: left;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 500;
-    color: #4a277a;
-}
-
-.input-group input[type="text"],
-.input-group input[type="email"] {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1.5px solid #a877d3;
-    border-radius: 7px;
-    font-size: 1em;
-    background: #fff;
-    color: #4a277a;
-    box-sizing: border-box;
-    margin-bottom: 2px;
-    transition: border 0.2s;
-}
-
-.input-group input[type="text"]:focus,
-.input-group input[type="email"]:focus {
-    border: 1.5px solid #7a0e8b;
-    outline: none;
-}
-
-/* Button style */
-.unlock-btn {
-    background: #7a0e8b;
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    padding: 12px 0;
-    width: 50%;
-    font-weight: 600;
-    font-size: 1.1em;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.2s;
-}
-
-.unlock-btn:hover {
-    background: #a877d3;
-}
-
 /* Error and success messages */
 .error-msg {
     color: #d72660;
@@ -1005,11 +928,13 @@ body.centered-page {
     color: #2ecc71;
     margin-bottom: 12px;
 }
+
 footer a[href^="mailto:"] {
     color: #d1688b;
     font-weight: bold;
     text-decoration: underline;
 }
+
 footer a[href^="mailto:"]:hover {
     color: #a01346;
 }

@@ -23,7 +23,12 @@
     </nav>
 
     <section class="hero">
-        <h1>Find Your Perfect Study Partner</h1>
+        <div class="hero-icon">
+            <img src="static/img/catss.gif" alt="icon">
+        </div>
+        <h1>
+            Find Your Perfect Study Partner
+        </h1>
         <p>Connect with classmates, match by faculty & subjects, and study smarter together.</p>
         {% if username %}
             <a href="{{ url_for('study_space') }}" class="cta-btn">Get Started</a>
