@@ -59,14 +59,15 @@
             {% endif %}
             <a href="{{ url_for('edit_profile', user_id=session['user_id']) }}">Update MMU Email</a>
         </div>
-    {% endif %}  
-    {% if session.get('is_admin') %}
-        <p>
-            <a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">
-                Go to Admin Dashboard
-            </a>
-        </p>
-    {% endif %}  
+        {% endif %}
+
+        <h1>Welcome, {{ username }}</h1>
+        <p>This is your profile page.</p>
+
+        <!-- Show admin dashboard link if user is admin -->
+        {% if session.get('is_admin') %}
+            <p><a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">Go to Admin Dashboard</a></p>
+        {% endif %}
     </div>
 
     <div class="timetable-section">

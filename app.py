@@ -31,13 +31,13 @@ def allowed_file(filename):
 class User(db.Model):
     #signupp
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    faculty = db.Column(db.String(50), nullable=False)
-    student_id = db.Column(db.String(50), unique=True, nullable=False)
-    user_email = db.Column(db.String(50), unique=True, nullable=False)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    faculty = db.Column(db.String(100), nullable=False)
+    student_id = db.Column(db.String(100), unique=True, nullable=False)
+    user_email = db.Column(db.String(100), unique=True, nullable=False)
     #edit profile
-    mmu_email = db.Column(db.String(50), unique=True, nullable=True)
+    mmu_email = db.Column(db.String(100), unique=True, nullable=True)
     bio = db.Column(db.Text, nullable=True)
     avatar = db.Column(db.String(200), nullable=True)
     background = db.Column(db.String(200), nullable=True)
@@ -52,8 +52,8 @@ class User(db.Model):
 #Message
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    sender = db.Column(db.String(50), nullable=False)
-    recipient = db.Column(db.String(50), nullable=False)
+    sender = db.Column(db.String(100), nullable=False)
+    recipient = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
