@@ -1,3 +1,5 @@
+import eventlet
+eventlet.monkey_patch()
 from flask import Flask, render_template, request, redirect, url_for, session, abort
 from flask_sqlalchemy import SQLAlchemy 
 from werkzeug.security import generate_password_hash, check_password_hash 
@@ -11,7 +13,7 @@ from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 serializer = URLSafeTimedSerializer(app.secret_key)
@@ -289,7 +291,7 @@ def unlock_account():
             return redirect(url_for("login", success="Your account has been updated and unbanned. You can now log in."))
     return render_template("unlock_acc.html", error=error, success=success)
 
-#--------------------------------study space----------------------------
+#----------------------Study Space----------------------------
 def is_mmu_email(email):
     if not email:
         return False
@@ -304,26 +306,30 @@ def study_space():
     if user.status == 'banned':
         return redirect(url_for("unlock_account")) # Redirect banned users to unlock page
     
-    avatar = user.avatar or "img/default_avatar.jpg"
+    avatar = user.avatar or "default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 
-    #check if user update mmu email
+# MMU email reminder with countdown
     mmu_reminder = None
+    days_left = None
     if not is_mmu_email(user.mmu_email):
-        mmu_reminder = "Update your MMU email within 7 days or your account will be blocked! Click below now."
+        delta = timedelta(days=7) - (datetime.utcnow() - user.created_at)
+        days_left = max(delta.days, 0)
+        mmu_reminder = "You haven't updated your MMU email yet. Click below to update."
 
     # Fetch user's timetable entries
     timetable_entries = TimetableEntry.query.filter_by(user_id=user.id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
 
-    #send data to study_space.html to display the study_space page
+    #send data to study_space.html to display the study space page
     return render_template("study_space.html",
                            username=user.username,
                            avatar=avatar,
                            background=background,
                            bio=bio,
                            mmu_reminder=mmu_reminder,
-                           timetable_entries=timetable_entries)
+                           timetable_entries=timetable_entries,
+                           days_left=days_left)
 
 #------------------------------display_profile-----------------------------
 

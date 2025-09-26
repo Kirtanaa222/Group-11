@@ -212,6 +212,18 @@ input:hover {
     transition: box-shadow 0.3s ease;
 }
 
+body.interface {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    background-image: url("img/final_bg.jpg"); /* Use your login bg path */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: auto;
+    margin-top: 0;
+    height: 100%;
+}
+
 .logo {
     font-size: 60px;
     font-weight: bold;
@@ -319,8 +331,8 @@ input:hover {
     font-style: inherit;
     padding: 50px;
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.1); /* transparent */
-    backdrop-filter: blur(10px);          /* make it blurry */
+    background: rgba(255, 255, 255, 0.097); /* transparent */
+    backdrop-filter: blur(7px);          /* make it blurry */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     width: 320px;
     height: fit-content;
@@ -330,6 +342,10 @@ input:hover {
 }
 
 .form-box h1 {
+    margin-bottom: 40px;
+}
+
+.form-box h2 {
     margin-bottom: 40px;
 }
 
@@ -800,7 +816,7 @@ body {
 footer {
     text-align: center;
     padding: 30px 10px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.537);
     color: #fff;
     margin-top: 50px;
     font-size: 14px;
@@ -899,6 +915,26 @@ footer {
 }
 
 .link-color{
-    color: paleturquoise;
+    color: rgb(195, 178, 236);
     text-decoration: none;
+}
+/* Error and success messages */
+.error-msg {
+    color: #d72660;
+    margin-bottom: 12px;
+}
+
+.success-msg {
+    color: #2ecc71;
+    margin-bottom: 12px;
+}
+
+footer a[href^="mailto:"] {
+    color: #d1688b;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+footer a[href^="mailto:"]:hover {
+    color: #a01346;
 }

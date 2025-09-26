@@ -15,19 +15,7 @@
             <li><a href="{{ url_for('study_space') }}">← Back to Study Space</a></li>
         </ul>
     </nav>
-
-    <h3>Messages:</h3>
-
-    <ul id="messages">
-    {% for msg in messages %}
-        <li>
-            {{ msg.sender }}: {{ msg.content }}
-            {% if msg.sender != username %}
-                <button type="button" onclick="replyTo('{{ msg.sender }}')">Reply</button>
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
+    
     <div class="chat-container">
         <div class="chat-header">
             Messaging: <span id="currentRecipient">{{ recipient }}</span>
@@ -36,7 +24,7 @@
         <ul id="messages">
             {% for msg in messages %}
                 <li class="{% if msg.sender == username %}sender{% else %}recipient{% endif %}">
-                    {{ msg.sender }}: {{ msg.content }}
+                    <span class="chat-username" onclick="replyTo('{{ msg.sender }}')">{{ msg.sender }}</span>: {{ msg.content }}
                 </li>
             {% endfor %}
         </ul>
@@ -51,22 +39,16 @@
     <script>
         var socket = io();
         var username = "{{ username }}";
+
         socket.emit('join', {username: username});
 
-    function replyTo(username) {
-        document.getElementById('recipient').value = username;
-        document.getElementById('recipient').dispatchEvent(new Event('input'));
-        document.getElementById('message').focus();
-    }
+        function replyTo(user) {
+            document.getElementById('recipient').value = user;
+            document.getElementById('recipient').dispatchEvent(new Event('input'));
+            document.getElementById('message').focus();
+        }
 
-    socket.on('receive_message', function(data) {
-        var li = document.createElement('li');
-        li.textContent = data.sender + ": " + data.message;
-        document.getElementById('messages').appendChild(li);
-        document.getElementById('message').value = '';
-    });
-</script>
-    <script>
+        // Keep recipient in header updated
         document.getElementById('recipient').addEventListener('input', function() {
             document.getElementById('currentRecipient').textContent = this.value;
         });
@@ -76,15 +58,21 @@
             var message = document.getElementById('message').value;
             if (message.trim() !== "") {
                 socket.emit('send_message', {recipient: recipient, message: message});
+                document.getElementById('message').value = '';
             }
         }
 
         socket.on('receive_message', function(data) {
             var li = document.createElement('li');
             li.className = data.sender === username ? "sender" : "recipient";
-            li.textContent = data.sender + ": " + data.message;
+            // Make sender clickable for reply
+            var nameSpan = document.createElement('span');
+            nameSpan.className = "chat-username";
+            nameSpan.textContent = data.sender;
+            nameSpan.onclick = function() { replyTo(data.sender); };
+            li.appendChild(nameSpan);
+            li.appendChild(document.createTextNode(": " + data.message));
             document.getElementById('messages').appendChild(li);
-            document.getElementById('message').value = '';
         });
     </script>
 </body>
