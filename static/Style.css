@@ -982,7 +982,7 @@ footer a[href^="mailto:"]:hover {
     background: #7a0e8b;
 }
 
-input[type="email"] {
+input[name="mmu_email"] {
     width: 20%;
     padding: 10px;
     border: 1px solid #ddd;
@@ -992,7 +992,7 @@ input[type="email"] {
     outline: none;
 }
 
-input[type="email"]:focus {
+input[name="mmu_email"]:focus {
     border-color: #a877d3;
     background: #fff;
 }
