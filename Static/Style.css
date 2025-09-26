@@ -213,7 +213,6 @@ input:hover {
 }
 
 .logo {
-    cursor: pointer;
     font-size: 60px;
     font-weight: bold;
     color: white;
@@ -311,7 +310,7 @@ input:hover {
     font-family: 'Chewy', cursive;
     font-size: 30px;   
     text-decoration: none;
-    color: #513474;
+    color: #ffffff;
 }
 
 .form-box {
@@ -727,6 +726,11 @@ body {
     color: white;
 }
 
+.hero-icon{
+    width: 80px;
+    height: 80px;
+}
+
 .hero h1 {
     font-size: 48px;
     font-weight: bold;
@@ -892,4 +896,9 @@ footer {
 @keyframes popIn {
     from { transform: scale(0.8); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
+}
+
+.link-color{
+    color: paleturquoise;
+    text-decoration: none;
 }
