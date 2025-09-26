@@ -59,9 +59,11 @@
                 <td>{{ entry.subject }}</td>
                 <td>{{ entry.description or '' }}</td>
                 <td>
-                    <form method="POST" action="{{ url_for('delete_timetable_entry', entry_id=entry.id) }}" style="display:inline;">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this entry?');">Del</button>
-                    </form>
+                    <div style="display: flex; justify-content: center;">
+                        <form method="POST" action="{{ url_for('delete_timetable_entry', entry_id=entry.id) }}" style="display:inline;">
+                            <button type="submit" class="btn-danger" onclick="return confirm('Delete this entry?');">Ketchup</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
