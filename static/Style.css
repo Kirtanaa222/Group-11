@@ -1013,3 +1013,17 @@ footer a[href^="mailto:"] {
 footer a[href^="mailto:"]:hover {
     color: #a01346;
 }
+
+.btn-danger {
+    background: #d14e4e;
+    color: #d76060;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-danger:hover {
+    background: #bd0000;
+}
