@@ -202,7 +202,7 @@ def login():
             session["user_id"] = user.id
             session["username"] = user.username
             session["is_admin"] = user.admin
-            return redirect(url_for("profile"))
+            return redirect(url_for("study_space"))
         else:
             return render_template("login.html", error="Invalid username or password.")
     return render_template("login.html")
@@ -291,14 +291,14 @@ def unlock_account():
             return redirect(url_for("login", success="Your account has been updated and unbanned. You can now log in."))
     return render_template("unlock_acc.html", error=error, success=success)
 
-#----------------------profile----------------------------
+#----------------------Study Space----------------------------
 def is_mmu_email(email):
     if not email:
         return False
     return email.endswith("@mmu.edu.my") or email.endswith("@student.mmu.edu.my")
 
-@app.route("/profile", methods=["GET", "POST"])
-def profile():
+@app.route("/study_space", methods=["GET", "POST"])
+def study_space():
     if "user_id" not in session:
         return redirect(url_for("login"))
 
@@ -306,7 +306,7 @@ def profile():
     if user.status == 'banned':
         return redirect(url_for("unlock_account")) # Redirect banned users to unlock page
     
-    avatar = user.avatar or "default_avatar.png"
+    avatar = user.avatar or "default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 
@@ -321,8 +321,8 @@ def profile():
     # Fetch user's timetable entries
     timetable_entries = TimetableEntry.query.filter_by(user_id=user.id).order_by(TimetableEntry.day_of_week, TimetableEntry.start_time).all()
 
-    #send data to profile.html to display the profile page
-    return render_template("profile.html",
+    #send data to study_space.html to display the study space page
+    return render_template("study_space.html",
                            username=user.username,
                            avatar=avatar,
                            background=background,
@@ -343,7 +343,7 @@ def display_profile(user_id):
     if not user:
         return "User not found", 404
 
-    avatar = user.avatar or "default_avatar.png"
+    avatar = user.avatar or "img/default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 
@@ -367,7 +367,7 @@ def edit_profile(user_id):
     if session["user_id"] != user_id and not session.get("is_admin"):
         abort(403)
 
-    avatar = user.avatar or "default_avatar.png"
+    avatar = user.avatar or "img/default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
     error = None
