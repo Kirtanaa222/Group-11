@@ -508,6 +508,14 @@ def timetable():
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     return render_template("timetable.html", entries=entries, days=days, error=error)
 
+@app.route('/delete_timetable_entry/<int:entry_id>', methods=['POST'])
+def delete_timetable_entry(entry_id):
+    entry = TimetableEntry.query.get_or_404(entry_id)
+    # Optionally, check if the current user owns this entry
+    db.session.delete(entry)
+    db.session.commit()
+    return redirect(url_for('timetable'))
+
 #------------------------------chat---------------------------------
 @app.route("/message")
 def message():

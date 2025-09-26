@@ -48,6 +48,7 @@
                 <th>End</th>
                 <th>Subject</th>
                 <th>Description</th>
+                <th>Delete</th>
             </tr>
             {% for entry in entries %}
             <tr>
@@ -57,6 +58,11 @@
                 <td>{{ entry.end_time.strftime('%H:%M') }}</td>
                 <td>{{ entry.subject }}</td>
                 <td>{{ entry.description or '' }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('delete_timetable_entry', entry_id=entry.id) }}" style="display:inline;">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this entry?');">Del</button>
+                    </form>
+                </td>
             </tr>
             {% endfor %}
         </table>
