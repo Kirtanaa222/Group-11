@@ -463,18 +463,6 @@ body {
     background-color: #cf8ad7;
 }
 
-.search-results {
-    background: #fff;
-    color: #000000;
-    padding: 30px 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    margin: 40px auto 0 auto;
-    width: 90%;
-    max-width: 700px;
-    text-align: center;
-}
-
 .faculty-search {
     display: flex;
     align-items: center;
@@ -515,10 +503,6 @@ body {
     background: #f8f8fa;
     color: #333;
 }
-.search-results h2 {
-    margin-bottom: 20px;
-    color: #333;
-}
 
 .search-label {
     font-weight: bold;
@@ -543,14 +527,6 @@ body {
     height: 40px;
     border-radius: 50%;
     margin-right: 10px;
-}
-
-.user-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 15px;
-    border-bottom: 1px solid #eee;
 }
 
 .hero {
@@ -950,4 +926,88 @@ footer a[href^="mailto:"]:hover {
 .timetable-section a:hover {
 
     background: #7a0e8b;
+}
+
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 一排三个 */
+    gap: 20px;
+    padding: 20px;
+}
+
+.profile-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    padding: 20px;
+    text-align: center;
+}
+
+.profile-avatar2 {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    object-fit: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.profile-card h2 {
+    margin: 10px 0 5px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.profile-card p {
+    margin: 5px 0;
+    font-size: 0.95em;
+    color: #666;
+}
+
+.view-profile-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #a877d3;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.view-profile-btn:hover {
+    background: #7a0e8b;
+}
+
+input[type="email"] {
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    font-size: 15px;
+    outline: none;
+}
+
+input[type="email"]:focus {
+    border-color: #a877d3;
+    background: #fff;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: #7041ba;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.custom-file-upload:hover {
+    background: #62257a;
 }

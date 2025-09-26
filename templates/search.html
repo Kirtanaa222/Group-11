@@ -3,37 +3,38 @@
 <head>
     <title>StudyBae!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
-</head>
 <body>
     <nav class="navbar">
-    <div class="logo">
-        <span>Study</span><span>B</span><span>a</span><span>e</span>
-    </div>
-<div>
-    <ul class="nav-links">
-        <li><a href="{{ url_for('study_space') }}">Back</a></li>
-        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    </ul>
-</div>
-</nav>
-<div class="search-results">
-    <h2>
-        Users
-        {% if faculty %} in {{ faculty }}{% endif %}
-        {% if subject %} with Subject {{ subject }}{% endif %}
-    </h2>
-    <ul>
-        {% for user in users %}
-        <li class="user-card">
-            <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.jpg') }}" alt="{{ user.username }}'s avatar" class="avatar">
-            <span>{{ user.username }} ({{ user.faculty }})</span>
-            <span>Subjects: {{ user.preferred_subjects or "None" }}</span>
-            <a href="{{ url_for('display_profile', user_id=user.id) }}" class="btn">View</a>
-        </li>
+        <div class="logo">
+            <span>Study</span><span>B</span><span>a</span><span>e</span>
+        </div>
+        <div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('study_space') }}">Back</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="results-container">
+        {% if users %}
+            {% for user in users %}
+            <div class="profile-card">
+                <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='img/default_avatar.jpg') }}" 
+                     alt="{{ user.username }}'s avatar" class="profile-avatar2">
+
+                <h2>{{ user.username }}</h2>
+                <p><strong>Faculty:</strong> {{ user.faculty }}</p>
+                <p><strong>Subjects:</strong> {{ user.preferred_subjects or "None" }}</p>
+
+                <a href="{{ url_for('display_profile', user_id=user.id) }}" class="view-profile-btn">
+                    View Profile
+                </a>
+            </div>
+            {% endfor %}
         {% else %}
-            <li>No users found.</li>
-        {% endfor %}
-    </ul>
-</div>
+            <p class="no-results">No users found for your search.</p>
+        {% endif %}
+    </div>
 </body>
 </html>

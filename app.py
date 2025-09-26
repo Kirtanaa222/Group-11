@@ -306,7 +306,7 @@ def study_space():
     if user.status == 'banned':
         return redirect(url_for("unlock_account")) # Redirect banned users to unlock page
     
-    avatar = user.avatar or "default_avatar.jpg"
+    avatar = user.avatar or "img/default_avatar.jpg"
     background = user.background or "default_bg.jpg"
     bio = user.bio or ""
 

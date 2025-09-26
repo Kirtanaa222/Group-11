@@ -44,8 +44,11 @@
             <textarea name="bio" rows="4" placeholder="Write your bio here...">{{ bio or '' }}</textarea>
 
             <p><strong>Background:</strong></p>
-            <input type="file" name="background">
-
+            <label for="background-upload" class="custom-file-upload">
+                Upload Background
+            </label>
+            <input id="background-upload" type="file" name="background" hidden>
+            
             <p><strong>Preferred Subjects:</strong></p>
             <div class="multi-select">
                 {% set all_subjects = ["Math", "Physics", "Computer Science", "Business", "Engineering", "Accounting", "English", "Law", "Data Science", "Cybersecurity"] %}
@@ -73,8 +76,6 @@
                 <p style="color:red;">{{ error }}</p>
             {% endif %}
 
-            <button type="submit">Save</button>
-
         {% elif email_editable %}
             <p><strong>MMU Email:</strong> 
                 <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
@@ -82,10 +83,12 @@
             {% if error %}
                 <p style="color:red;">{{ error }}</p>
             {% endif %}
-            <button type="submit">Save</button>
+            
         {% else %}
             <p><strong>MMU Email:</strong> {{ user.mmu_email }}</p>
         {% endif %}
+
+        <button type="submit">Save</button>
         </form>
     </div>
 
