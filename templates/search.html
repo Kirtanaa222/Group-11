@@ -3,6 +3,7 @@
 <head>
     <title>StudyBae!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+    <link rel="icon" href="static/img/catss.gif" type="image/gif">
 </head>
 <body>
     <nav class="navbar">
@@ -16,30 +17,20 @@
     </ul>
 </div>
 </nav>
-<div class="results-container">
     {% if users %}
-        {% for user in users %}
-        <li class="user-card">
-            <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.jpg') }}" alt="{{ user.username }}'s avatar" class="avatar">
-            <span>{{ user.username }} ({{ user.faculty }})</span>
-            <span>Subjects: {{ user.preferred_subjects or "None" }}</span>
-            <a href="{{ url_for('display_profile', user_id=user.id) }}" class="btn">View</a>
-        </li>
-        {% else %}
-            <li>No users found.</li>
+        <div class="profile-card-container">
+          {% for user in users %}
             <div class="profile-card">
-                <img src="{{ url_for('static', filename=user.avatar) if user.avatar else url_for('static', filename='default_avatar.png') }}" 
-                     alt="{{ user.username }}'s avatar" class="profile-avatar">
-
-                <h2>{{ user.username }}</h2>
-                <p><strong>Faculty:</strong> {{ user.faculty }}</p>
-                <p><strong>Subjects:</strong> {{ user.preferred_subjects }}</p>
-
-                <a href="{{ url_for('profile', username=user.username) }}" class="view-profile-btn">
-                    View Profile
-                </a>
+              <img src="{{ url_for('static', filename=user.avatar or 'img/default_avatar.jpg') }}" alt="Avatar" class="search-avatar">
+              <h3>{{ user.username }}</h3>
+              <p class="faculty">{{ user.faculty }}</p>
+              <p class="bio">{{ user.bio or '' }}</p>
+              <a href="{{ url_for('display_profile', user_id=user.id) }}" class="view-profile-btn">View Profile</a>
             </div>
-        {% endfor %}
+          {% else %}
+            <p>No users found.</p>
+          {% endfor %}
+        </div>
     {% else %}
         <p class="no-results">No users found for your search.</p>
     {% endif %}
