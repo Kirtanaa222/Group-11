@@ -9,14 +9,15 @@ import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1' 
 from datetime import datetime, timedelta
 from flask import abort
-from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
+import resend
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 serializer = URLSafeTimedSerializer(app.secret_key)
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
 
@@ -100,21 +101,24 @@ def admin_ban_user(user_id):
     return redirect(url_for('admin_dashboard'))
 
 def send_mmu_reminder_email(user):
-    msg = MailMessage(
-        subject="Reminder: Update Your MMU Email",
-        sender=app.config['MAIL_USERNAME'],
-        recipients=[user.user_email]
-    )
-    msg.body = f"""
-    Hi {user.username},
+    if not RESEND_API_KEY:
+        print("Resend API key not set. Skipping email.")
+        return
+    resend.api_key = RESEND_API_KEY
+    resend.Emails.send({
+        "from": "StudyBaeDev@gmail.com",
+        "to": user.user_email,
+        "subject": "Reminder: Update Your MMU Email",
+        "text": f"""
+Hi {user.username},
 
-    Please update your MMU email address in your profile as soon as possible.
-    If you do not update it, your account will be banned forever.
+Please update your MMU email address in your profile as soon as possible.
+If you do not update it, your account will be banned forever.
 
-    Regards,
-    Admin Team
-    """
-    mail.send(msg)
+Regards,
+Admin Team
+"""
+    })
 
 @app.route('/admin/users/<int:user_id>/unban', methods=['POST'])
 def admin_unban_user(user_id):
@@ -125,31 +129,26 @@ def admin_unban_user(user_id):
     db.session.commit()
     return redirect(url_for('admin_dashboard'))
 
-# Email config (use your own SMTP settings)
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'StudyBaeDev@gmail.com'
-app.config['MAIL_PASSWORD'] = 'cjtc orjl ycpb lbtj'
-mail = Mail(app)
-
 def send_verification_email(user):
-    msg = MailMessage(
-        subject="Your Account Has Been Verified",
-        sender=app.config['MAIL_USERNAME'],
-        recipients=[user.user_email]
-    )
-    msg.body = f"""
-    Hi {user.username},
+    if not RESEND_API_KEY:
+        print("Resend API key not set. Skipping email.")
+        return
+    resend.api_key = RESEND_API_KEY
+    resend.Emails.send({
+        "from": "StudyBaeDev@gmail.com",
+        "to": user.user_email,
+        "subject": "Your Account Has Been Verified",
+        "text": f"""
+Hi {user.username},
 
-    Congratulations! Your account has been verified because you updated your MMU email within the required time.
+Congratulations! Your account has been verified because you updated your MMU email within the required time.
 
-    You now have full access to the platform.
+You now have full access to the platform.
 
-    Regards,
-    Admin Team
-    """
-    mail.send(msg)
+Regards,
+Admin Team
+"""
+    })
 
 #---------------------------home----------------------------------
 @app.route("/")
@@ -208,6 +207,7 @@ def login():
     return render_template("login.html")
 
 #---------------------------forgotpassword----------------------------------
+
 @app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_pw():
     if request.method == "POST":
@@ -217,12 +217,13 @@ def forgot_pw():
             token = serializer.dumps(email, salt="reset-salt")
             reset_url = url_for("reset_pw", token=token, _external=True)
 
-            msg = MailMessage(
-                subject="Password Reset Request",
-                sender=app.config['MAIL_USERNAME'],
-                recipients=[email]
-            )
-            msg.body = f"""
+            if RESEND_API_KEY:
+                resend.api_key = RESEND_API_KEY
+                resend.Emails.send({
+                    "from": "StudyBaeDev@gmail.com",
+                    "to": email,
+                    "subject": "Password Reset Request",
+                    "text": f"""
 Hi {user.username},
 
 You requested to reset your password. Click the link below to reset it:
@@ -232,7 +233,9 @@ This link will expire in 10 minutes.
 
 If you did not request this, please ignore this email.
 """
-            mail.send(msg)
+                })
+            else:
+                print("Resend API key not set. Skipping email.")
 
             return render_template("forgot_pw.html", message="A reset link has been sent to your email.")
         else:
