@@ -19,7 +19,6 @@ app.secret_key = "supersecret"
 serializer = URLSafeTimedSerializer(app.secret_key)
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
-
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 

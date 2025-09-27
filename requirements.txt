@@ -6,4 +6,4 @@ psycopg2-binary
 itsdangerous
 Werkzeug
 gunicorn
-resend
+Flask-Mail
