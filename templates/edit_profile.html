@@ -3,6 +3,7 @@
 <head>
     <title>{{ user.username }}'s Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+    <link rel="icon" href="static/img/catss.gif" type="image/gif">
 </head>
 <body>
 
@@ -78,7 +79,7 @@
 
         {% elif email_editable %}
             <p><strong>MMU Email:</strong> 
-                <input type="email" name="mmu_email" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
+                <input type="email" name="mmu_email1" placeholder="Enter your MMU email" value="{{ user.mmu_email or '' }}">
             </p>
             {% if error %}
                 <p style="color:red;">{{ error }}</p>

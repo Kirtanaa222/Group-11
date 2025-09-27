@@ -3,6 +3,7 @@
 <head>
     <title>StudyBae Chat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+    <link rel="icon" href="static/img/catss.gif" type="image/gif">
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 </head>
 <body>
@@ -15,7 +16,7 @@
             <li><a href="{{ url_for('study_space') }}">← Back to Study Space</a></li>
         </ul>
     </nav>
-    
+
     <div class="chat-container">
         <div class="chat-header">
             Messaging: <span id="currentRecipient">{{ recipient }}</span>

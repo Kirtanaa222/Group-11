@@ -3,6 +3,7 @@
 <head>
     <title>Study Space</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='Style.css') }}">
+    <link rel="icon" href="static/img/catss.gif" type="image/gif">
 </head>
 <body>
 
@@ -58,14 +59,15 @@
             {% endif %}
             <a href="{{ url_for('edit_profile', user_id=session['user_id']) }}">Update MMU Email</a>
         </div>
-    {% endif %}  
-    {% if session.get('is_admin') %}
-        <p>
-            <a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">
-                Go to Admin Dashboard
-            </a>
-        </p>
-    {% endif %}  
+        {% endif %}
+
+        <h1>Welcome, {{ username }}</h1>
+        <h3>This is your personal space.</h3>
+
+        <!-- Show admin dashboard link if user is admin -->
+        {% if session.get('is_admin') %}
+            <p><a href="{{ url_for('admin_dashboard') }}" class="admin-btn pink-btn back-btn">Go to Admin Dashboard</a></p>
+        {% endif %}
     </div>
 
     <div class="timetable-section">

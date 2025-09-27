@@ -127,8 +127,6 @@ body.interface {
     color: #a877d3; /* purple hover effect */
 }
 
-
-
 .container {
     padding: 120px 20px 20px; 
     text-align: center;
@@ -463,44 +461,9 @@ body {
     background-color: #cf8ad7;
 }
 
-.faculty-search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto;
-}
-
-.faculty-search select {
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    background: #f8f8fa;
-    color: #333;
-}
-
-.faculty-search button {
-    padding: 8px 6px;
-    border-radius: 6px;
-    border: none;
-    background: #a877d3;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.faculty-search button:hover {
-    background: #7a0e8b;
-}
-
-.faculty-search input[type="text"] {
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    background: #f8f8fa;
+/* --- Search Page Styling --- */
+.search-results h2 {
+    margin-bottom: 20px;
     color: #333;
 }
 
@@ -522,22 +485,181 @@ body {
     z-index: 1500;
 }
 
-.avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+.faculty-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 auto;
 }
 
+.faculty-search input[type="text"],
+.faculty-search select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: #f8f8fa;
+    color: #333;
+}
+
+.faculty-search button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #a877d3;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.faculty-search button:hover {
+    background: #7a0e8b;
+    transform: scale(1.05);
+}
+
+
+.results-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+    padding: 0 20px;
+}
+
+
+/*profile cards for search results */
+.profile-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+
+.profile-card {
+    background: linear-gradient(135deg, #f8e1f4 0%, #e1eaff 100%);
+    border-radius: 2rem;
+    box-shadow: 0 8px 32px rgba(80, 0, 120, 0.12);
+    padding: 3.5rem 1.5rem 1.5rem 1.5rem; 
+    width: 260px;
+    text-align: center;
+    transition: transform 0.18s, box-shadow 0.18s;
+    position: relative;
+    margin-top: 50px; 
+}
+
+.search-avatar {
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    background: #fff;
+    padding: 0;
+    margin-bottom: 0;
+    z-index: 2;
+}
+
+.profile-card:hover {
+    transform: translateY(-8px) scale(1.04);
+    box-shadow: 0 16px 40px rgba(80, 0, 120, 0.18);
+}
+
+
+.profile-card h3 {
+    margin: 0.5rem 0 0.2rem 0;
+    font-size: 1.3rem;
+    color: #7c3aed;
+    font-weight: 700;
+}
+
+.profile-card .faculty {
+    font-size: 0.95rem;
+    color: #000000;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.profile-card .bio {
+    font-size: 0.95rem;
+    color: #444;
+    margin-bottom: 1rem;
+    min-height: 2.5em;
+}
+
+.view-profile-btn {
+    display: inline-block;
+    padding: 0.5rem 1.2rem;
+    background: hsl(297, 66%, 31%);
+    color: #fff;
+    border-radius: 1.2rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.18s;
+    box-shadow: 0 2px 8px rgba(215, 38, 96, 0.08);
+}
+
+.view-profile-btn:hover {
+    background: hsl(297, 66%, 17%);
+}
+
+input[name="mmu_email1"] {
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    font-size: 15px;
+    outline: none;
+}
+
+input[name="mmu_email1"]:focus {
+    border-color: #a877d3;
+    background: #fff;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: #7041ba;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.custom-file-upload:hover {
+    background: #62257a;
+}
+/* --- Home Page Styling --- */
 .hero {
     text-align: center;
     padding: 100px 20px 80px;
     color: white;
 }
 
-.hero-icon{
+.hero-icon-1{
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 100px;
+}
+
+.hero-icon-2{
     width: 80px;
     height: 80px;
+    position: absolute;
+    right: 300px;
+    top: 50px;
 }
 
 .hero h1 {
@@ -924,90 +1046,5 @@ footer a[href^="mailto:"]:hover {
     transition: background 0.2s;
 }
 .timetable-section a:hover {
-
     background: #7a0e8b;
-}
-
-.results-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 一排三个 */
-    gap: 20px;
-    padding: 20px;
-}
-
-.profile-card {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    padding: 20px;
-    text-align: center;
-}
-
-.profile-avatar2 {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-    object-fit: cover;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.profile-card h2 {
-    margin: 10px 0 5px;
-    font-size: 1.2em;
-    color: #333;
-}
-
-.profile-card p {
-    margin: 5px 0;
-    font-size: 0.95em;
-    color: #666;
-}
-
-.view-profile-btn {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 8px 14px;
-    border-radius: 6px;
-    background: #a877d3;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.view-profile-btn:hover {
-    background: #7a0e8b;
-}
-
-input[name="mmu_email"] {
-    width: 20%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-    font-size: 15px;
-    outline: none;
-}
-
-input[name="mmu_email"]:focus {
-    border-color: #a877d3;
-    background: #fff;
-}
-
-.custom-file-upload {
-    display: inline-block;
-    padding: 10px 18px;
-    border-radius: 8px;
-    background: #7041ba;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.custom-file-upload:hover {
-    background: #62257a;
 }
