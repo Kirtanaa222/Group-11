@@ -106,7 +106,7 @@ def send_mmu_reminder_email(user):
         return
     resend.api_key = RESEND_API_KEY
     resend.Emails.send({
-        "from": "onboarding@resend.dev",
+        "from": "noreply@studybae.com",
         "to": user.user_email,
         "subject": "Reminder: Update Your MMU Email",
         "text": f"""
@@ -135,7 +135,7 @@ def send_verification_email(user):
         return
     resend.api_key = RESEND_API_KEY
     resend.Emails.send({
-        "from": "onboarding@resend.dev",
+        "from": "noreply@studybae.com",
         "to": user.user_email,
         "subject": "Your Account Has Been Verified",
         "text": f"""
@@ -220,7 +220,7 @@ def forgot_pw():
             if RESEND_API_KEY:
                 resend.api_key = RESEND_API_KEY
                 resend.Emails.send({
-                    "from": "onboarding@resend.dev",
+                    "from": "noreply@studybae.com",
                     "to": email,
                     "subject": "Password Reset Request",
                     "text": f"""
