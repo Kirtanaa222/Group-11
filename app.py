@@ -176,9 +176,9 @@ def signup():
         if User.query.filter_by(user_email=user_email).first():
             return render_template("signup.html", error="Email already exists.")
 
-        hashed_pw = generate_password_hash(password, method="scrypt")
+        hashed_pw = generate_password_hash(password, method="scrypt") #encprt the password
         new_user = User(username=username, password=hashed_pw, faculty=faculty, student_id=student_id, user_email=user_email)
-        db.session.add(new_user)
+        db.session.add(new_user) #add to db
         db.session.commit()
         return redirect(url_for("login"))
 
