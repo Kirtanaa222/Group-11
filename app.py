@@ -73,6 +73,16 @@ with app.app_context():
 
 #----------------------------------ADMIN-----------------------------------------
 # Helper function to check if user is logged in or is admin
+@app.route("/make_admin")
+def make_admin():
+    user = User.query.filter_by(username="Kirtanaa").first()
+    print("User found:", user)
+    if user:
+        user.admin = True
+        db.session.commit()
+        return "You are now admin!"   # <-- REQUIRED
+    return "User not found."          # <-- REQUIRED
+
 @app.route('/admin')
 def admin_dashboard():
     if not is_logged_in_admin():
