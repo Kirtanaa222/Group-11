@@ -106,7 +106,7 @@ def send_mmu_reminder_email(user):
         return
     resend.api_key = RESEND_API_KEY
     resend.Emails.send({
-        "from": "StudyBaeDev@gmail.com",
+        "from": "onboarding@resend.dev",
         "to": user.user_email,
         "subject": "Reminder: Update Your MMU Email",
         "text": f"""
