@@ -11,7 +11,7 @@ from flask_mail import Mail, Message as MailMessage
 from flask_socketio import SocketIO, emit, join_room
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sql.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///sql.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "supersecret"
 serializer = URLSafeTimedSerializer(app.secret_key)
