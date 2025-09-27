@@ -73,24 +73,15 @@ with app.app_context():
 
 #----------------------------------ADMIN-----------------------------------------
 # Helper function to check if user is logged in or is admin
-from werkzeug.security import check_password_hash
-
-@app.route("/make_admin", methods=["POST"])
+@app.route("/make_admin")
 def make_admin():
-    username = request.form.get("username")
-    password = request.form.get("password")
-    # Only allow your username
-    if username != "Kirtanaa":
-        abort(403)
-    user = User.query.filter_by(username=username).first()
-    if not user:
-        abort(403)
-    # Check password
-    if not check_password_hash(user.password, password):
-        abort(403)
-    user.admin = True
-    db.session.commit()
-    return "You are now admin!"
+    user = User.query.filter_by(username="Kirtanaa").first()
+    if user:
+        user.admin = True
+        db.session.commit()
+        return "You are now admin!"
+    return "User not found."
+
 @app.route('/admin')
 def admin_dashboard():
     if not is_logged_in_admin():
@@ -423,7 +414,7 @@ def edit_profile(user_id):
             selected_subjects = request.form.getlist("subjects")
             user.preferred_subjects = ",".join(selected_subjects)
 
-            new_mmu_email = request.form.get("mmu_email") or request.form.get("mmu_email1")
+            new_mmu_email = request.form.get("mmu_email")
             if new_mmu_email and email_editable:
                 existing_user = User.query.filter_by(mmu_email=new_mmu_email).first()
                 if existing_user and existing_user.id != user.id:
@@ -442,9 +433,20 @@ def edit_profile(user_id):
                 else:
                     error = "Please enter a valid MMU email (@mmu.edu.my or @student.mmu.edu.my)."
 
-            if not error:            
-                db.session.commit()
-                return redirect(url_for("display_profile", user_id=user.id))
+            db.session.commit()
+
+        if error:
+            return render_template(
+                "edit_profile.html",
+                user=user,
+                avatar=user.avatar,
+                background=user.background,
+                bio=user.bio,
+                error=error,
+                email_editable=email_editable
+            )
+        else:
+            return redirect(url_for("display_profile", user_id=user.id))
 
     return render_template(
         "edit_profile.html",
