@@ -135,7 +135,7 @@ def send_verification_email(user):
         return
     resend.api_key = RESEND_API_KEY
     resend.Emails.send({
-        "from": "StudyBaeDev@gmail.com",
+        "from": "onboarding@resend.dev",
         "to": user.user_email,
         "subject": "Your Account Has Been Verified",
         "text": f"""
@@ -220,7 +220,7 @@ def forgot_pw():
             if RESEND_API_KEY:
                 resend.api_key = RESEND_API_KEY
                 resend.Emails.send({
-                    "from": "StudyBaeDev@gmail.com",
+                    "from": "onboarding@resend.dev",
                     "to": email,
                     "subject": "Password Reset Request",
                     "text": f"""
