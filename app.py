@@ -73,6 +73,24 @@ with app.app_context():
 
 #----------------------------------ADMIN-----------------------------------------
 # Helper function to check if user is logged in or is admin
+from werkzeug.security import check_password_hash
+
+@app.route("/make_admin", methods=["POST"])
+def make_admin():
+    username = request.form.get("username")
+    password = request.form.get("password")
+    # Only allow your username
+    if username != "Kirtanaa":
+        abort(403)
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        abort(403)
+    # Check password
+    if not check_password_hash(user.password, password):
+        abort(403)
+    user.admin = True
+    db.session.commit()
+    return "You are now admin!"
 @app.route('/admin')
 def admin_dashboard():
     if not is_logged_in_admin():
